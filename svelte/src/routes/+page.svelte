@@ -31,7 +31,10 @@
 <div class="page">
 	<header>
 		<div>
-			<p class="eyebrow">open-mSupply · Svelte rebuild · <a href="/gallery">UI primitives →</a></p>
+			<p class="eyebrow">
+				open-mSupply · Svelte rebuild · <a href="/gallery">UI primitives →</a> ·
+				<a href="/dashboard">App shell →</a>
+			</p>
 			<h1>Stage 1 — Foundation</h1>
 			<p class="sub">
 				Design tokens, typography and value formatting from the

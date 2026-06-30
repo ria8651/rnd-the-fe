@@ -4,6 +4,7 @@
 @import './lib/theme/tokens.css';
 @import './lib/theme/scale.css';
 @import './lib/ui/inputs/control.css';
+@import './lib/chrome/chrome.css';
 
 *,
 *::before,

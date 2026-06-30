@@ -1,0 +1,41 @@
+/* Shared chrome utilities. `.bar-control` is the footer/bottom-bar control look
+   used by the store, user and language selectors. */
+
+.bar-control {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-2);
+	min-height: var(--touch-target);
+	max-width: 240px;
+	padding: 0 var(--space-3);
+	border: 0;
+	border-radius: var(--radius);
+	background: transparent;
+	color: var(--text-primary);
+	font: inherit;
+	font-size: 13px;
+	cursor: pointer;
+	transition: background var(--transition-fast);
+}
+.bar-control:hover {
+	background: var(--hover-overlay);
+}
+.bar-control .label {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+/* Extra-small: stack icon over label, evenly spaced (chrome/01 › Bottom bar). */
+@media (max-width: 600px) {
+	.bar-control {
+		flex-direction: column;
+		gap: 2px;
+		min-width: var(--touch-target);
+		padding: var(--space-1);
+		font-size: 11px;
+	}
+	.bar-control .label {
+		max-width: 72px;
+	}
+}
