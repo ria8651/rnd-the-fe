@@ -8,8 +8,6 @@
   rail. A menu button toggles it; the choice persists once the user has explicitly set it.
 - **Responsive default:** auto-collapses on medium-and-smaller screens and auto-expands on
   larger — until the user overrides, after which their choice wins.
-- **Hover-to-peek:** on non-touch devices, hovering the collapsed rail temporarily expands it;
-  leaving collapses it again (with a short debounce). Disabled on touch devices.
 - **Sections (top, scrollable):** Dashboard, Replenishment, Inventory, Distribution,
   Dispensary, Cold Chain, Programs, any plugin categories, Reports.
 - **Sections (bottom):** Catalogue, Manage, Settings, Sync status, Help.

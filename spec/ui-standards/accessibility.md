@@ -13,8 +13,9 @@
 
 ## Focus states
 
-Every focus-visible interactive element shows a clear focus indicator (e.g. a 2px accent
-outline with offset). **Never remove focus outlines** — it breaks keyboard accessibility.
+Every focus-visible interactive element shows a clear focus indicator: a 2px outline in the
+[`focusRing` token](./theming.md#interaction) (brand orange) with a 2px offset. **Never remove
+focus outlines** — it breaks keyboard accessibility.
 
 ## Keyboard navigation
 

@@ -53,7 +53,7 @@ These specs are triangulated from three sources, in priority order:
 - [`chrome/`](./chrome/) — the app shell (sidebar, mobile nav, bottom bar, store/language
   selectors, logout). **Barebones** (overview / behaviours / acceptance) — wraps all verticals,
   is not one itself.
-- [`ui-standards/`](./ui-standards/) — shared UI rules (tables, inputs, typography,
-  accessibility) distilled from the published
+- [`ui-standards/`](./ui-standards/) — shared UI rules (theming/colour with light+dark tokens,
+  tables, inputs, typography, accessibility) distilled from the published
   [Open mSupply UI Standards](https://msupply-foundation.github.io/ui-standards/). Vertical
   UI-surface docs link to these instead of restating them.

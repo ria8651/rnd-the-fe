@@ -20,6 +20,7 @@ capture.
 
 | File | Covers |
 |------|--------|
+| [`theming.md`](./theming.md) | Light + dark colour tokens (hex), semantic token model, mode selection |
 | [`tables.md`](./tables.md) | Alignment, density, column priority/responsive, selection, sorting, keyboard, inline edit, filtering, touch targets |
 | [`typography.md`](./typography.md) | Font sizes, header/cell weight, value formatting (dates/currency/numbers/percent) |
 | [`inputs.md`](./inputs.md) | Field sizing/states, widths by content type, grid guidance |
