@@ -21,8 +21,9 @@
 	color: var(--text-disabled);
 }
 
-/* Hover darkens the border, but not while focused (the focus ring owns that state). */
-.control:hover:not(:disabled):not(:focus) {
+/* Hover darkens the border, but never overrides the focus ring or the error
+   state — those own the border colour while active. */
+.control:not(:disabled):not(:focus):not([aria-invalid='true']):hover {
 	border-color: var(--border-strong);
 }
 
