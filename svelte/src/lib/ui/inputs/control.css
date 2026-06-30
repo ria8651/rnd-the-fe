@@ -21,14 +21,18 @@
 	color: var(--text-disabled);
 }
 
-.control:hover:not(:disabled) {
+/* Hover darkens the border, but not while focused (the focus ring owns that state). */
+.control:hover:not(:disabled):not(:focus) {
 	border-color: var(--border-strong);
 }
 
-/* Border shifts to the accent on focus; the brand focus ring comes from the
-   global :focus-visible rule in app.css. */
+/* Single focus treatment: accent border + soft ring via box-shadow. We suppress
+   the global :focus-visible outline for controls (the ring replaces it, so keyboard
+   focus stays clearly visible — accessibility.md). */
 .control:focus {
+	outline: none;
 	border-color: var(--brand-primary);
+	box-shadow: 0 0 0 3px var(--brand-primary-subtle);
 }
 
 .control:disabled {
@@ -37,9 +41,14 @@
 	cursor: not-allowed;
 }
 
-/* Invalid state: red border pairs with the icon + message in FieldShell. */
+/* Invalid state: red border pairs with the icon + message in FieldShell;
+   the focus ring turns red too so the two cues never conflict. */
 .control[aria-invalid='true'] {
 	border-color: var(--state-error);
+}
+.control[aria-invalid='true']:focus {
+	border-color: var(--state-error);
+	box-shadow: 0 0 0 3px var(--state-error-subtle);
 }
 
 .control.compact {

@@ -1,5 +1,6 @@
 export { default as Table } from './Table.svelte';
 export { default as StatusBadge } from './StatusBadge.svelte';
+export { default as Popover } from './Popover.svelte';
 export { default as Button } from './Button.svelte';
 export { default as TextField } from './inputs/TextField.svelte';
 export { default as NumericField } from './inputs/NumericField.svelte';
