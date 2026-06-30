@@ -1,0 +1,61 @@
+/* Base styling shared by text/number/date inputs and selects (inputs.md ›
+   Field sizing and states). Global so every control is consistent without
+   re-declaring scoped styles per component. */
+
+.control {
+	width: 100%;
+	height: var(--field-height);
+	padding: 0 var(--field-pad-x);
+	font-family: inherit;
+	font-size: var(--font-size-cell);
+	color: var(--text-primary);
+	background: var(--surface-sunken);
+	border: 1px solid var(--border-default);
+	border-radius: var(--radius);
+	transition:
+		border-color var(--transition-fast),
+		box-shadow var(--transition-fast);
+}
+
+.control::placeholder {
+	color: var(--text-disabled);
+}
+
+.control:hover:not(:disabled) {
+	border-color: var(--border-strong);
+}
+
+/* Border shifts to the accent on focus; the brand focus ring comes from the
+   global :focus-visible rule in app.css. */
+.control:focus {
+	border-color: var(--brand-primary);
+}
+
+.control:disabled {
+	background: var(--surface-base);
+	color: var(--text-disabled);
+	cursor: not-allowed;
+}
+
+/* Invalid state: red border pairs with the icon + message in FieldShell. */
+.control[aria-invalid='true'] {
+	border-color: var(--state-error);
+}
+
+.control.compact {
+	height: var(--field-height-compact);
+}
+
+/* Numeric inputs right-align with tabular figures (tables/inputs standards). */
+.control.numeric {
+	text-align: right;
+	font-variant-numeric: tabular-nums;
+	font-feature-settings: var(--font-feature-tabular);
+}
+
+textarea.control {
+	height: auto;
+	padding: var(--space-2) var(--field-pad-x);
+	line-height: var(--line-height-cell);
+	resize: vertical;
+}

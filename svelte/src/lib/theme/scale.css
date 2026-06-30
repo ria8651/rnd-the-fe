@@ -1,0 +1,69 @@
+/* Theme-independent scale tokens: typography, spacing, sizing, radius.
+   Numeric values come from spec/ui-standards/{typography,inputs,tables,accessibility}.md.
+   These do not change between light/dark, so they live outside the generated tokens.css. */
+
+:root {
+	/* Type scale (typography.md) */
+	--font-sans:
+		'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+	--font-size-cell: 14px; /* desktop cell */
+	--font-size-header: 14px; /* desktop header */
+	--font-size-cell-touch: 16px; /* tablet cell */
+	--font-size-label: 11px; /* uppercase card/field labels */
+	--line-height-cell: 20px;
+	--line-height-touch: 24px;
+	--weight-regular: 400;
+	--weight-header: 600; /* headers differ from cells by weight, not colour/size */
+
+	/* Tabular figures for aligned numeric columns */
+	--font-feature-tabular: 'tnum' 1, 'lnum' 1;
+
+	/* Spacing scale (4px base) */
+	--space-1: 4px;
+	--space-2: 8px;
+	--space-3: 12px;
+	--space-4: 16px;
+	--space-5: 24px;
+	--space-6: 32px;
+	--space-7: 48px;
+
+	/* Radius (inputs.md: 6px) */
+	--radius-sm: 4px;
+	--radius: 6px;
+	--radius-lg: 10px;
+	--radius-pill: 999px;
+
+	/* Input sizing (inputs.md) */
+	--field-height: 40px;
+	--field-height-compact: 36px;
+	--field-pad-x: 12px;
+
+	/* Table row density (tables.md) */
+	--row-compact: 40px;
+	--row-comfortable: 52px; /* default */
+	--row-spacious: 64px; /* tablet/touch */
+
+	/* Touch target floor (accessibility.md: 48×48) */
+	--touch-target: 48px;
+
+	/* Responsive breakpoints (tables.md responsive strategy) */
+	--bp-phone: 600px;
+	--bp-tablet-portrait: 800px;
+	--bp-desktop: 1100px;
+
+	/* Elevation */
+	--shadow-popover: 0 4px 16px rgba(0, 0, 0, 0.12);
+	--shadow-modal: 0 12px 40px rgba(0, 0, 0, 0.24);
+
+	/* Layering */
+	--z-sticky-header: 10;
+	--z-sidebar: 20;
+	--z-bottom-bar: 20;
+	--z-popover: 40;
+	--z-modal: 50;
+	--z-toast: 60;
+
+	/* Motion */
+	--transition-fast: 120ms ease;
+	--transition: 200ms ease;
+}
