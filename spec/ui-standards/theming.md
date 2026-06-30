@@ -88,6 +88,23 @@ with text/icon per colour-independence.
 | `selected` | Selected table row tint | `#E8F1FE` | `rgba(62,123,250,0.24)` |
 | `selectedHover` | Hover on selected row | `#D2DFFF` | `rgba(62,123,250,0.32)` |
 
+## Spacing, radius & elevation
+
+Non-colour design tokens. Like the colour roles, these are referenced semantically so spacing,
+rounding and shadow stay consistent across screens and don't drift between implementations.
+These values do **not** change between light and dark. ⚠️ VERIFY the exact scale against the
+upstream UI Standards; the values below are the rewrite's working set, aligned with the field
+radius (6px) and row heights already fixed in [inputs](./inputs.md) and [tables](./tables.md).
+
+**Spacing** — a 4px base step: `4, 8, 12, 16, 24, 32, 48`. Use steps, not arbitrary pixels.
+
+**Radius** — `sm 4px` · `default 6px` (inputs, buttons, cards) · `lg 10px` (modals) ·
+`pill` (badges, toggles, segmented controls).
+
+**Elevation** — surfaces stack via shadow + the `surface.*` tokens, not colour alone:
+`popover` (menus/dropdowns/popovers) and `modal` (dialogs) are the two defined levels; flat
+surfaces (cards, tables) use a border instead of a shadow.
+
 ## Applying the tokens
 
 - **Tables:** `surface.default` background, `border.strong` header rule, `selected`/

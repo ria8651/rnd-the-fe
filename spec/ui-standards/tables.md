@@ -48,10 +48,17 @@ resize); simple tables use fixed widths.
 Progressive disclosure: assign every column a priority; lower priorities hide first as the
 viewport narrows.
 
-- **P1 — always visible:** record identifier, selection checkbox, primary status.
+- **P1 — always visible:** record identifier, selection checkbox, primary status, **and any
+  values core to the table's purpose** (e.g. a stocktake's *counted packs*). P1 is a per-table
+  set, not a fixed count — it is the columns that must never leave the grid.
 - **P2 — hide ≤ 800px:** supporting details (e.g. expiry dates, unit labels, line totals).
 - **P3 — hide ≤ 1100px:** cross-reference data (e.g. batch codes, locations, unit costs).
 - **Never hide:** primary identifiers, status signals, action buttons.
+
+> **On "~5 core columns" at 600–800px** (see [Responsive strategy](#responsive-strategy)): that
+> "core" set is exactly P1 for the table. If P1 is smaller than the visible width allows, P2
+> columns fill the remaining space until they're hidden at their breakpoint; any columns beyond
+> the visible set remain reachable via horizontal scroll. P1 is never hidden or scrolled away.
 
 ## Row density
 
@@ -121,3 +128,16 @@ Pagination controls ≥ 44×44px.
 
 Use sticky headers when the table exceeds the viewport height or has ~20+ rows; skip for short
 (5–10 row) or fully-paginated tables.
+
+## States (empty / loading / error)
+
+A table has four presentation states; the header row is always shown so columns stay legible.
+
+| State | Presentation |
+|-------|--------------|
+| **Normal** | Rows render. |
+| **Loading** | Placeholder/skeleton rows (or a centred indicator for the first load); existing rows may stay visible and dim during a refetch. Announce via a live region. |
+| **Empty** | A single centred message spanning the table, distinguishing **no records yet** from **no matches for the current filter** (the latter offers a clear-filters affordance). |
+| **Error** | A centred message with the failure and a retry affordance; never a silent blank table. |
+
+⚠️ VERIFY exact copy/affordances against the running app; the four-state model itself is the rule.

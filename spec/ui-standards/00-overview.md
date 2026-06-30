@@ -20,10 +20,11 @@ capture.
 
 | File | Covers |
 |------|--------|
-| [`theming.md`](./theming.md) | Light + dark colour tokens (hex), semantic token model, mode selection |
-| [`tables.md`](./tables.md) | Alignment, density, column priority/responsive, selection, sorting, keyboard, inline edit, filtering, touch targets |
-| [`typography.md`](./typography.md) | Font sizes, header/cell weight, value formatting (dates/currency/numbers/percent) |
-| [`inputs.md`](./inputs.md) | Field sizing/states, widths by content type, grid guidance |
+| [`theming.md`](./theming.md) | Light + dark colour tokens (hex), semantic token model, mode selection, spacing/radius/elevation scale |
+| [`tables.md`](./tables.md) | Alignment, density, column priority/responsive, selection, sorting, keyboard, inline edit, filtering, touch targets, empty/loading/error states |
+| [`typography.md`](./typography.md) | Font family, sizes, header/cell weight, value formatting (dates/currency/numbers/percent/signed), locale & symbols |
+| [`inputs.md`](./inputs.md) | Field sizing, interaction states + precedence, widths by content type, grid guidance |
+| [`controls.md`](./controls.md) | Buttons, menus/popovers, the single-select dropdown (combobox/listbox) behaviour |
 | [`accessibility.md`](./accessibility.md) | WCAG 2.1 AA, contrast, focus, keyboard, screen reader, touch targets, colour-independence |
 
 ## How to reference
