@@ -4,10 +4,29 @@
 
 ## Sidebar (desktop primary nav)
 
-- **Collapsible:** toggles between an expanded state (labels visible) and a collapsed icon
-  rail. A menu button toggles it; the choice persists once the user has explicitly set it.
-- **Responsive default:** auto-collapses on medium-and-smaller screens and auto-expands on
-  larger — until the user overrides, after which their choice wins.
+The sidebar has two states, and the width change between them is **animated** (a smooth
+expand/collapse transition, not an instant jump):
+
+- **Expanded** — a full-width labelled panel; every section shows its icon **and** label.
+- **Collapsed** — a narrow icon rail; only section icons show, labels hidden.
+
+**The brand mark is the toggle.** The [mSupply figure](../ui-standards/icons.md) (or a store's
+custom logo) at the top of the sidebar is the collapse/expand control — activating it toggles
+between the two states. It is horizontally centred in a header band at the top of the
+sidebar and stays centred in both states, so it remains anchored as the width animates. There
+is no separate menu button on desktop; the brand mark *is* the toggle, and it announces its
+action to assistive tech ("open the menu" / "close the menu") and reflects the
+expanded/collapsed state. The state changes only on this explicit activation
+([divergence D3](../DIVERGENCES.md)).
+
+- **Spin on toggle.** Activating the toggle plays a single 360° **spin** of the brand mark as
+  feedback; it spins one way when expanding and the other when collapsing, so the motion echoes
+  the direction of the change. The spin is decorative: it SHOULD play, but MUST be suppressed
+  under a [reduced-motion preference](../ui-standards/accessibility.md#motion).
+- **Persistence:** once the user sets the state explicitly it persists across navigation.
+- **Responsive default:** until the user overrides it, the state follows the viewport —
+  auto-collapsed on medium-and-smaller screens, auto-expanded on larger. After an explicit
+  toggle, the user's choice wins.
 - **Sections (top, scrollable):** Dashboard, Replenishment, Inventory, Distribution,
   Dispensary, Cold Chain, Programs, any plugin categories, Reports.
 - **Sections (bottom):** Catalogue, Manage, Settings, Sync status, Help.

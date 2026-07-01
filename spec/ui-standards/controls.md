@@ -99,8 +99,19 @@ popup, so it is themeable and consistent across platforms. ⚠️ VERIFY against
     selects the active option and closes, `Escape` closes without changing, `Tab` closes and moves on.
   - Type-ahead (jump to options matching typed characters) is optional. ⚠️ VERIFY.
 - **Disabled options** are shown but not selectable and are skipped by keyboard navigation.
-- **Searchable variant:** when the list is long (e.g. the store selector), the menu includes a
-  text filter; selection/keyboard rules are otherwise identical. See
+- **Clearing (the `×` affordance):** whether a value can be cleared follows the field's
+  optionality. A dropdown bound to an **optional** value shows a clear button — a
+  [`close`](./icons.md) (`×`) glyph at the field's trailing edge, before the disclosure arrow —
+  whenever a value is set; activating it empties the field back to its placeholder and returns
+  focus to it. A dropdown bound to a **required** value shows **no** clear button: it always
+  holds a value and is changed only by picking another option. The clear button is
+  keyboard-reachable and carries an accessible label.
+- **Searchable (type-to-filter) variant:** for long lists (locations, items, the store
+  selector), the trigger *is* a text input paired with the disclosure arrow — not a static
+  label. Focusing it opens the list; typing filters the options in place (case-insensitive
+  substring match), narrowing the list as the user types, and keyboard navigation moves through
+  the **filtered** set. When nothing matches, the menu shows an empty-state message rather than a
+  blank surface. Selection, dismissal, and clearing behave exactly as above. See
   [chrome › store selector](../chrome/01-behaviours.md#store-selector).
 
 ## Out of scope

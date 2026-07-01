@@ -43,6 +43,15 @@ checkboxes) get padding to reach 48×48. Pagination controls ≥ 44×44px. Comfo
 pattern — e.g. a status badge shows both colour **and** label ("New", "Finalised"); validation
 shows an icon + message, not just a red border.
 
+## Motion
+
+Animation is **decorative unless it conveys state**. When the user signals a reduced-motion
+preference (OS "reduce motion" setting), non-essential motion MUST be suppressed or replaced
+with an instant change: no spins, slides, or attention-grabbing transitions. Motion that
+carries meaning (e.g. a progress indicator) MAY remain but SHOULD be minimised. A control's
+outcome must never depend on the animation playing — the end state is what matters, the motion
+is only feedback.
+
 ## Testing checklist
 
 - Automated audits (e.g. axe, Lighthouse).

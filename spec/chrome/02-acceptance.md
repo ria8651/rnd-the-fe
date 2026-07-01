@@ -7,6 +7,11 @@
 **AC-CH1 — Toggle persists** — Given the sidebar, when the user toggles it, then the
 expanded/collapsed state changes and is remembered across navigation.
 
+**AC-CH1b — Brand mark toggles collapse/expand** — Given the desktop sidebar, when the user
+activates the brand mark at its top, then the sidebar toggles between expanded (each section
+shows icon **and** label) and the collapsed icon-only rail (labels hidden); no separate menu
+button is required, and hovering the sidebar changes nothing.
+
 **AC-CH2 — Responsive default** — Given the user has not manually set the sidebar, when the
 viewport drops to medium-or-smaller, then it collapses; and expands again on larger viewports.
 
