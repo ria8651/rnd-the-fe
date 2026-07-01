@@ -1,0 +1,206 @@
+/*
+ * Theme tokens — the platform-neutral role model from spec/ui-standards/theming.md
+ * realized as CSS custom properties. Code references roles (--c-surface, --c-text),
+ * never literal colours; swapping [data-theme] swaps the mapping (call sites unchanged).
+ *
+ * - Non-colour scales (spacing / radius / type / elevation) are SHARED across themes → :root.
+ * - Colour roles differ per theme → [data-theme="light|dark|mui"].
+ * - Translucent values use rgba() (the platform mapping of the spec's "hex @ opacity%").
+ * - The one per-theme metric is the button radius (--radius-button).
+ */
+
+:root {
+  /* ---- Spacing scale (base step 4) ---- */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-12: 48px;
+
+  /* ---- Radius scale (shared); button radius is per-theme ---- */
+  --radius-sm: 4px;
+  --radius-control: 8px;
+  --radius-modal: 12px;
+  --radius-pill: 9999px;
+
+  /* ---- Type scale ---- */
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --fs-heading: 16px;
+  --fs-body: 14px;
+  --fs-caption: 12px;
+  --lh-heading: 20px;
+  --lh-body: 20px;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-emphasis: 600;
+
+  /* ---- Density / sizing ---- */
+  --row-compact: 40px;
+  --row-comfortable: 52px;
+  --row-spacious: 64px;
+  --field-h: 40px;
+  --field-h-compact: 36px;
+  --touch: 48px;
+  --sidebar-expanded: 224px;
+  --sidebar-collapsed: 64px;
+  --bottom-bar-h: 28px;
+
+  /* ---- Motion ---- */
+  --motion-fast: 120ms;
+  --motion-med: 240ms;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================= LIGHT (default) ============================= */
+:root,
+[data-theme='light'] {
+  color-scheme: light;
+
+  --c-brand: #e95c30;
+  --c-brand-hover: #c43c11;
+  --c-brand-subtle: #fceae3;
+  --c-on-brand: #ffffff;
+  --c-secondary: #3e7bfa;
+  --c-secondary-hover: #3568d4;
+  --c-secondary-subtle: #e8f1fe;
+
+  --c-surface-base: #f2f2f5;
+  --c-surface: #ffffff;
+  --c-surface-raised: #ffffff;
+  --c-surface-sunken: #fafafc;
+  --c-surface-nav: #f2f2f5;
+  --c-scrim: rgba(0, 0, 0, 0.5);
+
+  --c-text: #1c1c28;
+  --c-text-secondary: #555770;
+  --c-text-disabled: #8f90a6;
+  --c-link: #3568d4;
+  --c-text-inverse: #ffffff;
+
+  --c-border: #e4e4eb;
+  --c-border-strong: #cbced4;
+  --c-divider: #eaeaea;
+
+  --c-error: #e63535;
+  --c-error-subtle: #ffcdce;
+  --c-warning: #e1a200;
+  --c-warning-subtle: #fcf1d4;
+  --c-success: #69a607;
+  --c-success-subtle: #edf7ed;
+  --c-info: #3e7bfa;
+  --c-info-subtle: #e8f1fe;
+
+  --c-focus: #e95c30;
+  --c-hover: rgba(0, 0, 0, 0.04);
+  --c-selected: #e8f1fe;
+  --c-selected-hover: #d2dfff;
+
+  --radius-button: var(--radius-control);
+  --radius-card: var(--radius-control);
+
+  --elev-raised: 0 4px 8px rgba(96, 97, 112, 0.16), 0 0 2px rgba(40, 41, 61, 0.08);
+  --elev-overlay: 0 12px 24px rgba(96, 97, 112, 0.16), 0 4px 8px rgba(40, 41, 61, 0.15);
+}
+
+/* ================================ DARK ==================================== */
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --c-brand: #f2774b;
+  --c-brand-hover: #e95c30;
+  --c-brand-subtle: rgba(233, 92, 48, 0.16);
+  --c-on-brand: #ffffff;
+  --c-secondary: #6b9bff;
+  --c-secondary-hover: #3e7bfa;
+  --c-secondary-subtle: rgba(62, 123, 250, 0.18);
+
+  --c-surface-base: #16161d;
+  --c-surface: #1f2029;
+  --c-surface-raised: #262732;
+  --c-surface-sunken: #14141a;
+  --c-surface-nav: #1a1b23;
+  --c-scrim: rgba(0, 0, 0, 0.6);
+
+  --c-text: #f2f2f5;
+  --c-text-secondary: #a4a7b5;
+  --c-text-disabled: #6a6d7e;
+  --c-link: #6b9bff;
+  --c-text-inverse: #16161d;
+
+  --c-border: #33343f;
+  --c-border-strong: #454654;
+  --c-divider: #2a2b36;
+
+  --c-error: #ff6b6b;
+  --c-error-subtle: rgba(230, 53, 53, 0.18);
+  --c-warning: #f2b43c;
+  --c-warning-subtle: rgba(225, 162, 0, 0.18);
+  --c-success: #8fcb3a;
+  --c-success-subtle: rgba(105, 166, 7, 0.18);
+  --c-info: #6b9bff;
+  --c-info-subtle: rgba(62, 123, 250, 0.18);
+
+  --c-focus: #f2774b;
+  --c-hover: rgba(255, 255, 255, 0.06);
+  --c-selected: rgba(62, 123, 250, 0.24);
+  --c-selected-hover: rgba(62, 123, 250, 0.32);
+
+  --radius-button: var(--radius-control);
+  --radius-card: var(--radius-control);
+
+  --elev-raised: 0 4px 8px rgba(0, 0, 0, 0.4), 0 0 2px rgba(0, 0, 0, 0.5);
+  --elev-overlay: 0 12px 24px rgba(0, 0, 0, 0.5), 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* ===================== EXISTING (MUI reference) =========================== */
+/* Same palette as light, but pill buttons and tighter 4px cards — the current app. */
+[data-theme='mui'] {
+  color-scheme: light;
+
+  --c-brand: #e95c30;
+  --c-brand-hover: #c43c11;
+  --c-brand-subtle: #fceae3;
+  --c-on-brand: #ffffff;
+  --c-secondary: #3e7bfa;
+  --c-secondary-hover: #3568d4;
+  --c-secondary-subtle: #e8f1fe;
+
+  --c-surface-base: #f2f2f5;
+  --c-surface: #ffffff;
+  --c-surface-raised: #f2f2f5;
+  --c-surface-sunken: #fafafc;
+  --c-surface-nav: #f2f2f5;
+  --c-scrim: rgba(0, 0, 0, 0.5);
+
+  --c-text: #1c1c28;
+  --c-text-secondary: #555770;
+  --c-text-disabled: #8f90a6;
+  --c-link: #3568d4;
+  --c-text-inverse: #ffffff;
+
+  --c-border: #e4e4eb;
+  --c-border-strong: #cbced4;
+  --c-divider: #eaeaea;
+
+  --c-error: #e63535;
+  --c-error-subtle: #ffcdce;
+  --c-warning: #f2a001;
+  --c-warning-subtle: #fcf1d4;
+  --c-success: #69a607;
+  --c-success-subtle: #edf7ed;
+  --c-info: #3e7bfa;
+  --c-info-subtle: #e8f1fe;
+
+  --c-focus: #e95c30;
+  --c-hover: rgba(0, 0, 0, 0.04);
+  --c-selected: #e8f1fe;
+  --c-selected-hover: #d2dfff;
+
+  --radius-button: var(--radius-pill);
+  --radius-card: var(--radius-sm);
+
+  --elev-raised: 0 4px 8px rgba(96, 97, 112, 0.16), 0 0 2px rgba(40, 41, 61, 0.08);
+  --elev-overlay: 0 12px 24px rgba(96, 97, 112, 0.16), 0 4px 8px rgba(40, 41, 61, 0.3);
+}

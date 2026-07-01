@@ -1,0 +1,77 @@
+.oms-selector {
+  min-width: 280px;
+  max-width: 360px;
+  padding: 0;
+}
+.oms-selector--narrow {
+  min-width: 200px;
+}
+.oms-selector--user {
+  min-width: 260px;
+}
+
+.oms-selector__search {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  border-bottom: 1px solid var(--c-divider);
+  color: var(--c-text-secondary);
+}
+.oms-selector__search input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: var(--fs-body);
+  color: var(--c-text);
+}
+
+.oms-selector__list {
+  list-style: none;
+  margin: 0;
+  padding: var(--sp-1);
+  max-height: 320px;
+  overflow-y: auto;
+}
+.oms-selector__store-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.oms-selector__tag {
+  margin-inline-start: auto;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--c-warning);
+  border: 1px solid var(--c-warning);
+  border-radius: var(--radius-sm);
+  padding: 0 4px;
+}
+
+.oms-selector__footer {
+  padding: var(--sp-2) var(--sp-3);
+  border-top: 1px solid var(--c-divider);
+}
+
+/* User details */
+.oms-user {
+  display: flex;
+  gap: var(--sp-3);
+  padding: var(--sp-4) var(--sp-3);
+}
+.oms-user__avatar {
+  color: var(--c-text-secondary);
+  flex: none;
+}
+.oms-user__name {
+  margin: 0 0 var(--sp-1);
+  font-weight: var(--fw-emphasis);
+  font-size: var(--fs-body);
+}
+.oms-user__row {
+  margin: 0;
+  font-size: var(--fs-caption);
+  color: var(--c-text-secondary);
+}

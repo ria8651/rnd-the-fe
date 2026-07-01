@@ -1,0 +1,85 @@
+.oms-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  min-width: 0;
+}
+
+/* Labels: static, above the field, always visible. */
+.oms-field__label {
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-medium);
+  color: var(--c-text-secondary);
+}
+
+.oms-input {
+  height: var(--field-h);
+  padding: 0 var(--sp-3);
+  background: var(--c-surface-sunken);
+  color: var(--c-text);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-control);
+  font-size: var(--fs-body);
+  width: 100%;
+  transition:
+    border-color var(--motion-fast) var(--ease),
+    box-shadow var(--motion-fast) var(--ease);
+}
+.oms-input::placeholder {
+  color: var(--c-text-disabled);
+}
+
+/* Hover restyles the control surface only (border darkens).
+   Excludes invalid: a hovered invalid field stays in its error colour
+   (state precedence: disabled > invalid > focus > hover). */
+.oms-input:not(:disabled):not(:focus):not(.oms-input--invalid):hover {
+  border-color: var(--c-border-strong);
+}
+
+/* Focus changes colour, not geometry — border to accent + ring; no stacked outline. */
+.oms-input:focus {
+  outline: none;
+  border-color: var(--c-focus);
+  box-shadow: 0 0 0 2px var(--c-focus);
+}
+
+/* Disabled wins over invalid: a disabled field shows the muted border,
+   not the error colour (state precedence). */
+.oms-input:disabled,
+.oms-input--invalid:disabled {
+  background: var(--c-surface-base);
+  color: var(--c-text-disabled);
+  border-color: var(--c-border);
+  cursor: not-allowed;
+}
+
+/* Invalid: error-colour border; ring turns error while focused. */
+.oms-input--invalid {
+  border-color: var(--c-error);
+}
+.oms-input--invalid:focus {
+  border-color: var(--c-error);
+  box-shadow: 0 0 0 2px var(--c-error);
+}
+
+.oms-textarea {
+  height: auto;
+  min-height: calc(var(--field-h) * 1.6);
+  padding: var(--sp-2) var(--sp-3);
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.oms-field__error {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  margin: 0;
+  color: var(--c-error);
+  font-size: var(--fs-caption);
+}
+.oms-field__hint {
+  margin: 0;
+  color: var(--c-text-secondary);
+  font-size: var(--fs-caption);
+}

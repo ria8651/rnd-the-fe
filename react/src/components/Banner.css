@@ -1,0 +1,60 @@
+.oms-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--radius-control);
+  border: 1px solid transparent;
+}
+.oms-banner__icon {
+  flex: none;
+  margin-top: 1px;
+}
+.oms-banner__content {
+  flex: 1;
+  min-width: 0;
+}
+.oms-banner__title {
+  margin: 0;
+  font-weight: var(--fw-emphasis);
+  font-size: var(--fs-body);
+}
+.oms-banner__body {
+  font-size: var(--fs-body);
+  color: var(--c-text);
+}
+.oms-banner__title + .oms-banner__body {
+  margin-top: var(--sp-1);
+}
+.oms-banner__action {
+  flex: none;
+}
+
+.oms-banner--info {
+  background: var(--c-info-subtle);
+  border-color: var(--c-info);
+}
+.oms-banner--info .oms-banner__icon {
+  color: var(--c-info);
+}
+.oms-banner--warning {
+  background: var(--c-warning-subtle);
+  border-color: var(--c-warning);
+}
+.oms-banner--warning .oms-banner__icon {
+  color: var(--c-warning);
+}
+.oms-banner--error {
+  background: var(--c-error-subtle);
+  border-color: var(--c-error);
+}
+.oms-banner--error .oms-banner__icon {
+  color: var(--c-error);
+}
+.oms-banner--success {
+  background: var(--c-success-subtle);
+  border-color: var(--c-success);
+}
+.oms-banner--success .oms-banner__icon {
+  color: var(--c-success);
+}

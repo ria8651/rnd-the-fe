@@ -1,0 +1,35 @@
+.oms-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px var(--sp-2);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-emphasis);
+  line-height: 1.5;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+.oms-badge--neutral {
+  background: var(--c-surface-base);
+  color: var(--c-text-secondary);
+  border-color: var(--c-border);
+}
+.oms-badge--info {
+  background: var(--c-info-subtle);
+  color: var(--c-info);
+}
+.oms-badge--success {
+  background: var(--c-success-subtle);
+  color: var(--c-success);
+}
+.oms-badge--warning {
+  background: var(--c-warning-subtle);
+  color: var(--c-warning);
+}
+.oms-badge--error {
+  background: var(--c-error-subtle);
+  color: var(--c-error);
+}
+[data-theme='dark'] .oms-badge--success {
+  color: var(--c-success);
+}

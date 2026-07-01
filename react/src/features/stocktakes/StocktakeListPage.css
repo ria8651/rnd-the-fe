@@ -1,0 +1,55 @@
+.oms-listbar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+.oms-listbar__title {
+  font-size: var(--fs-heading);
+  font-weight: var(--fw-emphasis);
+  margin-inline-end: var(--sp-2);
+}
+.oms-listbar__filters {
+  flex: 1;
+  min-width: 200px;
+}
+.oms-listbar__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-inline-start: auto;
+}
+
+.oms-muted {
+  color: var(--c-text-disabled);
+}
+.oms-truncate {
+  display: inline-block;
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: bottom;
+}
+
+.oms-selection-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+.oms-selection-bar__count {
+  font-weight: var(--fw-medium);
+  color: var(--c-text);
+}
+
+.oms-pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-4);
+  padding: var(--sp-4) 0 0;
+}
+.oms-pager__info {
+  color: var(--c-text-secondary);
+  font-size: var(--fs-caption);
+}

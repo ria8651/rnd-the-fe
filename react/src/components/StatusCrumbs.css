@@ -1,0 +1,99 @@
+.oms-crumbs {
+  display: inline-flex;
+}
+.oms-crumbs__trigger {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch);
+  padding: 0 var(--sp-2);
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-sm);
+}
+.oms-crumbs__trigger:hover {
+  background: var(--c-hover);
+}
+
+.oms-crumbs__full {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+}
+.oms-crumbs__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+}
+.oms-crumbs__sep {
+  color: var(--c-text-disabled);
+  transform: rotate(-90deg);
+}
+[dir='rtl'] .oms-crumbs__sep {
+  transform: rotate(90deg);
+}
+.oms-crumbs__label {
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-medium);
+  color: var(--c-text-disabled);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.oms-crumbs__label.is-reached {
+  color: var(--c-brand);
+}
+.oms-crumbs__label.is-current {
+  font-weight: var(--fw-emphasis);
+}
+
+.oms-crumbs__collapsed {
+  display: none;
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-medium);
+  color: var(--c-text);
+}
+
+/* History stepper */
+.oms-crumbs__history {
+  list-style: none;
+  margin: 0;
+  padding: var(--sp-2);
+  min-width: 200px;
+}
+.oms-crumbs__hist-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-1) var(--sp-2);
+  color: var(--c-text-disabled);
+}
+.oms-crumbs__hist-item.is-reached {
+  color: var(--c-text);
+}
+.oms-crumbs__hist-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.oms-crumbs__hist-item.is-reached .oms-crumbs__hist-dot {
+  background: var(--c-brand);
+}
+.oms-crumbs__hist-label {
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-medium);
+}
+.oms-crumbs__hist-time {
+  font-size: var(--fs-caption);
+  color: var(--c-text-secondary);
+}
+
+/* Collapse to a single label on small screens. */
+@media (max-width: 800px) {
+  .oms-crumbs__full {
+    display: none;
+  }
+  .oms-crumbs__collapsed {
+    display: inline;
+  }
+}

@@ -1,0 +1,92 @@
+.oms-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  height: var(--field-h);
+  min-width: var(--touch);
+  padding: 0 var(--sp-4);
+  border: 1px solid transparent;
+  border-radius: var(--radius-button);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+  line-height: 1;
+  white-space: nowrap;
+  transition:
+    background-color var(--motion-fast) var(--ease),
+    border-color var(--motion-fast) var(--ease),
+    color var(--motion-fast) var(--ease);
+}
+
+.oms-btn--compact {
+  height: var(--field-h-compact);
+  padding: 0 var(--sp-3);
+  font-size: var(--fs-caption);
+}
+
+/* Icon-only: square hit area meeting the touch minimum. */
+.oms-btn--icon-only {
+  padding: 0;
+  width: var(--field-h);
+  min-width: var(--field-h);
+}
+.oms-btn--icon-only.oms-btn--compact {
+  width: var(--field-h-compact);
+  min-width: var(--field-h-compact);
+}
+
+.oms-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+/* ---- primary: filled brand accent ---- */
+.oms-btn--primary {
+  background: var(--c-brand);
+  color: var(--c-on-brand);
+  border-color: var(--c-brand);
+}
+.oms-btn--primary:not(:disabled):hover {
+  background: var(--c-brand-hover);
+  border-color: var(--c-brand-hover);
+}
+
+/* ---- secondary: neutral surface, bordered ---- */
+.oms-btn--secondary {
+  background: var(--c-surface);
+  color: var(--c-text);
+  border-color: var(--c-border-strong);
+}
+.oms-btn--secondary:not(:disabled):hover {
+  background: var(--c-hover);
+}
+
+/* ---- ghost: text-only ---- */
+.oms-btn--ghost {
+  background: transparent;
+  color: var(--c-text);
+  border-color: transparent;
+}
+.oms-btn--ghost:not(:disabled):hover {
+  background: var(--c-hover);
+}
+
+/* ---- destructive: error colour is the cue, paired with icon/label (D7) ---- */
+.oms-btn--destructive {
+  background: transparent;
+  color: var(--c-error);
+  border-color: var(--c-error);
+}
+.oms-btn--destructive:not(:disabled):hover {
+  background: var(--c-error);
+  color: var(--c-text-inverse);
+}
+
+.oms-btn__spin {
+  animation: oms-spin 0.8s linear infinite;
+}
+@keyframes oms-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

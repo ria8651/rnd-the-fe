@@ -1,0 +1,500 @@
+[
+  {
+    "name": "alert",
+    "component": "AlertIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "arrow-left",
+    "component": "ArrowLeftIcon",
+    "viewBox": "0 0 24 24",
+    "style": "fill"
+  },
+  {
+    "name": "arrow-right",
+    "component": "ArrowRightIcon",
+    "viewBox": "0 0 16 16",
+    "style": "fill"
+  },
+  {
+    "name": "bar",
+    "component": "BarIcon",
+    "viewBox": "0 0 24 24",
+    "style": "fill"
+  },
+  {
+    "name": "bar-chart",
+    "component": "BarChartIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "book",
+    "component": "BookIcon",
+    "viewBox": "0 0 21 20",
+    "style": "fill"
+  },
+  {
+    "name": "camera",
+    "component": "CameraIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "central",
+    "component": "CentralIcon",
+    "viewBox": "0 0 512 640",
+    "style": "fill"
+  },
+  {
+    "name": "check",
+    "component": "CheckIcon",
+    "viewBox": "0 0 16 16",
+    "style": "fill"
+  },
+  {
+    "name": "check-circle",
+    "component": "CheckCircleIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "checkbox-checked",
+    "component": "CheckboxCheckedIcon",
+    "viewBox": "3 3 20 20",
+    "style": "fill"
+  },
+  {
+    "name": "checkbox-empty",
+    "component": "CheckboxEmptyIcon",
+    "viewBox": "3 3 20 20",
+    "style": "fill"
+  },
+  {
+    "name": "checkbox-indeterminate",
+    "component": "CheckboxIndeterminateIcon",
+    "viewBox": "3 3 20 20",
+    "style": "fill"
+  },
+  {
+    "name": "chevron-down",
+    "component": "ChevronDownIcon",
+    "viewBox": "0 0 24 24",
+    "style": "fill"
+  },
+  {
+    "name": "chevrons-down",
+    "component": "ChevronsDownIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "circle",
+    "component": "CircleIcon",
+    "viewBox": "0 0 20 20",
+    "style": "fill"
+  },
+  {
+    "name": "circle-alert",
+    "component": "CircleAlertIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "clock",
+    "component": "ClockIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "close",
+    "component": "CloseIcon",
+    "viewBox": "0 0 21 20",
+    "style": "fill"
+  },
+  {
+    "name": "collapse",
+    "component": "CollapseIcon",
+    "viewBox": "0 0 16 16",
+    "style": "fill"
+  },
+  {
+    "name": "columns",
+    "component": "ColumnsIcon",
+    "viewBox": "0 0 24 24",
+    "style": "fill"
+  },
+  {
+    "name": "copy",
+    "component": "CopyIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "customers",
+    "component": "CustomersIcon",
+    "viewBox": "0 0 20 20",
+    "style": "fill"
+  },
+  {
+    "name": "dashboard",
+    "component": "DashboardIcon",
+    "viewBox": "0 0 20 20",
+    "style": "fill"
+  },
+  {
+    "name": "delete",
+    "component": "DeleteIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "download",
+    "component": "DownloadIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "edit",
+    "component": "EditIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "emergency",
+    "component": "EmergencyIcon",
+    "viewBox": "-5.0 -10.0 110.0 135.0",
+    "style": "stroke"
+  },
+  {
+    "name": "expand",
+    "component": "ExpandIcon",
+    "viewBox": "0 0 16 16",
+    "style": "fill"
+  },
+  {
+    "name": "external-link",
+    "component": "ExternalLinkIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "eye",
+    "component": "EyeIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "eye-off",
+    "component": "EyeOffIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "file",
+    "component": "FileIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "file-upload",
+    "component": "FileUploadIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "filter",
+    "component": "FilterIcon",
+    "viewBox": "0 0 24 24",
+    "style": "fill"
+  },
+  {
+    "name": "help",
+    "component": "HelpIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "home",
+    "component": "HomeIcon",
+    "viewBox": "0 0 16 16",
+    "style": "fill"
+  },
+  {
+    "name": "info",
+    "component": "InfoIcon",
+    "viewBox": "0 0 90 90",
+    "style": "fill"
+  },
+  {
+    "name": "info-outline",
+    "component": "InfoOutlineIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "invoice",
+    "component": "InvoiceIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "link",
+    "component": "LinkIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "list",
+    "component": "ListIcon",
+    "viewBox": "0 0 21 20",
+    "style": "stroke"
+  },
+  {
+    "name": "location",
+    "component": "LocationIcon",
+    "viewBox": "0 0 24 24",
+    "style": "fill"
+  },
+  {
+    "name": "m-supply-guy",
+    "component": "MSupplyGuyIcon",
+    "viewBox": "3 1 206 310",
+    "style": "fill"
+  },
+  {
+    "name": "mail",
+    "component": "MailIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "maximise",
+    "component": "MaximiseIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "menu-dots",
+    "component": "MenuDotsIcon",
+    "viewBox": "0 0 21 20",
+    "style": "fill"
+  },
+  {
+    "name": "message-square",
+    "component": "MessageSquareIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "minimise",
+    "component": "MinimiseIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "minus",
+    "component": "MinusIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "minus-circle",
+    "component": "MinusCircleIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "plugin",
+    "component": "PluginIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "plus",
+    "component": "PlusIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "plus-circle",
+    "component": "PlusCircleIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "power",
+    "component": "PowerIcon",
+    "viewBox": "0 0 20 20",
+    "style": "fill"
+  },
+  {
+    "name": "printer",
+    "component": "PrinterIcon",
+    "viewBox": "0 0 21 20",
+    "style": "fill"
+  },
+  {
+    "name": "qr-code-scanner",
+    "component": "QrCodeScannerIcon",
+    "viewBox": "0 0 20 20",
+    "style": "fill"
+  },
+  {
+    "name": "radio",
+    "component": "RadioIcon",
+    "viewBox": "0 0 20 20",
+    "style": "fill"
+  },
+  {
+    "name": "refresh",
+    "component": "RefreshIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "reports",
+    "component": "ReportsIcon",
+    "viewBox": "0 0 20 20",
+    "style": "fill"
+  },
+  {
+    "name": "rewind",
+    "component": "RewindIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "save",
+    "component": "SaveIcon",
+    "viewBox": "0 0 16 16",
+    "style": "fill"
+  },
+  {
+    "name": "scan",
+    "component": "ScanIcon",
+    "viewBox": "0 0 700 575",
+    "style": "fill"
+  },
+  {
+    "name": "search",
+    "component": "SearchIcon",
+    "viewBox": "0 0 16 16",
+    "style": "fill"
+  },
+  {
+    "name": "settings",
+    "component": "SettingsIcon",
+    "viewBox": "0 0 20 20",
+    "style": "fill"
+  },
+  {
+    "name": "settings-circle",
+    "component": "SettingsCircleIcon",
+    "viewBox": "0 0 24 24",
+    "style": "fill"
+  },
+  {
+    "name": "sidebar",
+    "component": "SidebarIcon",
+    "viewBox": "0 0 20 24",
+    "style": "stroke"
+  },
+  {
+    "name": "sliders",
+    "component": "SlidersIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "snowflake",
+    "component": "SnowflakeIcon",
+    "viewBox": "0 0 20 20",
+    "style": "stroke"
+  },
+  {
+    "name": "sort-asc",
+    "component": "SortAscIcon",
+    "viewBox": "0,0,24,24",
+    "style": "fill"
+  },
+  {
+    "name": "sort-desc",
+    "component": "SortDescIcon",
+    "viewBox": "0,0,24,24",
+    "style": "fill"
+  },
+  {
+    "name": "stock",
+    "component": "StockIcon",
+    "viewBox": "0 0 20 20",
+    "style": "fill"
+  },
+  {
+    "name": "sun",
+    "component": "SunIcon",
+    "viewBox": "0 0 28 28",
+    "style": "stroke"
+  },
+  {
+    "name": "suppliers",
+    "component": "SuppliersIcon",
+    "viewBox": "0 0 20 20",
+    "style": "fill"
+  },
+  {
+    "name": "swipe",
+    "component": "SwipeIcon",
+    "viewBox": "0 0 24 24",
+    "style": "fill"
+  },
+  {
+    "name": "thermometer",
+    "component": "ThermometerIcon",
+    "viewBox": "0 0 28 64",
+    "style": "stroke"
+  },
+  {
+    "name": "translate",
+    "component": "TranslateIcon",
+    "viewBox": "0,0,24,24",
+    "style": "fill"
+  },
+  {
+    "name": "truck",
+    "component": "TruckIcon",
+    "viewBox": "0 0 24 24",
+    "style": "stroke"
+  },
+  {
+    "name": "upload",
+    "component": "UploadIcon",
+    "viewBox": "0 0 20 20",
+    "style": "fill"
+  },
+  {
+    "name": "user",
+    "component": "UserIcon",
+    "viewBox": "0 0 16 16",
+    "style": "fill"
+  },
+  {
+    "name": "user-circle",
+    "component": "UserCircleIcon",
+    "viewBox": "0 0 24 24",
+    "style": "fill"
+  },
+  {
+    "name": "x-circle",
+    "component": "XCircleIcon",
+    "viewBox": "0 0 16 16",
+    "style": "fill"
+  },
+  {
+    "name": "zap",
+    "component": "ZapIcon",
+    "viewBox": "0 0 20 20",
+    "style": "fill"
+  }
+]

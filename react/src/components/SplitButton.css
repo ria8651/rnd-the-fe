@@ -1,0 +1,51 @@
+/* One rounded control of two fused segments; raised elevation, secondary emphasis. */
+.oms-split {
+  display: inline-flex;
+  border-radius: var(--radius-button);
+  box-shadow: var(--elev-raised);
+  overflow: hidden;
+}
+
+/* Secondary emphasis (controls.md#split-multi-action-button): neutral surface,
+   not brand-filled — the forward icon + footer placement carry the intent. */
+.oms-split__primary,
+.oms-split__disclosure {
+  border: 1px solid var(--c-border-strong);
+  background: var(--c-surface);
+  color: var(--c-text);
+  height: var(--field-h);
+  transition: background-color var(--motion-fast) var(--ease);
+}
+.oms-split__primary:not(:disabled):hover,
+.oms-split__disclosure:not(:disabled):hover {
+  background: var(--c-hover);
+}
+
+.oms-split__primary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 0 var(--sp-4);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+  border-start-start-radius: var(--radius-button);
+  border-end-start-radius: var(--radius-button);
+}
+
+/* Disclosure divided from the primary by a hairline. */
+.oms-split__disclosure {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  border-inline-start-width: 0;
+  box-shadow: inset 1px 0 0 var(--c-border-strong);
+  border-start-end-radius: var(--radius-button);
+  border-end-end-radius: var(--radius-button);
+}
+
+.oms-split__primary:disabled,
+.oms-split__disclosure:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}

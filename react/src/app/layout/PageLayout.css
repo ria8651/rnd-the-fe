@@ -1,0 +1,63 @@
+.oms-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+/* App bar / toolbar — stays put while the body scrolls. */
+.oms-page__appbar {
+  flex: none;
+  padding: var(--sp-3) var(--sp-6);
+  border-bottom: 1px solid var(--c-border);
+  background: var(--c-surface-base);
+}
+
+/* Middle row: content body (+ optional side panel). Only the body scrolls. */
+.oms-page__mid {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+.oms-page__body {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  padding: var(--sp-6);
+}
+.oms-page__body.is-flush {
+  padding: 0;
+}
+
+/* Side panel: beside the body on wide screens; overlay when narrow. */
+.oms-page__side {
+  flex: none;
+  width: 320px;
+  border-inline-start: 1px solid var(--c-border);
+  background: var(--c-surface);
+  overflow-y: auto;
+  padding: var(--sp-4);
+}
+
+/* Action footer — persists at the bottom regardless of body scroll. */
+.oms-page__footer {
+  flex: none;
+  padding: var(--sp-2) var(--sp-6);
+  border-top: 1px solid var(--c-border);
+  background: var(--c-surface);
+}
+
+@media (max-width: 800px) {
+  .oms-page__appbar,
+  .oms-page__body,
+  .oms-page__footer {
+    padding-inline: var(--sp-4);
+  }
+  .oms-page__side {
+    position: fixed;
+    inset: 0 0 var(--bottom-bar-h) auto;
+    width: min(360px, 90vw);
+    z-index: 900;
+    box-shadow: var(--elev-overlay);
+  }
+}

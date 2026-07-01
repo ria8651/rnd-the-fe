@@ -1,0 +1,45 @@
+.oms-app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/* Body row: sidebar + main. Bottom bar spans full width beneath it. */
+.oms-app__body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+.oms-app__sidebar {
+  flex: none;
+  display: flex;
+}
+.oms-app__main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.oms-app__page {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--c-surface-base);
+}
+
+.oms-app__splash {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--c-text-secondary);
+}
+
+/* Sidebar hidden on mobile (drawer used instead). */
+@media (max-width: 800px) {
+  .oms-app__sidebar {
+    display: none;
+  }
+}

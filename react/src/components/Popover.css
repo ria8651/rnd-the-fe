@@ -1,0 +1,72 @@
+.oms-popover {
+  position: fixed;
+  /* Above the modal scrim (1100) so dropdowns opened inside a dialog sit on top,
+     but below toasts (1200). */
+  z-index: 1150;
+  background: var(--c-surface-raised);
+  color: var(--c-text);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--elev-raised);
+  padding: var(--sp-1);
+  max-height: min(60vh, 420px);
+  overflow-y: auto;
+  animation: oms-popover-in var(--motion-fast) var(--ease);
+}
+
+@keyframes oms-popover-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+/* Generic menu item used by Menu and selector lists. */
+.oms-menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  width: 100%;
+  min-height: var(--touch);
+  padding: var(--sp-2) var(--sp-3);
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--c-text);
+  font-size: var(--fs-body);
+  text-align: start;
+}
+.oms-menu-item:not(:disabled):hover {
+  background: var(--c-hover);
+}
+.oms-menu-item[aria-selected='true'],
+.oms-menu-item.is-active {
+  background: var(--c-selected);
+}
+.oms-menu-item[aria-selected='true'].is-active {
+  background: var(--c-selected-hover);
+}
+.oms-menu-item:disabled {
+  color: var(--c-text-disabled);
+  cursor: not-allowed;
+}
+.oms-menu-item__check {
+  margin-inline-start: auto;
+  color: var(--c-brand);
+}
+.oms-menu-item--destructive {
+  color: var(--c-error);
+}
+
+.oms-menu-sep {
+  height: 1px;
+  margin: var(--sp-1) 0;
+  background: var(--c-divider);
+}
+
+.oms-menu-empty {
+  padding: var(--sp-3);
+  color: var(--c-text-secondary);
+  font-size: var(--fs-caption);
+  text-align: center;
+}

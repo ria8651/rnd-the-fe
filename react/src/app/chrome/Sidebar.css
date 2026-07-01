@@ -1,0 +1,118 @@
+.oms-sidebar {
+  display: flex;
+  flex-direction: column;
+  width: var(--sidebar-expanded);
+  flex: none;
+  background: var(--c-surface-nav);
+  border-inline-end: 1px solid var(--c-border);
+  /* Width change between states is animated (chrome spec). */
+  transition: width var(--motion-med) var(--ease);
+  overflow: hidden;
+}
+.oms-sidebar.is-collapsed {
+  width: var(--sidebar-collapsed);
+}
+
+/* Brand band: brand mark stays horizontally centred in both states. */
+.oms-sidebar__brand-band {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 72px;
+  flex: none;
+}
+.oms-sidebar__brand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--touch);
+  height: var(--touch);
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-control);
+}
+.oms-sidebar__brand:hover {
+  background: var(--c-hover);
+}
+.oms-sidebar__brand-mark {
+  display: inline-flex;
+  line-height: 0;
+}
+.oms-sidebar__brand-mark.is-spinning.oms-sidebar__brand-mark--cw {
+  animation: oms-spin-cw var(--motion-med) var(--ease);
+}
+.oms-sidebar__brand-mark.is-spinning.oms-sidebar__brand-mark--ccw {
+  animation: oms-spin-ccw var(--motion-med) var(--ease);
+}
+@keyframes oms-spin-cw {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes oms-spin-ccw {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+.oms-sidebar__scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.oms-sidebar__group {
+  list-style: none;
+  margin: 0;
+  padding: var(--sp-2);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.oms-sidebar__group--lower {
+  border-top: 1px solid var(--c-divider);
+  padding-bottom: var(--sp-3);
+}
+
+.oms-sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  height: var(--touch);
+  padding: 0 var(--sp-3);
+  border-radius: var(--radius-control);
+  color: var(--c-text-secondary);
+  font-weight: var(--fw-medium);
+  white-space: nowrap;
+  text-decoration: none;
+}
+.oms-sidebar__link:hover {
+  background: var(--c-hover);
+  color: var(--c-text);
+  text-decoration: none;
+}
+/* Active nav item: selected treatment with brand accent. */
+.oms-sidebar__link.is-active {
+  background: var(--c-brand-subtle);
+  color: var(--c-brand);
+}
+.oms-sidebar__link-icon {
+  flex: none;
+}
+.oms-sidebar__link-label {
+  opacity: 1;
+  transition: opacity var(--motion-fast) var(--ease);
+}
+.is-collapsed .oms-sidebar__link {
+  justify-content: center;
+  padding: 0;
+}
+.is-collapsed .oms-sidebar__link-label {
+  display: none;
+}

@@ -1,0 +1,19 @@
+.oms-bulkbar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  width: 100%;
+}
+.oms-bulkbar__count {
+  font-weight: var(--fw-medium);
+  color: var(--c-text);
+}
+.oms-bulkbar__spacer {
+  flex: 1;
+}
+
+@media (max-width: 800px) {
+  .oms-bulkbar {
+    flex-wrap: wrap;
+  }
+}
