@@ -1,0 +1,88 @@
+/* Data table — realises ../../spec/ui-standards/tables.md. */
+
+.table-wrap {
+  overflow: auto;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-control);
+  background: var(--surface-default);
+  flex: 1;
+  min-height: 0;
+}
+
+table.data {
+  width: 100%;
+  border-collapse: collapse;
+  font: var(--type-body);
+}
+
+table.data thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--surface-default);
+  font: var(--type-body-emphasis);
+  color: var(--text-secondary);
+  text-align: left;
+  padding: 0 var(--space-3);
+  height: 44px;
+  border-bottom: 1px solid var(--border-default);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+table.data tbody td {
+  padding: 0 var(--space-3);
+  height: var(--row-height);
+  border-bottom: 1px solid var(--divider);
+  vertical-align: middle;
+  color: var(--text-primary);
+}
+
+table.data tbody tr:last-child td { border-bottom: none; }
+
+/* Alignment (tables.md#data-type-alignment) */
+.col-right { text-align: right; }
+.col-center { text-align: center; }
+td.col-right, th.col-right { font-variant-numeric: tabular-nums; }
+
+/* Interaction states (interaction.md) */
+table.data tbody tr { transition: background-color 0.08s ease; }
+table.data tbody tr.clickable { cursor: pointer; }
+table.data tbody tr:hover:not(.selected) { background: var(--interaction-hover-overlay); }
+table.data tbody tr.selected { background: var(--interaction-selected); }
+table.data tbody tr.selected:hover { background: var(--interaction-selected-hover); }
+table.data tbody tr.row-error td { box-shadow: inset 2px 0 0 var(--state-error-main); }
+
+/* Sortable header */
+th.sortable { cursor: pointer; user-select: none; }
+th.sortable:hover { color: var(--text-primary); }
+th .sort-ind { color: var(--brand-primary); margin-left: 4px; }
+
+/* Selection checkbox — padded to a 48px hit area */
+.cell-check { width: 48px; text-align: center; }
+.cell-check input { width: 18px; height: 18px; cursor: pointer; accent-color: var(--brand-primary); }
+
+/* Truncation (tables.md#wrapping-and-truncation) */
+.truncate { max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.clamp-2 {
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden; max-width: 280px;
+}
+
+/* Column priority responsive hiding (tables.md#column-priority) */
+@media (max-width: 1100px) { .p3 { display: none; } }
+@media (max-width: 800px) { .p2 { display: none; } }
+
+/* Table states */
+.table-state {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: var(--space-3); padding: var(--space-12); color: var(--text-secondary);
+  text-align: center;
+}
+.skeleton-row td > div {
+  height: 14px; border-radius: var(--radius-sm);
+  background: linear-gradient(90deg, var(--surface-sunken), var(--border-default), var(--surface-sunken));
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite;
+}
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }

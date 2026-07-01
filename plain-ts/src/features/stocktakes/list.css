@@ -1,0 +1,16 @@
+.list-screen { display: flex; flex-direction: column; gap: var(--space-4); flex: 1; min-height: 0; }
+
+.list-toolbar { display: flex; align-items: center; gap: var(--space-2); }
+.toolbar-spacer { flex: 1; }
+
+.filter-bar { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; }
+.active-filter {
+  display: flex; align-items: center; gap: var(--space-2);
+  padding: 4px 4px 4px 12px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-control);
+  background: var(--surface-default);
+}
+
+.pager { display: flex; align-items: center; gap: var(--space-3); }
+.pager .icon-btn { font-size: 20px; }

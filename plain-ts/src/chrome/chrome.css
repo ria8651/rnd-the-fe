@@ -1,0 +1,101 @@
+/* App shell layout. A light realisation of ../../spec/chrome — a collapsible
+   sidebar, a top bar with breadcrumbs, and a persistent bottom bar. Only the
+   stocktakes vertical is wired up. */
+
+.shell {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: 1fr auto;
+  grid-template-areas:
+    'sidebar main'
+    'footer footer';
+  height: 100%;
+}
+
+.sidebar {
+  grid-area: sidebar;
+  background: var(--surface-nav);
+  border-right: 1px solid var(--border-default);
+  width: 220px;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.12s ease;
+  overflow: hidden;
+}
+.sidebar.collapsed { width: 64px; }
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  font: var(--type-heading);
+  white-space: nowrap;
+}
+.sidebar-brand .dot {
+  width: 24px; height: 24px; border-radius: var(--radius-sm);
+  background: var(--brand-primary); flex: 0 0 auto;
+}
+
+.nav-group { padding: var(--space-2); }
+.nav-group-label {
+  font: var(--type-caption);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+  padding: var(--space-2) var(--space-3);
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0 var(--space-3);
+  min-height: 44px;
+  border-radius: var(--radius-control);
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+.nav-item:hover { background: var(--interaction-hover-overlay); text-decoration: none; }
+.nav-item.active {
+  background: var(--brand-primary-subtle);
+  color: var(--brand-primary);
+  font-weight: 600;
+}
+
+.sidebar-spacer { flex: 1; }
+
+.main { grid-area: main; overflow: auto; display: flex; flex-direction: column; }
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border-default);
+  background: var(--surface-default);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.breadcrumbs { display: flex; align-items: center; gap: var(--space-2); font: var(--type-body); color: var(--text-secondary); }
+.breadcrumbs .current { color: var(--text-primary); font-weight: 600; }
+.topbar-spacer { flex: 1; }
+
+.page { padding: var(--space-6); flex: 1; display: flex; flex-direction: column; gap: var(--space-4); min-height: 0; }
+
+.footer {
+  grid-area: footer;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-2) var(--space-4);
+  background: var(--surface-nav);
+  border-top: 1px solid var(--border-default);
+}
+.footer-item { display: flex; align-items: center; gap: var(--space-2); color: var(--text-secondary); }
+.footer-spacer { flex: 1; }
+
+@media (max-width: 800px) {
+  .shell { grid-template-columns: 1fr; grid-template-areas: 'main' 'footer'; }
+  .sidebar { display: none; }
+}
