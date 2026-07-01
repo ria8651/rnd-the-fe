@@ -144,6 +144,12 @@ with `?`. The GraphQL schema is authoritative for optionality.
 **Uncertainty** — flag anything unconfirmed with `⚠️ VERIFY` inline and collect it in an
 "Open questions" section. Resolving these is part of "done".
 
+**Divergences from the current app** — this is a greenfield spec, so state the *intended*
+behaviour plainly; don't caveat spec bodies with "the current app does X, but…". When a decision
+deliberately differs from the current frontend, record it once in [`DIVERGENCES.md`](./DIVERGENCES.md)
+(with the why) and link that entry from the spec section — the current implementation is
+[evidence, not a design to copy](#2-sources-of-truth-triangulate-in-priority-order).
+
 **Stable IDs** — acceptance criteria get stable IDs namespaced per vertical area
 (e.g. `AC-F7` = finalise group, item 7). Never renumber existing IDs; append. Tests cite IDs.
 

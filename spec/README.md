@@ -58,3 +58,10 @@ These specs are triangulated from three sources, in priority order:
   controls, typography, **icons (actual SVG assets)**, and accessibility — distilled from the published
   [Open mSupply UI Standards](https://msupply-foundation.github.io/ui-standards/). No CSS, so
   it suits web or native; vertical UI-surface docs link to these instead of restating them.
+
+## Divergences from the current app
+
+This is a **greenfield** spec — it describes intended behaviour, which sometimes deliberately
+differs from the current frontend. Those decisions are tracked in one place,
+[`DIVERGENCES.md`](./DIVERGENCES.md), so the spec bodies state the target plainly and the deltas
+stay discoverable.

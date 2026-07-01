@@ -53,6 +53,16 @@ Given a line, then its displayed difference equals `countedNumberOfPacks − sna
 Given selected `NEW` lines, when the user reduces to zero / changes location / deletes, then
 the operation applies to exactly the selection (reduce-to-zero requires confirmation).
 
+**AC-E6 — In-place edits are edited in place and auto-saved**
+Given a `NEW`, unlocked stocktake, when the user changes a header/metadata field (description,
+comment, counted-by, verified-by), then it is edited directly in the field (no Save button) and
+persisted automatically per the shared [in-place field behaviour](../ui-standards/inputs.md#editing--saving).
+
+**AC-E7 — A pending edit is not lost on navigation**
+Given a header/metadata field edited and then navigated away from (or the page refreshed) before
+the debounce interval elapses, then the pending change is **flushed and persisted** — not
+dropped (see [in-place field behaviour](../ui-standards/inputs.md#editing--saving)).
+
 ## Reasons
 
 **AC-R1 — Reason required by direction**

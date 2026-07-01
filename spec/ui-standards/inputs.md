@@ -48,6 +48,43 @@ defect.)
 message + border, never colour alone (mirrors [tables › inline editing](./tables.md#inline-editing)).
 The message sits below the field; the field references it for screen readers.
 
+## Editing & saving
+
+Two save models. Pick by field complexity; each has a defined behaviour for **leaving the page
+mid-edit**.
+
+### In-place fields (auto-save)
+
+Simple single fields — a record's metadata/header fields (description, comment, attribution,
+flags) — are edited **directly where they are displayed** (app bar or side panel), with **no
+Save button**:
+
+- **Optimistic** — the UI shows the new value immediately.
+- **Debounced write** — the write fires once the field has been idle briefly after the last
+  keystroke (current app default ~1000ms), so rapid typing yields one write, not one per key.
+- **Rollback on failure** — the field reverts to the last saved value and surfaces the error; on
+  success it re-syncs with the server's canonical copy.
+- **Leaving mid-edit flushes the pending write.** Blurring the field, tearing down the view, or
+  navigating away MUST **commit any still-pending debounced write immediately** rather than wait
+  out the timer or drop it — an in-place edit is never silently lost. Because these fields save
+  themselves, this path needs **no "unsaved changes" prompt**. (Differs from the current app —
+  see [`DIVERGENCES.md`](../DIVERGENCES.md).)
+
+### Modal / explicit save
+
+Multi-field or per-row entry (e.g. a stocktake line's batches) is done in a
+[modal](./layout.md#modals--dialogs) and committed by an **explicit action** — not auto-saved
+per keystroke. Here the pending work is real and uncommitted, so leaving mid-edit is guarded:
+**navigating away or refreshing with unsaved changes prompts a confirmation** (proceed and lose
+changes / stay), and the surface tracks its own dirty state. This is the opposite default from
+in-place fields — block-and-ask, because there is nothing auto-saving in the background.
+
+### Debounced querying
+
+Free-text inputs that drive a query — global search, text/number [filters](./tables.md#filtering),
+autocomplete lookups — are debounced before the request fires. The interval is a tuning value,
+not a contract; the requirement is the behaviour: coalesce rapid input into a single action.
+
 ## Widths by content type
 
 | Content | Width | Why |

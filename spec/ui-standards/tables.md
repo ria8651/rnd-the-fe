@@ -139,9 +139,10 @@ filters. It sits in the list toolbar (above the table) and works the same across
 - **Dependent filters** are allowed: one filter's selection may narrow another's options (e.g.
   picking a category changes the items offered in a second filter). Options refresh when
   dependencies change; a filter whose definition is withdrawn is dropped from the active set.
-- **Applying/changing a filter resets paging to the first page** and re-queries; the table's
-  [empty state](#states-empty--loading--error) distinguishes "no records yet" from "no matches
-  for the current filter" and offers the clear-filters affordance.
+- **Applying/changing a filter resets paging to the first page** and re-queries; free-text
+  filters are [debounced](./inputs.md#editing--saving) so typing coalesces into one query. The
+  table's [empty state](#states-empty--loading--error) distinguishes "no records yet" from "no
+  matches for the current filter" and offers the clear-filters affordance.
 
 A **global search** box in the toolbar (quick free-text lookup) may accompany the filter menu;
 it is separate from the typed filters above. Avoid hidden popover / Excel-style per-column

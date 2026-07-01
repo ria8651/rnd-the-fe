@@ -64,9 +64,12 @@ Side panel          →  additional info (counted/verified-by, comment) + delete
 
 ### Metadata fields
 The stocktake's metadata is split across the app bar (description) and the side panel
-(attribution + comment) per the layout map above. Every editable field shares the
-one [editability gate](./03-state-rules.md#editability-rules) — writable only while `NEW` and
-unlocked, otherwise read-only (SHOULD disable-with-reason rather than hide).
+(attribution + comment) per the layout map above. These are **edited in place** — directly in
+the field, auto-saved (optimistic + debounced) with no Save button, per the shared
+[in-place field behaviour](../ui-standards/inputs.md#editing--saving). (Line data, by contrast,
+is entered in the S4 modal — see the [purpose](#s3--detail-screen) invariant.) Every editable
+field shares the one [editability gate](./03-state-rules.md#editability-rules) — writable only
+while `NEW` and unlocked, otherwise read-only (SHOULD disable-with-reason rather than hide).
 
 **Editable fields** (gated):
 
