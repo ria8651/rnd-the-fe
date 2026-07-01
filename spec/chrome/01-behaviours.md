@@ -36,7 +36,11 @@ Above the routed page content:
 
 ## Bottom bar (footer)
 
-A persistent row of controls in a fixed left → right order (mirrored in RTL); each pairs an [icon](../ui-standards/icons.md) with a label:
+A persistent, **slim status strip** along the very bottom of the window — a single compact row kept as thin as one line of small icon + label needs, like a desktop editor's status bar, **not** a toolbar-height band. It carries identity and quick switches, not primary actions, so it stays out of the way.
+
+Its background is the **active store's configured colour**; icons, labels, and dividers use an automatically-[contrasting](../ui-standards/accessibility.md#compliance-and-contrast) foreground so they stay legible on whatever colour a store sets (falling back to the default [nav surface](../ui-standards/theming.md#colour-roles) when a store sets none). This colour is how a user tells at a glance which store they're in.
+
+The controls sit in a fixed left → right order (mirrored in RTL); each pairs an [icon](../ui-standards/icons.md) with a label:
 
 1. **Store** — [`home`](../ui-standards/icons.md) + current store name → opens the store selector (below).
 2. **Edit store** — [`edit`](../ui-standards/icons.md) + "Edit" → opens store-properties editing.

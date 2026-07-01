@@ -16,6 +16,10 @@
 
 **AC-CH4 — Menu drawer** — Given the mobile layout, when the user taps the menu toggle, then a nav drawer opens with nav links, Docs, Sync, Settings (if permitted), and Logout; the toggle icon reflects open/closed state.
 
+## Bottom bar
+
+**AC-CH17 — Thin store-coloured strip** — Given the app shell, then the bottom bar is a single compact status-strip row (not a toolbar-height band); its background is the active store's configured colour (or the default nav surface when none is set), and its icons/labels/dividers render in a contrasting, legible foreground. When the active store changes, the colour follows.
+
 ## Store selector
 
 **AC-CH5 — Hidden when single store** — Given the user has fewer than two stores, then no store selector is offered.

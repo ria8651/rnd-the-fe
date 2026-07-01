@@ -22,6 +22,6 @@ The persistent frame around the routed page content: navigation, the bottom bar 
 
 ## Key dependencies (what an implementation must provide)
 
-- **Auth context:** `user` (name, firstName, lastName, email, jobTitle), `store` (id, name, …), the list of the user's `stores`, `token`, and a permission check.
+- **Auth context:** `user` (name, firstName, lastName, email, jobTitle), `store` (id, name, an optional **custom/brand colour** used for the bottom bar, …), the list of the user's `stores`, `token`, and a permission check.
 - **i18n:** current language + name, available language options, RTL flag, change-language, per-user locale persistence.
 - **Routing:** navigate, a "root navigation path" (post-store-switch landing), a Login route.

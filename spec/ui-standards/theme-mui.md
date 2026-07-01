@@ -42,7 +42,7 @@ Domain palettes also present in the current theme (carry over as needed): cold-c
 | Row height | **52px** (comfortable) | matches `radius`-independent density |
 | Input radius | **8px** | model `radius.control` = 8 ✓ |
 | Card / menu (Paper) radius | **4px** | model uses 8 — current cards are tighter |
-| Action buttons | **pill** (24px radius, 40px height), white fill, orange icon | model `radius.pill` ✓ |
+| Action buttons | **pill** (24px radius, 40px height), white fill, orange icon — **all** buttons, consistently | model `radius.pill` ✓ (this theme's button radius) |
 | Chips | 16px radius, 32px height | |
 | Drawer width | 260px (icon-rail when collapsed) | see [chrome](../chrome/01-behaviours.md) |
 | Spacing base | 8px (MUI default) | model standardises on a **4** base step |

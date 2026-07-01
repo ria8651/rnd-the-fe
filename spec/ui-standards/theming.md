@@ -12,7 +12,7 @@
 
 1. **Semantic roles, not raw values.** Code references a role (`surface.default`, `text.primary`, `state.error`) — never a literal colour. A theme is a complete mapping from every role below to a concrete value. Swapping themes swaps the mapping; call sites are unchanged.
 2. **Every theme defines every role.** Light, dark, and any future theme implement the same role set, so any screen works under any theme.
-3. **Colours differ between themes; the scales below do not.** Spacing, radius, elevation, and the type scale are shared by all themes (a theme variant may note where a legacy snapshot diverges).
+3. **Colours differ between themes; the scales below do not.** Spacing, radius, elevation, and the type scale are shared by all themes (a theme variant may note where a legacy snapshot diverges). The one metric a theme chooses for itself is the **button radius** (see [radius scale](#radius-scale)).
 4. **Brand is constant.** The orange brand accent and blue secondary read as "mSupply" in every theme; only their tints adjust for contrast.
 5. **Colour is never the sole signal.** Always pair colour with text/icon/shape ([colour independence](./accessibility.md#colour-independence)).
 
@@ -48,9 +48,11 @@ A single base step of **4** (unitless; the platform applies px/dp). Use steps, n
 | Role | Step | Applies to |
 |------|------|-----------|
 | `radius.sm` | 4 | small chips, tight controls |
-| `radius.control` | 8 | inputs, buttons, cards, panels |
+| `radius.control` | 8 | inputs, cards, panels; **buttons in the light/dark themes** |
 | `radius.modal` | 12 | dialogs |
-| `radius.pill` | full | badges, toggles, segmented/pill buttons |
+| `radius.pill` | full | badges, toggles; **buttons in the existing-MUI theme** |
+
+**Buttons use one radius per theme, applied to every button.** The light and dark themes round buttons at `radius.control` (a consistent, moderate rounding — not a pill); the existing-MUI reference theme rounds them at `radius.pill` (matching the current app's pill buttons). Whichever a theme picks, **all** buttons — including split/segmented buttons — share it; rounding that varies button-to-button is a bug (the current app mixes 8px, pill, and others). The radius *scale* is shared across themes; the button's chosen step is the one per-theme radius decision.
 
 ## Elevation levels
 

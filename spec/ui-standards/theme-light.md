@@ -1,6 +1,6 @@
 # Theme — Light
 
-> Colour values for the **light** theme. Roles, scales, and notation are defined in the [theming model](./theming.md); this doc only supplies the per-role colours. Derived from the current app's brand palette, so light mode matches today's look. Values are hex, or `hex @ opacity%` for translucency (no CSS — see [notation](./theming.md#value-notation-for-the-variant-docs)).
+> Colour values for the **light** theme. Roles, scales, and notation are defined in the [theming model](./theming.md); this doc supplies the per-role colours. Derived from the current app's brand palette, so light mode matches today's look. Metrics come from the model, with one per-theme choice: this theme rounds **buttons** at `radius.control` — a moderate, consistent rounding, not a pill ([button radius](./theming.md#radius-scale)). Values are hex, or `hex @ opacity%` for translucency (no CSS — see [notation](./theming.md#value-notation-for-the-variant-docs)).
 
 ## Brand
 

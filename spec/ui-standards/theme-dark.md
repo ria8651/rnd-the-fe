@@ -1,6 +1,6 @@
 # Theme — Dark
 
-> Colour values for the **dark** theme. Roles/scales/notation: see the [theming model](./theming.md). **Proposed baseline** — the structure is stable, the exact hexes are expected to be tuned (the current app ships no dark theme). Values are hex, or `hex @ opacity%` for translucency (no CSS).
+> Colour values for the **dark** theme. Roles/scales/notation: see the [theming model](./theming.md). **Proposed baseline** — the structure is stable, the exact hexes are expected to be tuned (the current app ships no dark theme). Metrics come from the model, with one per-theme choice: this theme rounds **buttons** at `radius.control` — a moderate, consistent rounding, not a pill ([button radius](./theming.md#radius-scale)). Values are hex, or `hex @ opacity%` for translucency (no CSS).
 
 ## Brand
 
