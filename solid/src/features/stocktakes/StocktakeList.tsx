@@ -1,5 +1,5 @@
-import { createMemo, createSignal, For, Show, type JSX } from 'solid-js';
-import { useNavigate } from '@solidjs/router';
+import { createEffect, createMemo, createSignal, For, on, Show, type JSX } from 'solid-js';
+import { useNavigate, useSearchParams } from '@solidjs/router';
 import { createQuery, useQueryClient } from '@tanstack/solid-query';
 import { useStore } from '../../context/StoreContext';
 import { useToast } from '../../components/ui/Toast';
@@ -14,10 +14,23 @@ import { Icon } from '../../components/ui/Icon';
 import { Checkbox } from '../../components/ui/Checkbox';
 import { StatusBadge } from '../../components/ui/StatusBadge';
 import { Modal } from '../../components/ui/Modal';
+import { FilterBar, type FilterDef } from '../../components/ui/FilterBar';
 import { CreateStocktakeModal } from './CreateStocktakeModal';
 import { formatDate, formatDateTime } from '../../lib/format';
 import { downloadCsv, toCsv } from '../../lib/csv';
 import '../../components/ui/table.css';
+
+const FILTERS: FilterDef[] = [
+  {
+    key: 'status',
+    label: 'Status',
+    type: 'enum',
+    options: [
+      { value: 'NEW', label: 'New' },
+      { value: 'FINALISED', label: 'Finalised' },
+    ],
+  },
+];
 
 const PAGE_SIZE = 25;
 
@@ -26,8 +39,14 @@ export function StocktakeList(): JSX.Element {
   const toast = useToast();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const [statusFilter, setStatusFilter] = createSignal<StocktakeStatus | undefined>(undefined);
+  // Filter state lives in the URL (tables.md#filtering) so the view is shareable.
+  const statusFilter = (): StocktakeStatus | undefined => {
+    const s = Array.isArray(searchParams.status) ? searchParams.status[0] : searchParams.status;
+    return s === 'NEW' || s === 'FINALISED' ? s : undefined;
+  };
+
   const [page, setPage] = createSignal(0);
   const [sortKey, setSortKey] = createSignal<StocktakeSortField>('createdDatetime');
   const [sortDesc, setSortDesc] = createSignal(true);
@@ -35,6 +54,12 @@ export function StocktakeList(): JSX.Element {
   const [showCreate, setShowCreate] = createSignal(false);
   const [confirmDelete, setConfirmDelete] = createSignal(false);
   const [deleting, setDeleting] = createSignal(false);
+
+  // Changing the filter resets paging to the first page and clears selection.
+  createEffect(on(statusFilter, () => {
+    setPage(0);
+    setSelected(new Set<string>());
+  }, { defer: true }));
 
   const queryKey = createMemo(() => [
     'stocktakes',
@@ -71,11 +96,7 @@ export function StocktakeList(): JSX.Element {
     setPage(0);
   };
 
-  const setStatus = (s: StocktakeStatus | undefined) => {
-    setStatusFilter(s);
-    setPage(0);
-    setSelected(new Set<string>());
-  };
+  const clearFilters = () => setSearchParams({ status: undefined });
 
   const toggleRow = (id: string) => {
     setSelected((prev) => {
@@ -150,17 +171,7 @@ export function StocktakeList(): JSX.Element {
       </div>
 
       <div class="toolbar">
-        <div class="segmented" role="group" aria-label="Filter by status">
-          <button class="segmented__item" data-active={statusFilter() === undefined} onClick={() => setStatus(undefined)}>
-            All
-          </button>
-          <button class="segmented__item" data-active={statusFilter() === 'NEW'} onClick={() => setStatus('NEW')}>
-            New
-          </button>
-          <button class="segmented__item" data-active={statusFilter() === 'FINALISED'} onClick={() => setStatus('FINALISED')}>
-            Finalised
-          </button>
-        </div>
+        <FilterBar filters={FILTERS} />
 
         <div class="grow" />
 
@@ -220,7 +231,7 @@ export function StocktakeList(): JSX.Element {
                         <Show when={statusFilter()} fallback={<span>No stocktakes yet. Create one to get started.</span>}>
                           <div class="col" style={{ gap: 'var(--sp-2)', 'align-items': 'center' }}>
                             <span>No stocktakes match this filter.</span>
-                            <Button variant="ghost" size="sm" onClick={() => setStatus(undefined)}>Clear filter</Button>
+                            <Button variant="ghost" size="sm" onClick={clearFilters}>Clear filter</Button>
                           </div>
                         </Show>
                       }>

@@ -333,6 +333,161 @@
   box-shadow: var(--elev-raised);
 }
 
+/* ---------- Filter bar (add-a-filter menu) ---------- */
+.filterbar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 2px var(--sp-1) 2px var(--sp-3);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-control);
+  background: var(--surface-default);
+}
+.filter-chip__label {
+  font-size: var(--type-caption);
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.filter-chip__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+.filter-chip__remove:hover {
+  background: var(--hoverOverlay);
+  color: var(--text-primary);
+}
+.filter-menu {
+  position: absolute;
+  z-index: 50;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 220px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-control);
+  box-shadow: var(--elev-raised);
+  padding: var(--sp-1);
+}
+.filter-menu__sep {
+  height: 1px;
+  background: var(--divider);
+  margin: var(--sp-1) 0;
+}
+
+/* ---------- Split (multi-action) button ---------- */
+.split {
+  position: relative;
+  display: inline-flex;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--elev-raised);
+}
+.split__primary,
+.split__toggle {
+  border: 1px solid var(--border-strong);
+  background: var(--surface-default);
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: var(--type-body);
+  cursor: pointer;
+  min-height: 40px;
+}
+.split__primary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 0 var(--sp-4);
+  border-radius: var(--radius-pill) 0 0 var(--radius-pill);
+  border-right: none;
+}
+.split__toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  border-radius: 0 var(--radius-pill) var(--radius-pill) 0;
+  border-left: 1px solid var(--border-default);
+}
+.split__primary:not(:disabled):hover,
+.split__toggle:not(:disabled):hover {
+  background: var(--hoverOverlay);
+}
+.split__primary:disabled,
+.split__toggle:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.split__menu {
+  position: absolute;
+  z-index: 50;
+  top: calc(100% + 4px);
+  right: 0;
+  min-width: 200px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-control);
+  box-shadow: var(--elev-raised);
+  padding: var(--sp-1);
+}
+
+/* ---------- Status crumbs (lifecycle) ---------- */
+.crumbs {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: var(--sp-1) var(--sp-3);
+  border-radius: var(--radius-pill);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border-default);
+  cursor: default;
+}
+.crumbs__step {
+  font-size: var(--type-caption);
+  font-weight: 600;
+  color: var(--text-disabled);
+}
+.crumbs__step[data-reached='true'] {
+  color: var(--brand-primary);
+}
+.crumbs__sep {
+  color: var(--text-disabled);
+}
+.crumbs__history {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 0;
+  min-width: 220px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-control);
+  box-shadow: var(--elev-overlay);
+  padding: var(--sp-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  z-index: 60;
+}
+.crumbs__history-row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  font-size: var(--type-caption);
+}
+
 /* ---------- Banner ---------- */
 .banner {
   display: flex;

@@ -19,7 +19,11 @@
   column-hiding). Each row conveys at least: stocktake number, status, description, comment,
   created date, finalised date, locked indicator. Status is shown with text + style, never
   [colour alone](../ui-standards/accessibility.md#colour-independence).
-- **Filter:** by status (New / Finalised).
+- **Filter:** via the shared [add-a-filter menu](../ui-standards/tables.md#filtering) — a
+  "Filters" dropdown from which filters are added as typed toolbar controls, persisted in the
+  URL. The stocktake list currently offers one filter: **status** (an `enum`: New / Finalised).
+  Adding further filters (e.g. created-date range, description text) is a matter of extending
+  that filter set, not adding a new UI pattern.
 - **Actions:**
   - *New stocktake* → opens the create flow (S2).
   - *Export* the list to CSV.
@@ -41,7 +45,19 @@
 
 ## S3 — Detail screen
 
-**Purpose:** view and edit one stocktake, count its lines, and finalise.
+**Purpose:** view one stocktake, review its lines, manage the line set, and finalise.
+
+> **Division of responsibility (important).** The detail screen and the line editor (S4) are
+> **distinct surfaces with distinct jobs**:
+> - **S3 displays and manages.** Its line table is **read-only** — it shows each line's current
+>   values and flags per-line errors, but is **not** a data-entry grid. Editing a value happens
+>   in S4, opened by selecting the line.
+> - **S4 is the only place line data is entered** — counted packs, reason, batch, dates,
+>   location, prices, etc.
+>
+> Counting and reason selection must **not** be implemented as inline-editable cells in the S3
+> table. This mirrors the current app, keeps per-batch entry coherent, and preserves a single
+> validation path.
 
 ### Header region
 - **Editable** (`NEW`, unlocked): description.
@@ -53,12 +69,25 @@
 ### Actions (screen-level)
 - *Add item* (J3) — disabled when not editable.
 - *Generate/print report.*
-- *Status change* — a "save and confirm → Finalised" control (the only forward transition).
-  Hidden when not editable; blocked with a notice if there are no counted lines.
+- *Status change* — the shared [split (multi-action) button](../ui-standards/controls.md#split-multi-action-button):
+  its primary action is "save and confirm → Finalised" (the only forward transition, so the
+  disclosure menu lists New — disabled — and Finalised). Hidden when not editable; a click with
+  no counted lines surfaces a notice instead of finalising.
 - *Lock / unlock* toggle.
 - *Detail/side panel* toggle (summary info).
 
+### Status region (footer)
+- **Status crumbs** — the shared [lifecycle indicator](../ui-standards/controls.md#status-crumbs-lifecycle-indicator)
+  showing the stocktake flow **New → Finalised**, with the reached status emphasised and its
+  history (created / finalised timestamps) revealed on hover/focus/tap.
+- The lock toggle and the status-change split button sit alongside the crumbs in this footer
+  region.
+
 ### Line table
+A **read-only** table of the stocktake's lines. **Selecting a row opens the line editor (S4)**
+for that item; *Add item* opens the same editor for a new item. No cell in this table is
+directly editable — the "editable" concern lives entirely in S4.
+
 Columns (presence of some is gated by store preferences, noted):
 
 | Column | Notes |
@@ -73,10 +102,10 @@ Columns (presence of some is gated by store preferences, noted):
 | Pack size | |
 | Doses per unit | only if *manage vaccines in doses* pref; vaccines only |
 | **Snapshot packs** | shows mismatch error inline |
-| **Counted packs** | editable; shows reduced-below-zero error inline |
+| **Counted packs** | display only (entered in S4); shows reduced-below-zero error inline |
 | Doses counted | only if *manage vaccines in doses* pref; vaccines only |
 | **Difference** | counted − snapshot, in units/doses |
-| Reason | required by adjustment direction |
+| Reason | display only (selected in S4); required by adjustment direction |
 | Donor | only if *track stock by donor* pref |
 | Manufacturer | |
 | Comment | |
@@ -87,8 +116,9 @@ Columns (presence of some is gated by store preferences, noted):
 - Column visibility under narrowing viewports follows the
   [priority tiers](../ui-standards/tables.md#column-priority): item code/name and counted
   packs are P1 (never hidden); batch/location/manufacturer are the first to drop.
-- The table is the primary counting surface; it must scale to large line counts
-  (virtualised/paginated) and reflect per-line validation errors after a failed finalise.
+- The table is the primary **review** surface (not the entry surface); it must scale to large
+  line counts (virtualised/paginated) and reflect per-line validation errors after a failed
+  finalise, keyed to the offending row.
 - Extension point: plugins can contribute extra line columns (preserve as an extensibility
   seam, not a hard requirement).
 
@@ -99,7 +129,10 @@ Columns (presence of some is gated by store preferences, noted):
 
 ## S4 — Line editor
 
-**Purpose:** add/count an item's batches (J3).
+**Purpose:** the **single surface for entering line data** — add/count an item's batches and
+set their reason, batch, dates, location, prices, etc. (J3). Opened from S3 by selecting a line
+(edit) or via *Add item* (create). This modal owns **all** stocktake-line editing; the S3 table
+never edits inline.
 
 - **Item selector:** catalogue search; excludes items already on the stocktake; locked to the
   chosen item when editing an existing line.

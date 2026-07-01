@@ -123,7 +123,18 @@ that reason.
 
 ## List & lifecycle
 
-**AC-L1 — Filter by status** — the list can be filtered to New or Finalised.
+**AC-L1 — Filter by status** — a status filter (New / Finalised) can be added from the
+[filter menu](../ui-standards/tables.md#filtering); applying it narrows the list and the
+selected value persists in the URL (survives reload and is shareable).
 **AC-L2 — Bulk delete** — selected stocktakes are deleted via one batch operation.
 **AC-L3 — CSV export** — the list exports to CSV.
 **AC-L4 — Deep link by number** — a stocktake can be opened by its human number.
+
+## Detail view vs line editor
+
+**AC-D1 — Detail table is read-only** — on the detail screen, no line-table cell (counted
+packs, reason, or any other) is directly editable; the table only displays values and per-line
+error indicators.
+**AC-D2 — Editing opens the line editor** — selecting a line row opens the line editor for that
+item, and *Add item* opens it for a new item; all counted-packs and reason entry occurs there,
+not in the table.

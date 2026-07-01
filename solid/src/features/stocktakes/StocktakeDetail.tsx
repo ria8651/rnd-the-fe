@@ -1,4 +1,4 @@
-import { batch, createMemo, createSignal, For, Show, type JSX } from 'solid-js';
+import { createMemo, createSignal, For, Show, type JSX } from 'solid-js';
 import { A, useParams } from '@solidjs/router';
 import { createQuery, useQueryClient } from '@tanstack/solid-query';
 import { useStore } from '../../context/StoreContext';
@@ -20,18 +20,16 @@ import { Checkbox } from '../../components/ui/Checkbox';
 import { StatusBadge } from '../../components/ui/StatusBadge';
 import { Select } from '../../components/ui/Select';
 import { Modal } from '../../components/ui/Modal';
-import { AddItemModal } from './AddItemModal';
+import { SplitButton } from '../../components/ui/SplitButton';
+import { StatusCrumbs } from '../../components/ui/StatusCrumbs';
+import { LineEditor } from './LineEditor';
 import { formatDate, formatDateTime, formatNumber, formatSigned } from '../../lib/format';
-import { adjustmentDirection, reasonsForDirection, reasonState } from '../../lib/reasons';
+import { reasonState } from '../../lib/reasons';
 import '../../components/ui/table.css';
 import './detail.css';
 
 const PAGE_SIZE = 50;
 
-interface Edit {
-  counted?: number | null;
-  reasonId?: string | null;
-}
 interface LineError {
   counted?: string;
   snapshot?: string;
@@ -47,12 +45,14 @@ export function StocktakeDetail(): JSX.Element {
 
   const [itemFilter, setItemFilter] = createSignal('');
   const [page, setPage] = createSignal(0);
-  const [edits, setEdits] = createSignal<Record<string, Edit>>({});
   const [selected, setSelected] = createSignal<Set<string>>(new Set());
   const [lineErrors, setLineErrors] = createSignal<Record<string, LineError>>({});
   const [banner, setBanner] = createSignal<string | null>(null);
 
-  const [showAdd, setShowAdd] = createSignal(false);
+  // Line editor (S4): the only surface that edits line data.
+  const [editorMode, setEditorMode] = createSignal<'create' | 'edit' | null>(null);
+  const [editingLine, setEditingLine] = createSignal<StocktakeLine | null>(null);
+
   const [confirmFinalise, setConfirmFinalise] = createSignal(false);
   const [confirmReduce, setConfirmReduce] = createSignal(false);
   const [confirmDeleteLines, setConfirmDeleteLines] = createSignal(false);
@@ -64,19 +64,8 @@ export function StocktakeDetail(): JSX.Element {
     queryKey: ['stocktake', store.storeId(), stocktakeId()],
     queryFn: () => fetchStocktake(store.storeId(), stocktakeId()),
   }));
-
-  const reasonsQ = createQuery(() => ({
-    queryKey: ['reasonOptions'],
-    queryFn: fetchReasonOptions,
-    staleTime: 5 * 60_000,
-  }));
-
-  const locationsQ = createQuery(() => ({
-    queryKey: ['locations', store.storeId()],
-    queryFn: () => fetchLocations(store.storeId()),
-    staleTime: 5 * 60_000,
-  }));
-
+  const reasonsQ = createQuery(() => ({ queryKey: ['reasonOptions'], queryFn: fetchReasonOptions, staleTime: 5 * 60_000 }));
+  const locationsQ = createQuery(() => ({ queryKey: ['locations', store.storeId()], queryFn: () => fetchLocations(store.storeId()), staleTime: 5 * 60_000 }));
   const linesQ = createQuery(() => ({
     queryKey: ['stocktakeLines', store.storeId(), stocktakeId(), page(), itemFilter()],
     queryFn: () =>
@@ -96,96 +85,32 @@ export function StocktakeDetail(): JSX.Element {
   const pageCount = () => Math.max(1, Math.ceil(totalLines() / PAGE_SIZE));
 
   const editable = () => header()?.status === 'NEW' && !header()?.isLocked;
-  const dirtyCount = () => Object.keys(edits()).length;
 
-  // Merge server line + local edit for display.
-  const countedOf = (line: StocktakeLine): number | null => {
-    const e = edits()[line.id];
-    return e && 'counted' in e ? (e.counted ?? null) : (line.countedNumberOfPacks ?? null);
-  };
-  const reasonIdOf = (line: StocktakeLine): string | null => {
-    const e = edits()[line.id];
-    if (e && 'reasonId' in e) return e.reasonId ?? null;
-    return line.reasonOption?.id ?? null;
-  };
-  const differenceOf = (line: StocktakeLine): number | null => {
-    const c = countedOf(line);
-    if (c == null) return null;
-    return c - line.snapshotNumberOfPacks;
-  };
+  const differenceOf = (l: StocktakeLine): number | null =>
+    l.countedNumberOfPacks == null ? null : l.countedNumberOfPacks - l.snapshotNumberOfPacks;
 
-  const patch = (lineId: string, p: Edit) => {
-    setEdits((prev) => ({ ...prev, [lineId]: { ...prev[lineId], ...p } }));
-    // Clear any stale per-line error for the field being edited.
-    setLineErrors((prev) => {
-      if (!prev[lineId]) return prev;
-      const next = { ...prev };
-      delete next[lineId];
-      return next;
-    });
-  };
-
-  const setCounted = (line: StocktakeLine, raw: string) => {
-    const counted = raw.trim() === '' ? null : Number(raw);
-    if (counted != null && (isNaN(counted) || counted < 0)) return;
-    patch(line.id, { counted });
-  };
+  // A row needs attention if a reason is required for its adjustment but missing.
+  const reasonMissing = (l: StocktakeLine): boolean =>
+    editable() && reasonState(reasons(), l.snapshotNumberOfPacks, l.countedNumberOfPacks, l.reasonOption?.id) === 'missing';
 
   const invalidateLines = () => {
     queryClient.invalidateQueries({ queryKey: ['stocktakeLines', store.storeId(), stocktakeId()] });
     queryClient.invalidateQueries({ queryKey: ['stocktake', store.storeId(), stocktakeId()] });
   };
 
-  // Persist the working set of counted/reason edits (one batch call).
-  const saveEdits = async (): Promise<boolean> => {
-    const ids = Object.keys(edits());
-    if (ids.length === 0) return true;
-    const update = ids.map((id) => ({
-      id,
-      isNew: false,
-      stocktakeId: stocktakeId(),
-      counted: edits()[id].counted,
-      reasonId: edits()[id].reasonId,
-    }));
-    const res = await batchStocktakeLines(store.storeId(), {
-      update: update.map((u) => ({
-        id: u.id,
-        isNew: false,
-        stocktakeId: u.stocktakeId,
-        countedNumberOfPacks: u.counted,
-        reasonOptionId: u.reasonId,
-      })),
-    });
-    if (!res.ok) {
-      const errs: Record<string, LineError> = {};
-      for (const e of res.perLineErrors) {
-        const le: LineError = {};
-        if (e.errorType.includes('ReducedBelowZero')) le.counted = e.message;
-        else if (e.errorType.includes('Mismatch')) le.snapshot = e.message;
-        else if (e.errorType.toLowerCase().includes('reason')) le.reason = e.message;
-        else le.counted = e.message;
-        errs[e.lineId] = le;
-      }
-      setLineErrors(errs);
-      toast.show(`${res.perLineErrors.length} line(s) could not be saved`, 'error');
-      return false;
-    }
-    setEdits({});
-    setLineErrors({});
-    invalidateLines();
-    return true;
-  };
+  const presentItemIds = createMemo(() => new Set(lines().map((l) => l.itemId)));
 
-  const onSave = async () => {
-    setBusy(true);
-    try {
-      if (await saveEdits()) toast.show('Saved', 'success');
-    } catch (e) {
-      toast.show(e instanceof Error ? e.message : 'Save failed', 'error');
-    } finally {
-      setBusy(false);
-    }
+  // ---- Editing opens the line editor (AC-D2) ----
+  const openEdit = (line: StocktakeLine) => {
+    if (!editable()) return;
+    setEditingLine(line);
+    setEditorMode('edit');
   };
+  const openCreate = () => {
+    setEditingLine(null);
+    setEditorMode('create');
+  };
+  const closeEditor = () => setEditorMode(null);
 
   const toggleLock = async () => {
     const h = header();
@@ -193,9 +118,8 @@ export function StocktakeDetail(): JSX.Element {
     setBusy(true);
     try {
       const res = await updateStocktake(store.storeId(), { id: h.id, isLocked: !h.isLocked });
-      if (!res.ok) {
-        toast.show(res.errorMessage ?? 'Could not change lock', 'error');
-      } else {
+      if (!res.ok) toast.show(res.errorMessage ?? 'Could not change lock', 'error');
+      else {
         toast.show(h.isLocked ? 'Unlocked' : 'Locked', 'success');
         queryClient.invalidateQueries({ queryKey: ['stocktake', store.storeId(), stocktakeId()] });
       }
@@ -204,15 +128,10 @@ export function StocktakeDetail(): JSX.Element {
     }
   };
 
-  // Finalise = save working set, then confirm status transition (J7).
   const doFinalise = async () => {
     setBusy(true);
     setBanner(null);
     try {
-      if (!(await saveEdits())) {
-        setConfirmFinalise(false);
-        return;
-      }
       const res = await finaliseStocktake(store.storeId(), stocktakeId());
       if (res.ok) {
         toast.show('Stocktake finalised', 'success');
@@ -220,7 +139,6 @@ export function StocktakeDetail(): JSX.Element {
         invalidateLines();
         return;
       }
-      // Map typed errors to surfaces (S5).
       const errs: Record<string, LineError> = {};
       if (res.reducedStockLineIds?.length) {
         for (const line of lines()) {
@@ -244,6 +162,14 @@ export function StocktakeDetail(): JSX.Element {
     }
   };
 
+  const onFinaliseClick = () => {
+    if (totalLines() === 0) {
+      toast.show('Nothing counted to finalise', 'info');
+      return;
+    }
+    setConfirmFinalise(true);
+  };
+
   // ---- Selection + bulk actions ----
   const toggleRow = (id: string) =>
     setSelected((prev) => {
@@ -261,18 +187,26 @@ export function StocktakeDetail(): JSX.Element {
       return next;
     });
 
-  // Reduce-to-zero: stage counted=0 locally so the user can assign reasons + save.
-  const reduceToZero = () => {
-    batch(() => {
-      setEdits((prev) => {
-        const next = { ...prev };
-        for (const id of selected()) next[id] = { ...next[id], counted: 0 };
-        return next;
+  const reduceToZero = async () => {
+    setBusy(true);
+    try {
+      const res = await batchStocktakeLines(store.storeId(), {
+        update: [...selected()].map((id) => ({ id, countedNumberOfPacks: 0 })),
       });
+      if (!res.ok) {
+        const errs: Record<string, LineError> = {};
+        for (const e of res.perLineErrors) errs[e.lineId] = { reason: e.message };
+        setLineErrors(errs);
+        toast.show('Set to 0 — some lines still need a reason (open them to set it)', 'info');
+      } else {
+        toast.show(`Reduced ${selected().size} line(s) to 0`, 'success');
+      }
       setSelected(new Set<string>());
       setConfirmReduce(false);
-    });
-    toast.show('Counted set to 0 — assign reasons where needed, then Save', 'info');
+      invalidateLines();
+    } finally {
+      setBusy(false);
+    }
   };
 
   const changeLocation = async () => {
@@ -307,44 +241,11 @@ export function StocktakeDetail(): JSX.Element {
     }
   };
 
-  const presentItemIds = createMemo(() => new Set(lines().map((l) => l.itemId)));
-
   const setDescription = async (value: string) => {
     const h = header();
     if (!h || value === (h.description ?? '')) return;
     await updateStocktake(store.storeId(), { id: h.id, description: value });
     queryClient.invalidateQueries({ queryKey: ['stocktake', store.storeId(), stocktakeId()] });
-  };
-
-  // ---- Render helpers ----
-  const ReasonCell = (p: { line: StocktakeLine }) => {
-    const dir = () => adjustmentDirection(p.line.snapshotNumberOfPacks, countedOf(p.line));
-    const opts = () => reasonsForDirection(reasons(), dir()).map((r) => ({ value: r.id, label: r.reason }));
-    const state = () => reasonState(reasons(), p.line.snapshotNumberOfPacks, countedOf(p.line), reasonIdOf(p.line));
-    return (
-      <Show when={dir() !== 'none' && opts().length > 0} fallback={<span class="muted">—</span>}>
-        <Select
-          size="sm"
-          value={reasonIdOf(p.line)}
-          options={opts()}
-          onChange={(v) => patch(p.line.id, { reasonId: v })}
-          placeholder="Select reason"
-          invalid={state() !== 'ok'}
-          disabled={!editable()}
-          aria-label="Adjustment reason"
-        />
-        <Show when={state() === 'missing'}>
-          <div class="cell-error" style={{ 'justify-content': 'flex-start' }}>
-            <Icon name="alert" size={14} /> Reason required
-          </div>
-        </Show>
-        <Show when={lineErrors()[p.line.id]?.reason}>
-          <div class="cell-error" style={{ 'justify-content': 'flex-start' }}>
-            <Icon name="alert" size={14} /> {lineErrors()[p.line.id]?.reason}
-          </div>
-        </Show>
-      </Show>
-    );
   };
 
   return (
@@ -364,28 +265,8 @@ export function StocktakeDetail(): JSX.Element {
             <div class="grow" />
             <div class="detail-actions">
               <Show when={editable()}>
-                <Button variant="secondary" onClick={() => setShowAdd(true)}>
+                <Button variant="secondary" onClick={openCreate}>
                   <Icon name="plus-circle" size={18} /> Add item
-                </Button>
-              </Show>
-              <Show when={header()!.status === 'NEW'}>
-                <Button variant="secondary" onClick={toggleLock} busy={busy()}>
-                  <Icon name={header()!.isLocked ? 'unlock' : 'lock'} size={18} />
-                  {header()!.isLocked ? 'Unlock' : 'Lock'}
-                </Button>
-              </Show>
-              <Show when={editable()}>
-                <Button variant="secondary" onClick={onSave} busy={busy()} disabled={dirtyCount() === 0}>
-                  <Icon name="check" size={18} /> Save
-                  <Show when={dirtyCount() > 0}><span class="dirty-dot" /></Show>
-                </Button>
-                <Button
-                  variant="primary"
-                  onClick={() => setConfirmFinalise(true)}
-                  disabled={totalLines() === 0}
-                  title={totalLines() === 0 ? 'No lines to finalise' : undefined}
-                >
-                  <Icon name="arrow-right" size={18} /> Save &amp; confirm
                 </Button>
               </Show>
             </div>
@@ -416,11 +297,7 @@ export function StocktakeDetail(): JSX.Element {
             <div class="detail-meta__item">
               <span class="detail-meta__label">Description</span>
               <Show when={editable()} fallback={<span>{header()!.description || '—'}</span>}>
-                <input
-                  class="input input--sm"
-                  value={header()!.description ?? ''}
-                  onChange={(e) => setDescription(e.currentTarget.value)}
-                />
+                <input class="input input--sm" value={header()!.description ?? ''} onChange={(e) => setDescription(e.currentTarget.value)} />
               </Show>
             </div>
             <div class="detail-meta__item">
@@ -436,24 +313,54 @@ export function StocktakeDetail(): JSX.Element {
               <span class="tnum">{formatNumber(totalLines())}</span>
             </div>
           </div>
+
+          {/* Status region: lifecycle crumbs + lock + status-change split button */}
+          <div class="detail-status-region">
+            <StatusCrumbs
+              steps={[
+                { value: 'NEW', label: 'New', reachedAt: header()!.createdDatetime },
+                { value: 'FINALISED', label: 'Finalised', reachedAt: header()!.finalisedDatetime },
+              ]}
+              current={header()!.status}
+              formatTime={formatDateTime}
+            />
+            <div class="grow" />
+            <Show when={header()!.status === 'NEW'}>
+              <Button variant="secondary" onClick={toggleLock} busy={busy()}>
+                <Icon name={header()!.isLocked ? 'unlock' : 'lock'} size={18} />
+                {header()!.isLocked ? 'Unlock' : 'Lock'}
+              </Button>
+            </Show>
+            <Show when={editable()}>
+              <SplitButton
+                icon="arrow-right"
+                options={[
+                  { value: 'NEW', label: 'New', disabled: true },
+                  { value: 'FINALISED', label: 'Save & confirm → Finalised' },
+                ]}
+                selected="FINALISED"
+                onSelect={() => {}}
+                onActivate={onFinaliseClick}
+                busy={busy()}
+              />
+            </Show>
+          </div>
         </Show>
       </div>
 
       {/* Line table toolbar */}
       <div class="toolbar">
-        <div class="field" style={{ 'min-width': '260px' }}>
-          <div class="row" style={{ gap: 'var(--sp-2)' }}>
-            <Icon name="search" size={18} />
-            <input
-              class="input input--sm"
-              placeholder="Filter by item code or name…"
-              value={itemFilter()}
-              onInput={(e) => {
-                setItemFilter(e.currentTarget.value);
-                setPage(0);
-              }}
-            />
-          </div>
+        <div class="row" style={{ gap: 'var(--sp-2)', 'min-width': '260px' }}>
+          <Icon name="search" size={18} />
+          <input
+            class="input input--sm"
+            placeholder="Filter by item code or name…"
+            value={itemFilter()}
+            onInput={(e) => {
+              setItemFilter(e.currentTarget.value);
+              setPage(0);
+            }}
+          />
         </div>
         <div class="grow" />
         <Show when={editable() && someSelected()}>
@@ -466,6 +373,7 @@ export function StocktakeDetail(): JSX.Element {
         </Show>
       </div>
 
+      {/* Read-only review table — selecting a row opens the editor (AC-D1/D2) */}
       <div class="table-wrap">
         <table class="data">
           <thead>
@@ -482,10 +390,10 @@ export function StocktakeDetail(): JSX.Element {
               <th class="p3">Location</th>
               <th class="p2 num" style={{ width: '90px' }}>Pack size</th>
               <th class="num" style={{ width: '110px' }}>Snapshot</th>
-              <th class="num" style={{ width: '130px' }}>Counted</th>
+              <th class="num" style={{ width: '110px' }}>Counted</th>
               <th class="num" style={{ width: '100px' }}>Difference</th>
-              <th class="reason-cell">Reason</th>
-              <th class="p3">Comment</th>
+              <th style={{ width: '180px' }}>Reason</th>
+              <Show when={editable()}><th class="center" style={{ width: '56px' }}>Edit</th></Show>
             </tr>
           </thead>
           <tbody>
@@ -500,16 +408,22 @@ export function StocktakeDetail(): JSX.Element {
                 <For each={lines()}>
                   {(line) => {
                     const err = () => lineErrors()[line.id];
+                    const rowError = () => !!err() || reasonMissing(line);
                     return (
-                      <tr data-selected={selected().has(line.id)} data-error={!!err()}>
+                      <tr
+                        class={editable() ? 'row-select' : ''}
+                        data-selected={selected().has(line.id)}
+                        data-error={rowError()}
+                        onClick={() => openEdit(line)}
+                      >
                         <Show when={editable()}>
-                          <td class="center">
+                          <td class="center" onClick={(e) => e.stopPropagation()}>
                             <Checkbox checked={selected().has(line.id)} onChange={() => toggleRow(line.id)} aria-label={`Select ${line.itemName}`} />
                           </td>
                         </Show>
                         <td>
                           <div class="row" style={{ gap: 'var(--sp-1)' }}>
-                            <Show when={err()}><span title="Line has an error"><Icon name="alert" size={14} /></span></Show>
+                            <Show when={rowError()}><span title="Line needs attention"><Icon name="alert" size={14} /></span></Show>
                             <span class="tnum">{line.item.code}</span>
                           </div>
                         </td>
@@ -520,29 +434,26 @@ export function StocktakeDetail(): JSX.Element {
                         <td class="p2 num tnum">{formatNumber(line.packSize)}</td>
                         <td class="num tnum">
                           {formatNumber(line.snapshotNumberOfPacks)}
-                          <Show when={err()?.snapshot}>
-                            <div class="cell-error"><Icon name="alert" size={14} /> {err()!.snapshot}</div>
-                          </Show>
+                          <Show when={err()?.snapshot}><div class="cell-error"><Icon name="alert" size={14} /> {err()!.snapshot}</div></Show>
                         </td>
-                        <td class="num">
-                          <Show when={editable()} fallback={<span class="tnum">{formatNumber(countedOf(line))}</span>}>
-                            <input
-                              class="cell-input"
-                              type="number"
-                              min="0"
-                              inputmode="numeric"
-                              data-invalid={!!err()?.counted}
-                              value={countedOf(line) ?? ''}
-                              onInput={(e) => setCounted(line, e.currentTarget.value)}
-                            />
-                          </Show>
-                          <Show when={err()?.counted}>
-                            <div class="cell-error"><Icon name="alert" size={14} /> {err()!.counted}</div>
-                          </Show>
+                        <td class="num tnum">
+                          {line.countedNumberOfPacks == null ? <span class="muted">—</span> : formatNumber(line.countedNumberOfPacks)}
+                          <Show when={err()?.counted}><div class="cell-error"><Icon name="alert" size={14} /> {err()!.counted}</div></Show>
                         </td>
                         <td class="num tnum" style={{ color: 'var(--text-secondary)' }}>{formatSigned(differenceOf(line))}</td>
-                        <td class="reason-cell">{ReasonCell({ line })}</td>
-                        <td class="p3"><div class="truncate" style={{ 'max-width': '160px' }}>{line.comment}</div></td>
+                        <td>
+                          <Show when={line.reasonOption} fallback={<span class={reasonMissing(line) ? '' : 'muted'} style={reasonMissing(line) ? { color: 'var(--state-error-main)' } : undefined}>{reasonMissing(line) ? 'Reason required' : '—'}</span>}>
+                            <span>{line.reasonOption!.reason}</span>
+                          </Show>
+                          <Show when={err()?.reason}><div class="cell-error" style={{ 'justify-content': 'flex-start' }}><Icon name="alert" size={14} /> {err()!.reason}</div></Show>
+                        </td>
+                        <Show when={editable()}>
+                          <td class="center" onClick={(e) => e.stopPropagation()}>
+                            <button class="btn btn--ghost btn--icon btn--sm" aria-label={`Edit ${line.itemName}`} onClick={() => openEdit(line)}>
+                              <Icon name="edit" size={16} />
+                            </button>
+                          </td>
+                        </Show>
                       </tr>
                     );
                   }}
@@ -562,16 +473,22 @@ export function StocktakeDetail(): JSX.Element {
         </div>
       </Show>
 
-      {/* Modals */}
-      <Show when={showAdd()}>
-        <AddItemModal
+      {/* Line editor (S4) */}
+      <Show when={editorMode()}>
+        <LineEditor
           stocktakeId={stocktakeId()}
+          mode={editorMode()!}
+          line={editingLine() ?? undefined}
+          lines={lines()}
+          reasons={reasons()}
+          locations={locationsQ.data ?? []}
           excludeItemIds={presentItemIds()}
-          onClose={() => setShowAdd(false)}
-          onAdded={invalidateLines}
+          onClose={closeEditor}
+          onSaved={invalidateLines}
         />
       </Show>
 
+      {/* Finalise confirmation */}
       <Show when={confirmFinalise()}>
         <Modal
           title="Save & confirm stocktake?"
@@ -584,10 +501,7 @@ export function StocktakeDetail(): JSX.Element {
             </>
           }
         >
-          <p>
-            Finalising applies all counted differences as inventory adjustments and makes this
-            stocktake read-only. Uncounted lines are removed. This cannot be undone.
-          </p>
+          <p>Finalising applies all counted differences as inventory adjustments and makes this stocktake read-only. Uncounted lines are removed. This cannot be undone.</p>
         </Modal>
       </Show>
 
@@ -598,12 +512,12 @@ export function StocktakeDetail(): JSX.Element {
           onClose={() => setConfirmReduce(false)}
           footer={
             <>
-              <Button variant="ghost" onClick={() => setConfirmReduce(false)}>Cancel</Button>
-              <Button variant="primary" onClick={reduceToZero}>Set to 0</Button>
+              <Button variant="ghost" onClick={() => setConfirmReduce(false)} disabled={busy()}>Cancel</Button>
+              <Button variant="primary" busy={busy()} onClick={reduceToZero}>Set to 0</Button>
             </>
           }
         >
-          <p>Set counted packs to 0 for {selected().size} selected line(s)? You can assign reasons and Save afterwards.</p>
+          <p>Set counted packs to 0 for {selected().size} selected line(s)? Lines that need an adjustment reason will be flagged to open and complete.</p>
         </Modal>
       </Show>
 

@@ -31,7 +31,9 @@ table.data thead th {
 table.data tbody td {
   padding: var(--sp-2) var(--sp-3);
   border-bottom: 1px solid var(--divider);
-  vertical-align: top;
+  /* Data cells are middle-aligned (tables.md#vertical-alignment): wrapped
+     content centres as a block against single-line neighbours. */
+  vertical-align: middle;
   height: var(--row-height);
   color: var(--text-primary);
 }

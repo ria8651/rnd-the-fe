@@ -210,17 +210,31 @@ export async function deleteStocktakes(storeId: string, ids: string[]): Promise<
 }
 
 // ---- Batch: line edits ----
-export interface LineUpsert {
-  // insert (needs itemId) vs update (keyed by id)
-  id: string;
-  isNew: boolean;
-  stocktakeId: string;
-  itemId?: string;
-  stockLineId?: string;
+// The full editable field set for a stocktake line (spec 01/02). All optional;
+// only defined keys are sent. Editing lives entirely in the line editor (S4).
+export interface LineFields {
   countedNumberOfPacks?: number | null;
   reasonOptionId?: string | null;
-  comment?: string | null;
   batch?: string | null;
+  expiryDate?: string | null;
+  manufactureDate?: string | null;
+  packSize?: number | null;
+  costPricePerPack?: number | null;
+  sellPricePerPack?: number | null;
+  comment?: string | null;
+  note?: string | null;
+  locationId?: string | null;
+}
+
+export interface LineInsert extends LineFields {
+  id: string;
+  stocktakeId: string;
+  itemId: string;
+  stockLineId?: string;
+}
+
+export interface LineUpdate extends LineFields {
+  id: string;
 }
 
 export interface LineBatchResult {
@@ -228,31 +242,56 @@ export interface LineBatchResult {
   perLineErrors: { lineId: string; errorType: string; message: string }[];
 }
 
-export async function batchStocktakeLines(
-  storeId: string,
-  ops: {
-    insert?: LineUpsert[];
-    update?: LineUpsert[];
-    deleteIds?: string[];
-  },
-): Promise<LineBatchResult> {
-  const insertStocktakeLines = (ops.insert ?? []).map((l) => ({
+// Insert takes plain scalars; location is a NullableStringUpdate wrapper.
+function toInsertInput(l: LineInsert): Record<string, unknown> {
+  const out: Record<string, unknown> = {
     id: l.id,
     stocktakeId: l.stocktakeId,
     itemId: l.itemId,
-    stockLineId: l.stockLineId,
-    countedNumberOfPacks: l.countedNumberOfPacks ?? undefined,
-    reasonOptionId: l.reasonOptionId ?? undefined,
-    comment: l.comment ?? undefined,
-    batch: l.batch ?? undefined,
-  }));
-  const updateStocktakeLines = (ops.update ?? []).map((l) => ({
-    id: l.id,
-    countedNumberOfPacks: l.countedNumberOfPacks ?? undefined,
-    reasonOptionId: l.reasonOptionId ?? undefined,
-    comment: l.comment ?? undefined,
-    batch: l.batch ?? undefined,
-  }));
+  };
+  if (l.stockLineId != null) out.stockLineId = l.stockLineId;
+  if (l.countedNumberOfPacks !== undefined) out.countedNumberOfPacks = l.countedNumberOfPacks ?? undefined;
+  if (l.reasonOptionId !== undefined) out.reasonOptionId = l.reasonOptionId ?? undefined;
+  if (l.batch !== undefined) out.batch = l.batch ?? undefined;
+  if (l.expiryDate !== undefined) out.expiryDate = l.expiryDate ?? undefined;
+  if (l.manufactureDate !== undefined) out.manufactureDate = l.manufactureDate ?? undefined;
+  if (l.packSize !== undefined) out.packSize = l.packSize ?? undefined;
+  if (l.costPricePerPack !== undefined) out.costPricePerPack = l.costPricePerPack ?? undefined;
+  if (l.sellPricePerPack !== undefined) out.sellPricePerPack = l.sellPricePerPack ?? undefined;
+  if (l.comment !== undefined) out.comment = l.comment ?? undefined;
+  if (l.note !== undefined) out.note = l.note ?? undefined;
+  if (l.locationId !== undefined) out.location = { value: l.locationId };
+  return out;
+}
+
+// Update: nullable date/location use the { value } wrapper so "clear to null" is
+// distinguishable from "leave unchanged"; scalars are sent as-is.
+function toUpdateInput(l: LineUpdate): Record<string, unknown> {
+  const out: Record<string, unknown> = { id: l.id };
+  if (l.countedNumberOfPacks !== undefined) out.countedNumberOfPacks = l.countedNumberOfPacks ?? undefined;
+  if (l.reasonOptionId !== undefined) out.reasonOptionId = l.reasonOptionId ?? undefined;
+  if (l.batch !== undefined) out.batch = l.batch ?? undefined;
+  if (l.expiryDate !== undefined) out.expiryDate = { value: l.expiryDate };
+  if (l.manufactureDate !== undefined) out.manufactureDate = { value: l.manufactureDate };
+  if (l.packSize !== undefined) out.packSize = l.packSize ?? undefined;
+  if (l.costPricePerPack !== undefined) out.costPricePerPack = l.costPricePerPack ?? undefined;
+  if (l.sellPricePerPack !== undefined) out.sellPricePerPack = l.sellPricePerPack ?? undefined;
+  if (l.comment !== undefined) out.comment = l.comment ?? undefined;
+  if (l.note !== undefined) out.note = l.note ?? undefined;
+  if (l.locationId !== undefined) out.location = { value: l.locationId };
+  return out;
+}
+
+export async function batchStocktakeLines(
+  storeId: string,
+  ops: {
+    insert?: LineInsert[];
+    update?: LineUpdate[];
+    deleteIds?: string[];
+  },
+): Promise<LineBatchResult> {
+  const insertStocktakeLines = (ops.insert ?? []).map(toInsertInput);
+  const updateStocktakeLines = (ops.update ?? []).map(toUpdateInput);
   const deleteStocktakeLines = (ops.deleteIds ?? []).map((id) => ({ id }));
 
   const data = await gql<{
