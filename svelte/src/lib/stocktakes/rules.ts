@@ -56,9 +56,9 @@ export function adjustmentDirection(
 // ── Adjustment-reason rules (03 › Adjustment-reason rules) ────────────────────
 
 const NEGATIVE_REASON_TYPES: ReasonOptionType[] = [
-	'NegativeInventoryAdjustment',
-	'OpenVialWastage',
-	'ClosedVialWastage'
+	'NEGATIVE_INVENTORY_ADJUSTMENT',
+	'OPEN_VIAL_WASTAGE',
+	'CLOSED_VIAL_WASTAGE'
 ];
 
 /** Reason option types valid for a given adjustment direction (AC-R2). */
@@ -66,7 +66,7 @@ export function reasonTypeMatchesDirection(
 	type: ReasonOptionType,
 	dir: AdjustmentDirection
 ): boolean {
-	if (dir === 'positive') return type === 'PositiveInventoryAdjustment';
+	if (dir === 'positive') return type === 'POSITIVE_INVENTORY_ADJUSTMENT';
 	if (dir === 'negative') return NEGATIVE_REASON_TYPES.includes(type);
 	return false;
 }

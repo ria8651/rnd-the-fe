@@ -32,12 +32,15 @@ export interface Location {
 	onHold: boolean;
 }
 
+/** Matches the live GraphQL enum `ReasonOptionNodeType` (SCREAMING_SNAKE_CASE). */
 export type ReasonOptionType =
-	| 'PositiveInventoryAdjustment'
-	| 'NegativeInventoryAdjustment'
-	| 'OpenVialWastage'
-	| 'ClosedVialWastage'
-	| 'ReturnReason';
+	| 'POSITIVE_INVENTORY_ADJUSTMENT'
+	| 'NEGATIVE_INVENTORY_ADJUSTMENT'
+	| 'OPEN_VIAL_WASTAGE'
+	| 'CLOSED_VIAL_WASTAGE'
+	| 'RETURN_REASON'
+	| 'REQUISITION_LINE_VARIANCE'
+	| 'SHIPMENT_VARIANCE';
 
 export interface ReasonOption {
 	id: string;

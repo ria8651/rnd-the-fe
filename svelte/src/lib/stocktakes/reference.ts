@@ -4,11 +4,33 @@
  * server will generate so the user sees an approximate line count before confirming.
  */
 import { gql } from '$lib/api/graphql';
+import type { ReasonOption } from './types';
 
 export interface Ref {
 	id: string;
 	name: string;
 	code?: string;
+}
+
+/**
+ * Active inventory-adjustment reasons, used to validate line reasons on save/finalise
+ * (03 › Adjustment-reason rules). Filtered to the two inventory-adjustment types the
+ * stocktake flow can produce; server is authoritative on which are active.
+ */
+export async function listReasonOptions(): Promise<ReasonOption[]> {
+	const data = await gql<{ reasonOptions: { nodes: ReasonOption[] } }>(
+		`query {
+			reasonOptions(
+				filter: {
+					isActive: true
+					type: { equalAny: [POSITIVE_INVENTORY_ADJUSTMENT, NEGATIVE_INVENTORY_ADJUSTMENT] }
+				}
+			) {
+				... on ReasonOptionConnector { nodes { id reason type isActive } }
+			}
+		}`
+	);
+	return data.reasonOptions.nodes;
 }
 
 export async function listLocations(storeId: string): Promise<Ref[]> {
@@ -17,6 +39,34 @@ export async function listLocations(storeId: string): Promise<Ref[]> {
 		{ s: storeId }
 	);
 	return data.locations.nodes;
+}
+
+export interface ItemSearchResult {
+	id: string;
+	code: string;
+	name: string;
+	unitName?: string | null;
+	isVaccine: boolean;
+	doses: number;
+	defaultPackSize: number;
+}
+
+/**
+ * Catalogue search for the line editor's item picker (S4). Matches on code or name;
+ * capped to a page. Callers exclude items already on the stocktake client-side.
+ */
+export async function searchItems(storeId: string, term: string): Promise<ItemSearchResult[]> {
+	const filter: Record<string, unknown> = { isActive: true };
+	if (term.trim()) filter.codeOrName = { like: term.trim() };
+	const data = await gql<{ items: { nodes: ItemSearchResult[] } }>(
+		`query($s:String!,$f:ItemFilterInput){
+			items(storeId:$s, page:{first:50}, filter:$f) {
+				... on ItemConnector { nodes { id code name unitName isVaccine doses defaultPackSize } }
+			}
+		}`,
+		{ s: storeId, f: filter }
+	);
+	return data.items.nodes;
 }
 
 export async function listMasterLists(storeId: string): Promise<(Ref & { linesCount: number })[]> {

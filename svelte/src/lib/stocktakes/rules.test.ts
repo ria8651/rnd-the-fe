@@ -30,8 +30,8 @@ function line(over: Partial<StocktakeLine> = {}): StocktakeLine {
 	};
 }
 
-const posReason: ReasonOption = { id: 'p', reason: 'Found', type: 'PositiveInventoryAdjustment', isActive: true };
-const negReason: ReasonOption = { id: 'n', reason: 'Lost', type: 'NegativeInventoryAdjustment', isActive: true };
+const posReason: ReasonOption = { id: 'p', reason: 'Found', type: 'POSITIVE_INVENTORY_ADJUSTMENT', isActive: true };
+const negReason: ReasonOption = { id: 'n', reason: 'Lost', type: 'NEGATIVE_INVENTORY_ADJUSTMENT', isActive: true };
 
 describe('editability (AC-E1)', () => {
 	it('editable only when NEW and unlocked', () => {

@@ -28,7 +28,7 @@ const LINE_FIELDS = `
 	stockLine { id totalNumberOfPacks availableNumberOfPacks packSize }
 	location { id name code onHold }
 	reasonOption { id reason type isActive }
-	manufacturer { id name }
+	manufacturer(storeId: $storeId) { id name }
 `;
 
 // ── Queries ───────────────────────────────────────────────────────────────────
@@ -186,6 +186,12 @@ export async function updateStocktake(
 /** Nullable-field wrapper: `{ value }` sets, `{ value: null }` clears, omit = leave. */
 export type NullableUpdate<T> = { value: T | null } | undefined;
 
+/**
+ * Fields for a line insert or update. Note the API's asymmetry: on **insert**
+ * `expiryDate` is a plain NaiveDate; on **update** it's a nullable wrapper — so we
+ * only send `expiryDate` on inserts (new batches). `location` is a nullable wrapper
+ * in both. `id` present ⇒ update, absent ⇒ insert.
+ */
 export interface UpsertLineInput {
 	id?: string;
 	stocktakeId: string;
@@ -193,7 +199,8 @@ export interface UpsertLineInput {
 	stockLineId?: string;
 	countedNumberOfPacks?: number | null;
 	batch?: string;
-	expiryDate?: NullableUpdate<string>;
+	/** Plain NaiveDate — inserts only. */
+	expiryDate?: string;
 	packSize?: number;
 	costPricePerPack?: number;
 	sellPricePerPack?: number;

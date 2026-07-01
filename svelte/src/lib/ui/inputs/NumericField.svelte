@@ -48,10 +48,13 @@
 	});
 
 	function commit() {
-		if (text.trim() === '') {
+		// `bind:value` on a type=number input can hand us a number or null, not just a
+		// string — so don't assume string methods here.
+		const raw = text as unknown as string | number | null;
+		if (raw === '' || raw == null) {
 			value = null;
 		} else {
-			let n = Number(text);
+			let n = Number(raw);
 			if (Number.isNaN(n)) return; // ignore invalid; keep prior value
 			if (min != null && n < min) n = min;
 			if (max != null && n > max) n = max;
