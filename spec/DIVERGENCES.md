@@ -1,14 +1,8 @@
 # Divergences from the current frontend
 
-This spec is **greenfield**: it describes the behaviour the new frontend should have, which is
-not always what the current open-mSupply frontend does. Where a decision was made to
-**intentionally differ** from the current implementation, it is recorded here — one running list
-— so the spec bodies can state the target plainly (without "the current app does X, but…" asides)
-while the rationale and the delta stay discoverable in one place.
+This spec is **greenfield**: it describes the behaviour the new frontend should have, which is not always what the current open-mSupply frontend does. Where a decision was made to **intentionally differ** from the current implementation, it is recorded here — one running list — so the spec bodies can state the target plainly (without "the current app does X, but…" asides) while the rationale and the delta stay discoverable in one place.
 
-This is **not** a bug list or a backlog for the current app. It is the set of deliberate "the
-spec does it differently" decisions. Add a row when you make such a decision; link it from the
-spec section that states the new behaviour.
+This is **not** a bug list or a backlog for the current app. It is the set of deliberate "the spec does it differently" decisions. Add a row when you make such a decision; link it from the spec section that states the new behaviour.
 
 | # | Area | Current app | This spec | Why | Ref |
 |---|------|-------------|-----------|-----|-----|

@@ -1,32 +1,20 @@
 # UI Standards — Theming Model
 
-> The **platform-neutral** theming contract: the set of semantic roles every theme must
-> define, plus the non-colour scales. It contains **no colour values and no CSS** — so it
-> applies equally to a web app or a native app. Concrete values live in the theme variants:
+> The **platform-neutral** theming contract: the set of semantic roles every theme must define, plus the non-colour scales. It contains **no colour values and no CSS** — so it applies equally to a web app or a native app. Concrete values live in the theme variants:
 >
 > - [`theme-light.md`](./theme-light.md) — the light theme
 > - [`theme-dark.md`](./theme-dark.md) — the dark theme
 > - [`theme-mui.md`](./theme-mui.md) — the **existing** app's theme, captured as a reference
 >
-> Interaction *behaviour* (hover, focus, selected, pressed, disabled…) is **not** here — see
-> [`interaction.md`](./interaction.md). This doc defines the colour *roles* those states use;
-> that doc defines *when* they apply.
+> Interaction *behaviour* (hover, focus, selected, pressed, disabled…) is **not** here — see [`interaction.md`](./interaction.md). This doc defines the colour *roles* those states use; that doc defines *when* they apply.
 
 ## How theming works
 
-1. **Semantic roles, not raw values.** Code references a role (`surface.default`,
-   `text.primary`, `state.error`) — never a literal colour. A theme is a complete mapping from
-   every role below to a concrete value. Swapping themes swaps the mapping; call sites are
-   unchanged.
-2. **Every theme defines every role.** Light, dark, and any future theme implement the same
-   role set, so any screen works under any theme.
-3. **Colours differ between themes; the scales below do not.** Spacing, radius, elevation, and
-   the type scale are shared by all themes (a theme variant may note where a legacy snapshot
-   diverges).
-4. **Brand is constant.** The orange brand accent and blue secondary read as "mSupply" in
-   every theme; only their tints adjust for contrast.
-5. **Colour is never the sole signal.** Always pair colour with text/icon/shape
-   ([colour independence](./accessibility.md#colour-independence)).
+1. **Semantic roles, not raw values.** Code references a role (`surface.default`, `text.primary`, `state.error`) — never a literal colour. A theme is a complete mapping from every role below to a concrete value. Swapping themes swaps the mapping; call sites are unchanged.
+2. **Every theme defines every role.** Light, dark, and any future theme implement the same role set, so any screen works under any theme.
+3. **Colours differ between themes; the scales below do not.** Spacing, radius, elevation, and the type scale are shared by all themes (a theme variant may note where a legacy snapshot diverges).
+4. **Brand is constant.** The orange brand accent and blue secondary read as "mSupply" in every theme; only their tints adjust for contrast.
+5. **Colour is never the sole signal.** Always pair colour with text/icon/shape ([colour independence](./accessibility.md#colour-independence)).
 
 ## Colour roles
 
@@ -41,8 +29,7 @@ The roles every theme must supply a value for. (Values: see the variant docs.)
 | **State** | each of `state.error`, `state.warning`, `state.success`, `state.info` provides a `main` (icon/text/border/indicator) and a `subtle` (tinted background) |
 | **Interaction** | `hoverOverlay`, `selected`, `selectedHover`, `focusRing` (semantics in [interaction.md](./interaction.md)) |
 
-Domain status palettes (VVM stages, cold-chain hot/cold, vaccination status) map onto
-`state.*` and must keep their text/icon labels.
+Domain status palettes (VVM stages, cold-chain hot/cold, vaccination status) map onto `state.*` and must keep their text/icon labels.
 
 ## Value notation (for the variant docs)
 
@@ -54,8 +41,7 @@ So values stay platform-neutral (no CSS):
 
 ## Spacing scale
 
-A single base step of **4** (unitless; the platform applies px/dp). Use steps, not arbitrary
-values: `4, 8, 12, 16, 24, 32, 48`.
+A single base step of **4** (unitless; the platform applies px/dp). Use steps, not arbitrary values: `4, 8, 12, 16, 24, 32, 48`.
 
 ## Radius scale
 
@@ -68,9 +54,7 @@ values: `4, 8, 12, 16, 24, 32, 48`.
 
 ## Elevation levels
 
-Elevation is expressed as named **levels** by intent — not as shadow CSS. A renderer realises
-each with whatever its platform uses (web shadow, native shadow/tonal overlay). Parameters are
-given platform-neutrally as *vertical offset / blur / shadow colour @ opacity*.
+Elevation is expressed as named **levels** by intent — not as shadow CSS. A renderer realises each with whatever its platform uses (web shadow, native shadow/tonal overlay). Parameters are given platform-neutrally as *vertical offset / blur / shadow colour @ opacity*.
 
 | Level | Intent | Offset | Blur | Shadow |
 |-------|--------|--------|------|--------|
@@ -80,8 +64,7 @@ given platform-neutrally as *vertical offset / blur / shadow colour @ opacity*.
 
 ## Type scale
 
-Roles (sizes shared by all themes; family/exact metrics per variant). See
-[typography](./typography.md) for formatting.
+Roles (sizes shared by all themes; family/exact metrics per variant). See [typography](./typography.md) for formatting.
 
 | Role | Size | Weight |
 |------|------|--------|
@@ -95,5 +78,4 @@ Roles (sizes shared by all themes; family/exact metrics per variant). See
 
 - Default to the **operating system's light/dark preference**.
 - Offer a **manual override** (light / dark / follow-system) the user can set.
-- **Persist** the choice per user, alongside the language preference (see
-  [chrome](../chrome/01-behaviours.md)).
+- **Persist** the choice per user, alongside the language preference (see [chrome](../chrome/01-behaviours.md)).

@@ -1,9 +1,6 @@
 # Theme — Dark
 
-> Colour values for the **dark** theme. Roles/scales/notation: see the
-> [theming model](./theming.md). **Proposed baseline** — the structure is stable, the exact
-> hexes are expected to be tuned (the current app ships no dark theme). Values are hex, or
-> `hex @ opacity%` for translucency (no CSS).
+> Colour values for the **dark** theme. Roles/scales/notation: see the [theming model](./theming.md). **Proposed baseline** — the structure is stable, the exact hexes are expected to be tuned (the current app ships no dark theme). Values are hex, or `hex @ opacity%` for translucency (no CSS).
 
 ## Brand
 
@@ -66,6 +63,4 @@
 
 ## To validate
 
-Run a contrast pass before treating these as authoritative: every `text.*` on each
-`surface.*`, and each `state.*` `main` on its `subtle`, against the AA thresholds in
-[accessibility](./accessibility.md#compliance-and-contrast). Adjust values, keep the roles.
+Run a contrast pass before treating these as authoritative: every `text.*` on each `surface.*`, and each `state.*` `main` on its `subtle`, against the AA thresholds in [accessibility](./accessibility.md#compliance-and-contrast). Adjust values, keep the roles.

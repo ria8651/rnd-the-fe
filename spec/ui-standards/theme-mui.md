@@ -1,13 +1,8 @@
 # Theme — Existing (MUI) Reference
 
-> A faithful capture of the **current** open-mSupply app's theme, sourced from its resolved
-> styles (the running app) and theme definition. This is the **reference**:
-> "what we have today." The [light theme](./theme-light.md) is derived from it; this
-> doc is what to diff against and where the current look is non-obvious.
+> A faithful capture of the **current** open-mSupply app's theme, sourced from its resolved styles (the running app) and theme definition. This is the **reference**: "what we have today." The [light theme](./theme-light.md) is derived from it; this doc is what to diff against and where the current look is non-obvious.
 >
-> Unlike the model, this snapshot records the app's actual **metrics** (radius/density/type/
-> shadow) too — including their inconsistencies — because that is the value of a reference.
-> Values are hex / `hex @ opacity%` (no CSS).
+> Unlike the model, this snapshot records the app's actual **metrics** (radius/density/type/ shadow) too — including their inconsistencies — because that is the value of a reference. Values are hex / `hex @ opacity%` (no CSS).
 
 ## Colours (palette)
 
@@ -30,9 +25,7 @@
 | `state.warning` | `#F2A001` / `#E1A200` | "needs attention" / pending |
 | `state.info` | `#3E7BFA` | |
 
-Domain palettes also present in the current theme (carry over as needed): cold-chain
-hot `#DB6974` / cold `#AACAE2`; VVM/status functioning `#69A607`, attention `#F2A001`,
-not-functioning `#DE0001`; chart line series `#EED600 #922DD0 #E1A200 #59639C #E500EA #00DBCE`.
+Domain palettes also present in the current theme (carry over as needed): cold-chain hot `#DB6974` / cold `#AACAE2`; VVM/status functioning `#69A607`, attention `#F2A001`, not-functioning `#DE0001`; chart line series `#EED600 #922DD0 #E1A200 #59639C #E500EA #00DBCE`.
 
 ## Typography
 
@@ -54,15 +47,11 @@ not-functioning `#DE0001`; chart line series `#EED600 #922DD0 #E1A200 #59639C #E
 | Drawer width | 260px (icon-rail when collapsed) | see [chrome](../chrome/01-behaviours.md) |
 | Spacing base | 8px (MUI default) | model standardises on a **4** base step |
 
-> **Divergences to resolve:** the current app mixes radii (4px cards, 8px
-> inputs, pill buttons, 16px chips) and uses an 8px spacing base. The [model](./theming.md)
-> proposes a single 4-base spacing step and a small radius scale. The light theme keeps the
-> *colours* exact; metrics are expected to standardise.
+> **Divergences to resolve:** the current app mixes radii (4px cards, 8px inputs, pill buttons, 16px chips) and uses an 8px spacing base. The [model](./theming.md) proposes a single 4-base spacing step and a small radius scale. The light theme keeps the *colours* exact; metrics are expected to standardise.
 
 ## Elevation (current shadow recipes)
 
-Four levels, expressed as *offset / blur / shadow colour @ opacity* (the app defines them as
-layered shadows; parameters below are platform-neutral):
+Four levels, expressed as *offset / blur / shadow colour @ opacity* (the app defines them as layered shadows; parameters below are platform-neutral):
 
 | Level | Primary layer | Secondary layer |
 |-------|---------------|-----------------|
@@ -71,5 +60,4 @@ layered shadows; parameters below are platform-neutral):
 | 3 | y8 blur16 `#606170 @ 16%` | y2 blur4 `#28293D @ 4%` |
 | 4 | y12 blur24 `#606170 @ 16%` | y4 blur8 `#28293D @ 30%` |
 
-Model mapping: level 2 ≈ `raised` (menus/popovers), level 3–4 ≈ `overlay` (dialogs); flat
-surfaces use a border, not a shadow.
+Model mapping: level 2 ≈ `raised` (menus/popovers), level 3–4 ≈ `overlay` (dialogs); flat surfaces use a border, not a shadow.

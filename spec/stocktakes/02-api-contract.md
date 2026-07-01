@@ -1,9 +1,6 @@
 # Stocktakes — API Contract
 
-> The durable backbone. Any implementation must speak this contract. Authoritative source:
-> the live GraphQL endpoint (introspectable, auth disabled in dev). Operation names below
-> match the current GraphQL API; an implementation may name its client operations differently
-> but must send the same fields/inputs.
+> The durable backbone. Any implementation must speak this contract. Authoritative source: the live GraphQL endpoint (introspectable, auth disabled in dev). Operation names below match the current GraphQL API; an implementation may name its client operations differently but must send the same fields/inputs.
 
 All operations are store-scoped via a `storeId` argument.
 
@@ -16,16 +13,13 @@ All operations are store-scoped via a `storeId` argument.
 | `stocktakeByNumber` | `stocktakeNumber`, `storeId` | Same as above, looked up by human number (deep-link/URL). |
 | `stocktakeLines` | `stocktakeId`, `storeId`, `filter?`, `page?`, `sort?` | Paginated `StocktakeLineConnector`. Lines fetched independently of the header for large counts. |
 
-**Filtering/sorting** — list filter supports at least `status` (equal/in), plus the usual
-date/number fields. Lines filter/sort by item, location, etc. (enumerate exact fields from
-the live schema when writing tests).
+**Filtering/sorting** — list filter supports at least `status` (equal/in), plus the usual date/number fields. Lines filter/sort by item, location, etc. (enumerate exact fields from the live schema when writing tests).
 
 ## Mutations
 
 ### `insertStocktake(input: InsertStocktakeInput!, storeId)`
 
-Creates a stocktake and generates its lines per the creation mode. Returns the new
-`StocktakeNode` (`id`, `stocktakeNumber`) or an error union.
+Creates a stocktake and generates its lines per the creation mode. Returns the new `StocktakeNode` (`id`, `stocktakeNumber`) or an error union.
 
 ```
 InsertStocktakeInput {
@@ -47,8 +41,7 @@ Mode is implied by which fields are set; precedence is fixed (see `03-state-rule
 
 ### `updateStocktake(input: UpdateStocktakeInput!, storeId)`
 
-Updates header fields and/or drives the status transition. Returns `StocktakeNode` on
-success or `UpdateStocktakeError`.
+Updates header fields and/or drives the status transition. Returns `StocktakeNode` on success or `UpdateStocktakeError`.
 
 ```
 UpdateStocktakeInput {
@@ -69,22 +62,14 @@ Setting `status: FINALISED` triggers validation + inventory adjustments (see `03
 
 One transactional batch endpoint used for **two** distinct jobs:
 
-1. **Line edits** — `insertStocktakeLines[]`, `updateStocktakeLines[]`, `deleteStocktakeLines[]`.
-   Each returns a per-row response so partial errors are reported per line.
+1. **Line edits** — `insertStocktakeLines[]`, `updateStocktakeLines[]`, `deleteStocktakeLines[]`. Each returns a per-row response so partial errors are reported per line.
 2. **Header deletes** — `deleteStocktakes[]` (bulk delete from the list view).
 
-`InsertStocktakeLineInput` / `UpdateStocktakeLineInput` carry the line fields from
-`01-domain-model.md` (`countedNumberOfPacks`, `batch`, `expiryDate`, `location`,
-`packSize`, `costPricePerPack`, `sellPricePerPack`, `reasonOptionId`, `donorId`,
-`itemVariantId`, `vvmStatusId`, `campaignId`, `programId`, `comment`, `note`, …).
-Insert additionally takes `itemId` + `stockLineId?`; update is keyed by line `id`.
-Nullable update fields use a wrapper (`{ value }`) so "clear to null" is distinguishable
-from "leave unchanged".
+`InsertStocktakeLineInput` / `UpdateStocktakeLineInput` carry the line fields from `01-domain-model.md` (`countedNumberOfPacks`, `batch`, `expiryDate`, `location`, `packSize`, `costPricePerPack`, `sellPricePerPack`, `reasonOptionId`, `donorId`, `itemVariantId`, `vvmStatusId`, `campaignId`, `programId`, `comment`, `note`, …). Insert additionally takes `itemId` + `stockLineId?`; update is keyed by line `id`. Nullable update fields use a wrapper (`{ value }`) so "clear to null" is distinguishable from "leave unchanged".
 
 ## Error model
 
-Errors are **typed members of a response union**, not generic strings — the UI matches on
-`__typename` and renders per-line where applicable. The implementation must surface each:
+Errors are **typed members of a response union**, not generic strings — the UI matches on `__typename` and renders per-line where applicable. The implementation must surface each:
 
 | Error | Raised when | Surface |
 |-------|-------------|---------|
@@ -100,9 +85,6 @@ See `03-state-rules.md` for the exact conditions behind each.
 
 ## Notes for implementers
 
-- **Lines are paginated and fetched separately** from the header — design for large
-  stocktakes (thousands of lines), not eager-loading everything.
-- **Optimistic line editing** is feasible because `batchStocktake` returns per-row results;
-  an implementation can batch a working set of edits in one call.
-- The mismatch error means the spec must tolerate **stock changing underneath an open
-  stocktake** — counts are validated against *current* stock at finalise, not at creation.
+- **Lines are paginated and fetched separately** from the header — design for large stocktakes (thousands of lines), not eager-loading everything.
+- **Optimistic line editing** is feasible because `batchStocktake` returns per-row results; an implementation can batch a working set of edits in one call.
+- The mismatch error means the spec must tolerate **stock changing underneath an open stocktake** — counts are validated against *current* stock at finalise, not at creation.

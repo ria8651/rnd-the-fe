@@ -1,14 +1,10 @@
 # Stocktakes — Domain Model
 
-> Framework-agnostic. Types are described in neutral notation; the authoritative
-> source is the live GraphQL schema. Field optionality below
-> reflects the API contract (`?` = nullable/optional).
+> Framework-agnostic. Types are described in neutral notation; the authoritative source is the live GraphQL schema. Field optionality below reflects the API contract (`?` = nullable/optional).
 
 ## Entities
 
-A **Stocktake** is a point-in-time count of stock in a store, used to reconcile the
-system's recorded stock against physically counted stock. Confirming (finalising) a
-stocktake applies the differences as inventory adjustments.
+A **Stocktake** is a point-in-time count of stock in a store, used to reconcile the system's recorded stock against physically counted stock. Confirming (finalising) a stocktake applies the differences as inventory adjustments.
 
 ```
 Stocktake 1 ──── * StocktakeLine ──── 0..1 StockLine (existing stock being counted)
@@ -16,8 +12,7 @@ Stocktake 1 ──── * StocktakeLine ──── 0..1 StockLine (existing s
                                   └─── 0..1 Location
 ```
 
-A stocktake holds header/metadata; each line represents one batch of one item being
-counted (or a new batch being introduced via a blank stocktake).
+A stocktake holds header/metadata; each line represents one batch of one item being counted (or a new batch being introduced via a blank stocktake).
 
 ---
 
@@ -47,16 +42,13 @@ NEW        — editable working state; lines can be added/counted/removed
 FINALISED  — terminal; differences applied as inventory adjustments; read-only
 ```
 
-Only these two values exist. There is no draft/in-progress distinction beyond `NEW`,
-and no un-finalise transition.
+Only these two values exist. There is no draft/in-progress distinction beyond `NEW`, and no un-finalise transition.
 
 ---
 
 ## StocktakeLine
 
-One counted batch. `snapshotNumberOfPacks` captures the system's recorded quantity at
-the moment the line was generated; `countedNumberOfPacks` is what the user physically
-counted. Their difference (× pack size) is the adjustment applied on finalise.
+One counted batch. `snapshotNumberOfPacks` captures the system's recorded quantity at the moment the line was generated; `countedNumberOfPacks` is what the user physically counted. Their difference (× pack size) is the adjustment applied on finalise.
 
 | Field | Type | Notes |
 |-------|------|-------|
@@ -89,22 +81,17 @@ counted. Their difference (× pack size) is the adjustment applied on finalise.
 
 ## Related entities (referenced, owned elsewhere)
 
-- **Item** — the catalogue item. Stocktake lines reference but never mutate it.
-  Relevant props: `isVaccine`/`doses` (vaccine handling), `defaultPackSize`,
-  `restrictedLocationTypeId` (constrains valid locations), store-level default sell price.
-- **StockLine** — existing on-hand stock. A stocktake line counts one stock line.
-  Reducing a count below what is available/issued triggers `StockLineReducedBelowZero`.
+- **Item** — the catalogue item. Stocktake lines reference but never mutate it. Relevant props: `isVaccine`/`doses` (vaccine handling), `defaultPackSize`, `restrictedLocationTypeId` (constrains valid locations), store-level default sell price.
+- **StockLine** — existing on-hand stock. A stocktake line counts one stock line. Reducing a count below what is available/issued triggers `StockLineReducedBelowZero`.
 - **Location** — physical storage; may be `onHold` and typed (`locationType`).
 - **ReasonOption** — inventory-adjustment reason (`reason`, `type`, `isActive`).
-- **MasterList**, **VVMStatus**, **Campaign**, **Program**, **Name** (donor/manufacturer),
-  **ItemVariant** — used as filters at creation and as line attributes.
+- **MasterList**, **VVMStatus**, **Campaign**, **Program**, **Name** (donor/manufacturer), **ItemVariant** — used as filters at creation and as line attributes.
 
 ---
 
 ## Creation inputs (shape of "new stocktake")
 
-A stocktake is created in one of three modes (one `insert` operation, mode selected by
-which fields are set — see `02-api-contract.md`):
+A stocktake is created in one of three modes (one `insert` operation, mode selected by which fields are set — see `02-api-contract.md`):
 
 | Mode | Generates lines for | Key inputs |
 |------|--------------------|------------|
@@ -112,14 +99,10 @@ which fields are set — see `02-api-contract.md`):
 | **Filtered** | Stock matching filters. Optionally all items on a master list incl. zero stock (`includeAllMasterListItems`). | `masterListId?`, `locationId?`, `vvmStatusId?`, `expiresBefore?`, `includeAllMasterListItems?` |
 | **Blank** | No lines; user adds them manually. | `createBlankStocktake: true` |
 
-All modes accept `description?` and `comment?`. `isInitialStocktake?` marks a store's
-first count.
+All modes accept `description?` and `comment?`. `isInitialStocktake?` marks a store's first count.
 
 ---
 
 ## Creation-mode precedence
 
-When multiple creation inputs are set, the backend resolves them in this fixed order
-(first match wins): **blank → initial → all-items → all-master-list-items → filtered**.
-The filtered path additionally constrains to stock with packs in store. See
-`03-state-rules.md` for the full generation rules and `02-api-contract.md` for inputs.
+When multiple creation inputs are set, the backend resolves them in this fixed order (first match wins): **blank → initial → all-items → all-master-list-items → filtered**. The filtered path additionally constrains to stock with packs in store. See `03-state-rules.md` for the full generation rules and `02-api-contract.md` for inputs.

@@ -2,14 +2,9 @@
 
 ## Purpose
 
-A **stocktake** lets a store reconcile what the system *believes* is in stock against what
-is *physically* counted. The user generates a set of lines (each a batch of an item with its
-recorded "snapshot" quantity), records the counted quantity for each, and **finalises** —
-at which point the differences are applied to stock as inventory adjustments
-(additions/reductions), and new batches discovered during counting are introduced as stock.
+A **stocktake** lets a store reconcile what the system *believes* is in stock against what is *physically* counted. The user generates a set of lines (each a batch of an item with its recorded "snapshot" quantity), records the counted quantity for each, and **finalises** — at which point the differences are applied to stock as inventory adjustments (additions/reductions), and new batches discovered during counting are introduced as stock.
 
-It is one of the core inventory-control workflows: the system of record for "did our books
-match reality, and what did we change to make them match."
+It is one of the core inventory-control workflows: the system of record for "did our books match reality, and what did we change to make them match."
 
 ## Scope of this spec
 
@@ -20,14 +15,12 @@ In scope:
 - Inventory-adjustment effects of finalising.
 
 Adjacent, referenced but specified elsewhere:
-- Stock lines, locations, items, master lists, reasons, VVM statuses, campaigns, programs,
-  donors — stocktakes *consume* these but do not own them.
+- Stock lines, locations, items, master lists, reasons, VVM statuses, campaigns, programs, donors — stocktakes *consume* these but do not own them.
 - Inventory adjustment invoices produced by finalise (their own vertical).
 
 ## Actors
 
-- **Store user** — creates and counts stocktakes, finalises them. The only actor in the
-  core flow. Attribution fields (`countedBy`, `verifiedBy`) are free text, not enforced roles.
+- **Store user** — creates and counts stocktakes, finalises them. The only actor in the core flow. Attribution fields (`countedBy`, `verifiedBy`) are free text, not enforced roles.
 
 ## Glossary
 
@@ -54,5 +47,4 @@ Adjacent, referenced but specified elsewhere:
    export CSV                 lock/unlock                  lock to read-only
 ```
 
-Read the layers in order: `01` (what the data is) → `02` (how you talk to it) → `03` (the
-rules) → `04` (what users do) → `05` (what they see) → `06` (how to prove it works).
+Read the layers in order: `01` (what the data is) → `02` (how you talk to it) → `03` (the rules) → `04` (what users do) → `05` (what they see) → `06` (how to prove it works).
