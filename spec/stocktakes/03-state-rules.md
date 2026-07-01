@@ -24,11 +24,21 @@
 
 ## Editability rules
 
+**The single gate:** a stocktake is editable **if and only if `status = NEW` and
+`isLocked = false`**. Any other combination disables **all** header-field edits, **all** line
+edits (add/count/edit/delete lines), and the **delete-stocktake** action. The UI mirrors this
+one condition everywhere it gates an affordance; the server enforces it per field.
+
 | Condition | Effect |
 |-----------|--------|
-| status = FINALISED | All header/line edits rejected (`CannotEditFinalised` / `CannotEditStocktake`). |
-| `isLocked` = true | Edits rejected (`StocktakeIsLocked`) unless the request sets `isLocked: false`. |
+| status = NEW **and** not locked | Editable. Header fields, lines, lock toggle, finalise, and delete are all available. |
+| status = FINALISED | All header/line edits rejected (`CannotEditFinalised` / `CannotEditStocktake`); delete not offered. Terminal. |
+| `isLocked` = true (status still NEW) | Edits rejected (`StocktakeIsLocked`) unless the same request sets `isLocked: false`; the **unlock toggle itself remains available** so the user can re-enable editing. Delete not offered while locked. |
 | store mismatch | Rejected (`InvalidStore`). |
+
+The two edit-blocking states are surfaced differently: **locked** is user-reversible (unlock to
+resume), **finalised** is permanent. Both show an explanatory banner rather than silently
+disabling (see [05 › header region](./05-ui-surface.md#header-region)).
 
 ## Finalise preconditions (validated before any adjustment)
 

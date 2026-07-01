@@ -60,11 +60,32 @@
 > validation path.
 
 ### Header region
-- **Editable** (`NEW`, unlocked): description.
-- **Status/lock messaging:** when locked or finalised, show an info banner explaining why
-  editing is blocked.
-- **Attribution:** counted-by / verified-by, comment, stocktake date (per domain model).
-- **Item filter:** free-text search to narrow the line table.
+The header presents the stocktake's metadata. Every editable field shares the one
+[editability gate](./03-state-rules.md#editability-rules) — writable only while **`NEW` and
+unlocked**, otherwise shown read-only (prefer disabled-with-reason over hiding).
+
+**Editable fields** (gated):
+
+| Field | Control | Notes |
+|-------|---------|-------|
+| Description | short text | Free-text title/label. |
+| Counted by | short text | Attribution. |
+| Verified by | short text | Attribution. |
+| Comment | multi-line text | Free-text note (may be auto-generated for full/filtered creates). |
+
+**Read-only / system fields** (always display-only): stocktake number, status, entered-by
+(owning user, with contact detail on demand), created date, and — once set — finalised date.
+
+- **`stocktakeDate`** is accepted by the update API (see [02](./02-api-contract.md)) but is
+  **not surfaced as an editable control in the current app**; treat exposing it as optional.
+- **Status / lock messaging:** when locked or finalised, show an info banner explaining why
+  editing is blocked — distinguishing the reversible **locked** state ("unlock to edit") from
+  the permanent **finalised** state.
+- **Item filter:** a free-text search that narrows the line table. This is a **view filter, not
+  a stored field**, and stays available regardless of status/lock.
+- **Header-level actions:** *delete stocktake* (only when `NEW` and unlocked — same gate) and
+  *copy record to clipboard* (always available). The lock toggle and finalise control live in
+  the [status footer](#status-region-footer), not among the header fields.
 
 ### Actions (screen-level)
 - *Add item* (J3) — disabled when not editable.
