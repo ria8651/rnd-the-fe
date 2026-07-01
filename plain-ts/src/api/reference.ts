@@ -4,6 +4,7 @@
 // guarantee (the server is authoritative at insert time).
 
 import { gql } from './client.ts';
+import type { ReasonOption } from '../domain/types.ts';
 
 export interface MasterList {
   id: string;
@@ -42,6 +43,74 @@ export async function fetchLocations(storeId: string): Promise<Location[]> {
   `;
   const data = await gql<{ locations: { nodes: Location[] } }>(query, { storeId });
   return data.locations.nodes.slice().sort((a, b) => a.name.localeCompare(b.name));
+}
+
+/** Active adjustment-reason options (reasons gate line saves by direction). */
+export async function fetchReasonOptions(): Promise<ReasonOption[]> {
+  const query = `
+    query Reasons {
+      reasonOptions(filter: { isActive: true }) {
+        ... on ReasonOptionConnector { nodes { id reason type isActive } }
+      }
+    }
+  `;
+  const data = await gql<{ reasonOptions: { nodes: ReasonOption[] } }>(query);
+  return data.reasonOptions.nodes;
+}
+
+export interface CatalogueItem {
+  id: string;
+  code: string;
+  name: string;
+  unitName?: string | null;
+  isVaccine: boolean;
+  doses: number;
+  defaultPackSize: number;
+}
+
+/** Catalogue search for the add-item flow (visible stock items, code or name). */
+export async function searchItems(storeId: string, term: string): Promise<CatalogueItem[]> {
+  const query = `
+    query SearchItems($storeId: String!, $filter: ItemFilterInput) {
+      items(storeId: $storeId, filter: $filter, page: { first: 50 }) {
+        ... on ItemConnector { nodes { id code name unitName isVaccine doses defaultPackSize } }
+      }
+    }
+  `;
+  const filter: Record<string, unknown> = { isVisible: true, type: { equalTo: 'STOCK' } };
+  if (term.trim()) filter.codeOrName = { like: term.trim() };
+  const data = await gql<{ items: { nodes: CatalogueItem[] } }>(query, { storeId, filter });
+  return data.items.nodes;
+}
+
+export interface ItemStockLine {
+  id: string;
+  batch?: string | null;
+  packSize: number;
+  expiryDate?: string | null;
+  totalNumberOfPacks: number;
+  availableNumberOfPacks: number;
+  costPricePerPack: number;
+  sellPricePerPack: number;
+  locationId?: string | null;
+  locationCode?: string | null;
+}
+
+/** Existing stock lines (batches) of an item — the batches the editor can count. */
+export async function fetchItemStockLines(storeId: string, itemId: string): Promise<ItemStockLine[]> {
+  const query = `
+    query ItemStock($storeId: String!, $filter: StockLineFilterInput) {
+      stockLines(storeId: $storeId, filter: $filter, page: { first: 200 }) {
+        ... on StockLineConnector {
+          nodes { id batch packSize expiryDate totalNumberOfPacks availableNumberOfPacks costPricePerPack sellPricePerPack locationId location { code } }
+        }
+      }
+    }
+  `;
+  const data = await gql<{
+    stockLines: { nodes: Array<Omit<ItemStockLine, 'locationCode'> & { location?: { code: string } | null }> };
+  }>(query, { storeId, filter: { itemId: { equalTo: itemId } } });
+  return data.stockLines.nodes.map((n) => ({ ...n, locationCode: n.location?.code ?? null }));
 }
 
 export async function fetchActiveVvmStatuses(storeId: string): Promise<VvmStatus[]> {

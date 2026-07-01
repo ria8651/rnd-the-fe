@@ -80,6 +80,7 @@ export function openDialog(opts: {
 
   const close = () => {
     document.removeEventListener('keydown', onKey);
+    window.removeEventListener('hashchange', close);
     backdrop.remove();
     opts.onClose?.();
     opener?.focus?.();
@@ -88,6 +89,10 @@ export function openDialog(opts: {
   const onKey = (e: KeyboardEvent) => {
     if (e.key === 'Escape') close();
   };
+
+  // Dialogs live on <body>, outside the routed view — close them on navigation
+  // so a stale modal never lingers over a new screen.
+  window.addEventListener('hashchange', close);
 
   backdrop.addEventListener('mousedown', (e) => {
     if (e.target === backdrop) close();

@@ -81,6 +81,7 @@ export interface LineArgs {
   first: number;
   offset: number;
   itemLike?: string;
+  itemId?: string;
 }
 
 export async function fetchStocktakeLines(args: LineArgs): Promise<StocktakeLineListResult> {
@@ -89,6 +90,7 @@ export async function fetchStocktakeLines(args: LineArgs): Promise<StocktakeLine
     // Item text filter matches code or name.
     filter.itemCodeOrName = { like: args.itemLike };
   }
+  if (args.itemId) filter.itemId = { equalTo: args.itemId };
   const query = `
     query StocktakeLines($storeId: String!, $stocktakeId: String!, $page: PaginationInput, $filter: StocktakeLineFilterInput) {
       stocktakeLines(storeId: $storeId, stocktakeId: $stocktakeId, page: $page, filter: $filter) {
@@ -184,6 +186,80 @@ export async function updateStocktake(
     ok: false,
     typename: node.error.__typename,
     error: node.error.description || describeError(node.error.__typename),
+  };
+}
+
+/** All item ids present on a stocktake — used to exclude them from add-item search. */
+export async function fetchStocktakeItemIds(stocktakeId: string, storeId: string): Promise<Set<string>> {
+  const query = `
+    query ItemIds($storeId: String!, $stocktakeId: String!) {
+      stocktakeLines(storeId: $storeId, stocktakeId: $stocktakeId, page: { first: 5000 }) {
+        ... on StocktakeLineConnector { nodes { itemId } }
+      }
+    }
+  `;
+  const data = await gql<{ stocktakeLines: { nodes: Array<{ itemId: string }> } }>(query, { storeId, stocktakeId });
+  return new Set(data.stocktakeLines.nodes.map((n) => n.itemId));
+}
+
+export interface FinaliseResult {
+  ok: boolean;
+  value?: Stocktake;
+  message?: string;
+  /** whole-stocktake banner errors (locked / finalised / no lines) */
+  banner?: string;
+  /** stocktake-line ids whose snapshot no longer matches current stock */
+  mismatchLineIds: string[];
+  /** stock-line ids that would be reduced below zero (map to lines via stockLine.id) */
+  reducedStockLineIds: string[];
+}
+
+/** Finalise (J7). Returns typed per-line error ids so the UI can key errors to rows. */
+export async function finaliseStocktake(id: string, storeId: string): Promise<FinaliseResult> {
+  const query = `
+    mutation Finalise($input: UpdateStocktakeInput!, $storeId: String!) {
+      updateStocktake(input: $input, storeId: $storeId) {
+        __typename
+        ... on StocktakeNode { ${STOCKTAKE_HEADER_FIELDS} }
+        ... on UpdateStocktakeError {
+          error {
+            __typename
+            description
+            ... on SnapshotCountCurrentCountMismatch { lines { stocktakeLine { id } } }
+            ... on StockLinesReducedBelowZero { errors { stockLine { id } } }
+          }
+        }
+      }
+    }
+  `;
+  const data = await gql<{
+    updateStocktake:
+      | ({ __typename: 'StocktakeNode' } & Stocktake)
+      | {
+          __typename: 'UpdateStocktakeError';
+          error: {
+            __typename: string;
+            description: string;
+            lines?: Array<{ stocktakeLine: { id: string } }>;
+            errors?: Array<{ stockLine: { id: string } }>;
+          };
+        };
+  }>(query, { input: { id, status: 'FINALISED' }, storeId });
+
+  const node = data.updateStocktake;
+  if (node.__typename === 'StocktakeNode') {
+    return { ok: true, value: node, mismatchLineIds: [], reducedStockLineIds: [] };
+  }
+  const err = node.error;
+  const mismatchLineIds = (err.lines ?? []).map((l) => l.stocktakeLine.id);
+  const reducedStockLineIds = (err.errors ?? []).map((e) => e.stockLine.id);
+  const isPerLine = mismatchLineIds.length > 0 || reducedStockLineIds.length > 0;
+  return {
+    ok: false,
+    message: err.description || describeError(err.__typename),
+    banner: isPerLine ? undefined : err.description || describeError(err.__typename),
+    mismatchLineIds,
+    reducedStockLineIds,
   };
 }
 
