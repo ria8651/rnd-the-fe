@@ -7,9 +7,10 @@
 - **Labels:** static, positioned **above** the field, always visible.
 - **Height:** 40px default; 36px in compact contexts (inline table edit, filter rows,
   toolbars, sidebars).
-- **Padding:** 12px horizontal. **Border radius:** 6px.
-- **Border:** 1px neutral default; shifts to the accent colour on focus, with a focus ring
-  (see [accessibility › focus states](./accessibility.md#focus-states)).
+- **Padding:** one spacing step of horizontal inset; corners use the `radius.control` step
+  (see [theming model › radius](./theming.md#radius-scale)).
+- **Surface & border:** `surface.sunken` fill with a `border.default` outline that shifts to
+  `focusRing` on focus (see [focus states](./accessibility.md#focus-states)).
 - **Max width:** ~400px for short fields (codes, quantities); ~600px for extended fields
   (names, descriptions).
 - Dropdowns (single-select) follow the same sizing, label, and focus rules but have their own
@@ -23,14 +24,15 @@
 
 ## Interaction states
 
-Every field has the same set of visual states. Colour always pairs with a non-colour cue
-([colour independence](./accessibility.md#colour-independence)).
+Fields use the shared [interaction states](./interaction.md); the rules below are the
+field-specific specifics (precedence, no layout shift, validation). Colour always pairs with a
+non-colour cue ([colour independence](./accessibility.md#colour-independence)).
 
 | State | Treatment |
 |-------|-----------|
-| Default | Neutral 1px border, sunken fill. |
-| Hover | Border darkens (to the strong border token). Applies to the **control surface only** — pointing at the field's *label* must not restyle the control. |
-| Focus | Border shifts to the accent colour **plus** a focus ring ([focusRing](./theming.md#interaction)). The ring **replaces** any default focus outline — never show two stacked rings. |
+| Default | `border.default` outline, `surface.sunken` fill. |
+| Hover | Border darkens to `border.strong`. Applies to the **control surface only** — pointing at the field's *label* must not restyle the control. |
+| Focus | Border shifts to the brand accent **plus** the `focusRing`. The ring **replaces** any default focus outline — never show two stacked rings. |
 | Disabled | Muted fill + text; not interactive; cursor indicates so. |
 | Invalid | Error-colour border **and** an icon + message (see below); the focus ring turns the error colour while focused. |
 

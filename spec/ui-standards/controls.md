@@ -31,7 +31,7 @@ language popovers — see [chrome](../chrome/01-behaviours.md)):
 - **Open** on trigger activation (click / Enter / Space).
 - **Dismiss** on: outside-click, `Escape`, selecting an item, or the trigger toggling it shut.
   On dismissal, **focus returns to the trigger**.
-- **Surface:** the `raised` surface + `popover` [elevation](./theming.md#spacing-radius--elevation).
+- **Surface:** the `surface.raised` colour + `raised` [elevation](./theming.md#elevation-levels).
 - **Placement:** anchored to the trigger (typically below, start-aligned); stays within the
   viewport (flips/shifts if it would overflow).
 

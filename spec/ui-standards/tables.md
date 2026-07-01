@@ -39,9 +39,9 @@ right-aligned headers; mismatched alignment breaks the visual column.
 ## Column widths
 
 Recommended fixed widths: codes/IDs 100–150px; dates 100–120px; small numbers 80–100px;
-large/currency numbers 110–140px; short text 120–160px; long text takes remaining space
-(flex). Interactive tables support drag-to-resize (disable per column where it shouldn't
-resize); simple tables use fixed widths.
+large/currency numbers 110–140px; short text 120–160px; long text fills the remaining space.
+Interactive tables support drag-to-resize (disable per column where it shouldn't resize);
+simple tables use fixed widths.
 
 ## Column priority
 
@@ -89,13 +89,15 @@ uppercase ~11px, values ~14px); actions right-aligned in a footer with ≥44px t
 
 ## Selection
 
-Row checkboxes plus a header "select all". Selected rows get a subtle blue tint; hover is
-light grey (unselected) / stronger blue (selected).
+Row checkboxes plus a header "select all". Selection and hover behaviour follow the shared
+[interaction states](./interaction.md#where-they-apply): an unselected row shows the
+`hoverOverlay` on hover, a selected row keeps the `selected` tint, and hovering a selected row
+deepens to `selectedHover` (token values in the [theme variants](./theming.md)).
 
 ## Sorting
 
 Sortable columns have clickable headers; the active sort shows a direction indicator
-(ascending/descending) in the accent colour.
+(ascending/descending) in the brand accent.
 
 ## Keyboard navigation
 
