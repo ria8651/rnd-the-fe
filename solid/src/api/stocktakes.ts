@@ -313,6 +313,135 @@ export async function fetchStores(search?: string): Promise<Paginated<Store>> {
   return data.stores;
 }
 
+// ---- Finalise (updateStocktake status: FINALISED), with offending-line mapping ----
+export interface FinaliseResult {
+  ok: boolean;
+  errorType?: string;
+  message?: string;
+  // Offending references keyed for per-line surfacing (S5 error surfaces).
+  mismatchStocktakeLineIds?: string[];
+  reducedStockLineIds?: string[];
+}
+
+export async function finaliseStocktake(storeId: string, id: string): Promise<FinaliseResult> {
+  const data = await gql<{
+    updateStocktake:
+      | { __typename: 'StocktakeNode'; status: StocktakeStatus }
+      | {
+          __typename: 'UpdateStocktakeError';
+          error: {
+            __typename: string;
+            description: string;
+            lines?: { stocktakeLine: { id: string } }[];
+            errors?: { stockLine: { id: string } }[];
+          };
+        };
+  }>(
+    `mutation Finalise($storeId: String!, $input: UpdateStocktakeInput!) {
+      updateStocktake(storeId: $storeId, input: $input) {
+        __typename
+        ... on StocktakeNode { status }
+        ... on UpdateStocktakeError {
+          error {
+            __typename
+            description
+            ... on SnapshotCountCurrentCountMismatch { lines { stocktakeLine { id } } }
+            ... on StockLinesReducedBelowZero { errors { stockLine { id } } }
+          }
+        }
+      }
+    }`,
+    { storeId, input: { id, status: 'FINALISED' } },
+  );
+  const r = data.updateStocktake;
+  if (r.__typename === 'StocktakeNode') return { ok: true };
+  return {
+    ok: false,
+    errorType: r.error.__typename,
+    message: r.error.description,
+    mismatchStocktakeLineIds: r.error.lines?.map((l) => l.stocktakeLine.id),
+    reducedStockLineIds: r.error.errors?.map((e) => e.stockLine.id),
+  };
+}
+
+// ---- Catalogue item search (S4 add-item; excludes items already present) ----
+export interface ItemSearchResult {
+  id: string;
+  code: string;
+  name: string;
+  unitName?: string | null;
+  defaultPackSize?: number;
+}
+
+export async function searchItems(
+  storeId: string,
+  search: string,
+  first = 25,
+): Promise<ItemSearchResult[]> {
+  const data = await gql<{ items: Paginated<ItemSearchResult> }>(
+    `query Items($storeId: String!, $page: PaginationInput, $filter: ItemFilterInput) {
+      items(storeId: $storeId, page: $page, filter: $filter) {
+        ... on ItemConnector { nodes { id code name unitName defaultPackSize } }
+      }
+    }`,
+    {
+      storeId,
+      page: { first },
+      filter: {
+        isVisible: true,
+        ...(search ? { codeOrName: { like: search } } : {}),
+      },
+    },
+  );
+  return data.items.nodes;
+}
+
+// ---- Locations (bulk change-location) ----
+export async function fetchLocations(storeId: string): Promise<{ id: string; name: string; code: string }[]> {
+  const data = await gql<{ locations: Paginated<{ id: string; name: string; code: string }> }>(
+    `query Locations($storeId: String!, $page: PaginationInput) {
+      locations(storeId: $storeId, page: $page) {
+        ... on LocationConnector { nodes { id name code } }
+      }
+    }`,
+    { storeId, page: { first: 500 } },
+  );
+  return data.locations.nodes;
+}
+
+// Bulk location change: update lines' location via the nullable-string wrapper.
+export async function setLinesLocation(
+  storeId: string,
+  lineIds: string[],
+  locationId: string | null,
+): Promise<LineBatchResult> {
+  const data = await gql<{
+    batchStocktake: {
+      updateStocktakeLines?: { id: string; response: { __typename: string; error?: { __typename: string; description: string } } }[];
+    };
+  }>(
+    `mutation SetLocation($storeId: String!, $input: BatchStocktakeInput!) {
+      batchStocktake(storeId: $storeId, input: $input) {
+        updateStocktakeLines { id response { __typename ... on UpdateStocktakeLineError { error { __typename description } } } }
+      }
+    }`,
+    {
+      storeId,
+      input: {
+        updateStocktakeLines: lineIds.map((id) => ({ id, location: { value: locationId } })),
+        continueOnError: true,
+      },
+    },
+  );
+  const perLineErrors: LineBatchResult['perLineErrors'] = [];
+  for (const row of data.batchStocktake.updateStocktakeLines ?? []) {
+    if (row.response.error) {
+      perLineErrors.push({ lineId: row.id, errorType: row.response.error.__typename, message: row.response.error.description });
+    }
+  }
+  return { ok: perLineErrors.length === 0, perLineErrors };
+}
+
 export async function fetchReasonOptions(): Promise<ReasonOption[]> {
   const data = await gql<{ reasonOptions: Paginated<ReasonOption> }>(
     `query ReasonOptions {

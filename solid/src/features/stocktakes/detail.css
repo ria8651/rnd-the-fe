@@ -1,0 +1,108 @@
+.detail-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
+}
+.detail-title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+.detail-back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  color: var(--text-link);
+  text-decoration: none;
+  font-size: var(--type-caption);
+}
+.detail-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+.detail-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  background: var(--surface-default);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-control);
+}
+.detail-meta__item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.detail-meta__label {
+  font-size: var(--type-caption);
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Inline cell editors */
+.cell-input {
+  width: 110px;
+  height: 36px;
+  padding: 0 var(--sp-2);
+  border-radius: var(--radius-control);
+  border: 1px solid var(--border-default);
+  background: var(--surface-sunken);
+  color: var(--text-primary);
+  font-size: var(--type-body);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.cell-input:focus {
+  outline: none;
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 2px var(--focusRing);
+}
+.cell-input[data-invalid='true'] {
+  border-color: var(--state-error-main);
+}
+.cell-error {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--state-error-main);
+  font-size: var(--type-caption);
+  margin-top: 2px;
+  justify-content: flex-end;
+}
+td.reason-cell {
+  min-width: 200px;
+}
+.dirty-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--brand-primary);
+  margin-left: var(--sp-1);
+}
+
+/* Item-search result rows */
+.item-result {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  min-height: 44px;
+}
+.item-result:hover,
+.item-result[data-active='true'] {
+  background: var(--hoverOverlay);
+}
+.item-result__code {
+  font-size: var(--type-caption);
+  color: var(--text-secondary);
+}
