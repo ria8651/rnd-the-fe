@@ -273,7 +273,7 @@
 		overflow-x: auto;
 		background: var(--surface-default);
 		border: 1px solid var(--border-default);
-		border-radius: var(--radius);
+		border-radius: var(--radius-card);
 	}
 	table {
 		width: 100%;
@@ -389,7 +389,7 @@
 	.card {
 		background: var(--surface-default);
 		border: 1px solid var(--border-default);
-		border-radius: var(--radius);
+		border-radius: var(--radius-card);
 		padding: var(--space-3);
 	}
 	.card.has-error {

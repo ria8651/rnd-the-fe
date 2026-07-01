@@ -67,11 +67,12 @@ a:hover {
 }
 
 /* Focus is never removed; the brand ring is shown for keyboard users
-   (accessibility.md › focus states). */
+   (accessibility.md › focus states). The outline follows each element's own
+   border-radius — we must NOT set border-radius here, or focus would change a
+   control's geometry (interaction.md: "focus changes colour, not geometry"). */
 :where(a, button, input, select, textarea, [tabindex]):focus-visible {
 	outline: 2px solid var(--focus-ring);
 	outline-offset: 2px;
-	border-radius: var(--radius-sm);
 }
 
 /* Respect reduced-motion. */

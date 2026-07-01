@@ -15,6 +15,9 @@
 export interface TokenValue {
 	light: string;
 	dark: string;
+	/** The existing-app (MUI) theme — see spec theme-mui.md. Defaults to the light
+	 *  value (the light theme is derived from MUI); only set where MUI differs. */
+	mui?: string;
 	/** Short description of the token's role (kept for docs / the theme preview). */
 	role: string;
 }
@@ -52,7 +55,7 @@ export const colorTokens = {
 	// ── State ────────────────────────────────────────────────────────────────
 	'--state-error': { role: 'Errors, destructive, reduced-below-zero', light: '#E63535', dark: '#FF6B6B' },
 	'--state-error-subtle': { role: 'Error tinted background', light: '#FFCDCE', dark: 'rgba(230,53,53,0.18)' },
-	'--state-warning': { role: 'Warnings, near-expiry', light: '#E1A200', dark: '#F2B43C' },
+	'--state-warning': { role: 'Warnings, near-expiry', light: '#E1A200', dark: '#F2B43C', mui: '#F2A001' },
 	'--state-warning-subtle': { role: 'Warning tinted background', light: '#FCF1D4', dark: 'rgba(225,162,0,0.18)' },
 	'--state-success': { role: 'Success, functioning, finalised-ok', light: '#69A607', dark: '#8FCB3A' },
 	'--state-success-subtle': { role: 'Success tinted background', light: '#EDF7ED', dark: 'rgba(105,166,7,0.18)' },

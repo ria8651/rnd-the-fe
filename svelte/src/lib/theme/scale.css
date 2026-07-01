@@ -27,11 +27,13 @@
 	--space-6: 32px;
 	--space-7: 48px;
 
-	/* Radius (inputs.md: 6px) */
-	--radius-sm: 4px;
-	--radius: 6px;
-	--radius-lg: 10px;
-	--radius-pill: 999px;
+	/* Radius scale (theming.md › Radius scale).
+	   --radius-card / --radius-modal diverge under the MUI theme (tighter Paper). */
+	--radius-sm: 4px; /* radius.sm */
+	--radius-control: 8px; /* radius.control — inputs, buttons, interactive */
+	--radius-card: 8px; /* containers: cards, panels, tables, popovers, menus */
+	--radius-modal: 12px; /* radius.modal — dialogs */
+	--radius-pill: 999px; /* radius.pill */
 
 	/* Input sizing (inputs.md) */
 	--field-height: 40px;
@@ -51,9 +53,9 @@
 	--bp-tablet-portrait: 800px;
 	--bp-desktop: 1100px;
 
-	/* Elevation */
-	--shadow-popover: 0 4px 16px rgba(0, 0, 0, 0.12);
-	--shadow-modal: 0 12px 40px rgba(0, 0, 0, 0.24);
+	/* Elevation (theming.md › Elevation levels): raised = y4/blur8, overlay = y12/blur24. */
+	--shadow-popover: 0 4px 8px rgba(40, 41, 61, 0.16), 0 0 2px rgba(40, 41, 61, 0.08);
+	--shadow-modal: 0 12px 24px rgba(40, 41, 61, 0.24), 0 4px 8px rgba(40, 41, 61, 0.16);
 
 	/* Layering */
 	--z-sticky-header: 10;
@@ -66,4 +68,16 @@
 	/* Motion */
 	--transition-fast: 120ms ease;
 	--transition: 200ms ease;
+}
+
+/* MUI reference theme — metric divergences from the model (theme-mui.md › Metrics):
+   the current app uses tighter 4px Paper (cards/menus/dialogs) and its own layered
+   shadow recipes. Colours come from the generated tokens.css; these are the non-colour
+   differences that give the existing app its feel. */
+:root[data-theme='mui'] {
+	--radius-card: 4px;
+	--radius-modal: 4px;
+	/* Existing app shadow levels: 2 ≈ raised, 3–4 ≈ overlay. */
+	--shadow-popover: 0 4px 8px rgba(96, 97, 112, 0.16), 0 0 2px rgba(40, 41, 61, 0.08);
+	--shadow-modal: 0 8px 16px rgba(96, 97, 112, 0.16), 0 2px 4px rgba(40, 41, 61, 0.04);
 }

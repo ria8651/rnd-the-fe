@@ -106,7 +106,7 @@
 		overflow: auto;
 		background: var(--surface-raised);
 		border: 1px solid var(--border-default);
-		border-radius: var(--radius-lg);
+		border-radius: var(--radius-modal);
 		box-shadow: var(--shadow-modal);
 		z-index: var(--z-modal);
 	}

@@ -113,7 +113,7 @@
 		place-items: center;
 		width: 32px;
 		height: 32px;
-		border-radius: var(--radius);
+		border-radius: var(--radius-control);
 		background: var(--brand-primary);
 		color: var(--brand-on-primary);
 		font-weight: 700;
@@ -162,7 +162,7 @@
 		padding: 0 var(--space-3);
 		border: 0;
 		background: transparent;
-		border-radius: var(--radius);
+		border-radius: var(--radius-control);
 		color: var(--text-primary);
 		text-decoration: none;
 		font: inherit;

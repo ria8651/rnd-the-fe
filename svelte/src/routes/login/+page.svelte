@@ -39,14 +39,14 @@
 		padding: var(--space-6);
 		background: var(--surface-default);
 		border: 1px solid var(--border-default);
-		border-radius: var(--radius-lg);
+		border-radius: var(--radius-card);
 	}
 	.brand {
 		display: grid;
 		place-items: center;
 		width: 48px;
 		height: 48px;
-		border-radius: var(--radius);
+		border-radius: var(--radius-control);
 		background: var(--brand-primary);
 		color: var(--brand-on-primary);
 		font-weight: 700;

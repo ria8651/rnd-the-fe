@@ -57,7 +57,7 @@
 		font-size: var(--font-size-cell);
 		font-weight: 600;
 		line-height: 1;
-		border-radius: var(--radius);
+		border-radius: var(--radius-control);
 		border: 1px solid transparent;
 		cursor: pointer;
 		text-decoration: none;

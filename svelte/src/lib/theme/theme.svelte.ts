@@ -12,8 +12,8 @@
  */
 import { browser } from '$app/environment';
 
-export type ThemeMode = 'system' | 'light' | 'dark';
-export type ResolvedTheme = 'light' | 'dark';
+export type ThemeMode = 'system' | 'light' | 'dark' | 'mui';
+export type ResolvedTheme = 'light' | 'dark' | 'mui';
 
 const BASE_KEY = 'oms.theme';
 
@@ -61,7 +61,10 @@ class ThemeController {
 	#load() {
 		if (!browser) return;
 		const stored = localStorage.getItem(this.storageKey);
-		this.mode = stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'system';
+		this.mode =
+			stored === 'light' || stored === 'dark' || stored === 'mui' || stored === 'system'
+				? stored
+				: 'system';
 	}
 
 	#apply() {

@@ -73,7 +73,7 @@
 		padding: var(--space-4);
 		background: var(--surface-default);
 		border: 1px solid var(--border-default);
-		border-radius: var(--radius);
+		border-radius: var(--radius-card);
 		color: var(--text-primary);
 		text-decoration: none;
 	}

@@ -73,8 +73,44 @@
 	--selected-hover: rgba(62,123,250,0.32);
 }
 
+:root[data-theme='mui'] {
+	--brand-primary: #E95C30;
+	--brand-primary-hover: #C43C11;
+	--brand-primary-subtle: #FCEAE3;
+	--brand-on-primary: #FFFFFF;
+	--brand-secondary: #3E7BFA;
+	--brand-secondary-hover: #3568D4;
+	--brand-secondary-subtle: #E8F1FE;
+	--surface-base: #F2F2F5;
+	--surface-default: #FFFFFF;
+	--surface-raised: #FFFFFF;
+	--surface-sunken: #FAFAFC;
+	--surface-nav: #F2F2F5;
+	--surface-scrim: rgba(0,0,0,0.5);
+	--text-primary: #1C1C28;
+	--text-secondary: #555770;
+	--text-disabled: #8F90A6;
+	--text-link: #3568D4;
+	--text-inverse: #FFFFFF;
+	--border-default: #E4E4EB;
+	--border-strong: #CBCED4;
+	--divider: #EAEAEA;
+	--state-error: #E63535;
+	--state-error-subtle: #FFCDCE;
+	--state-warning: #F2A001;
+	--state-warning-subtle: #FCF1D4;
+	--state-success: #69A607;
+	--state-success-subtle: #EDF7ED;
+	--state-info: #3E7BFA;
+	--state-info-subtle: #E8F1FE;
+	--focus-ring: #E95C30;
+	--hover-overlay: rgba(0,0,0,0.04);
+	--selected: #E8F1FE;
+	--selected-hover: #D2DFFF;
+}
+
 @media (prefers-color-scheme: dark) {
-	:root:not([data-theme='light']) {
+	:root:not([data-theme]) {
 		--brand-primary: #F2774B;
 		--brand-primary-hover: #E95C30;
 		--brand-primary-subtle: rgba(233,92,48,0.16);
