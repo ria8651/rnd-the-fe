@@ -13,6 +13,7 @@
 		disabled = false,
 		compact = false,
 		width = 'full',
+		hideLabel = false,
 		oninput
 	}: {
 		value?: string;
@@ -25,6 +26,7 @@
 		disabled?: boolean;
 		compact?: boolean;
 		width?: FieldWidth | string;
+		hideLabel?: boolean;
 		oninput?: (value: string) => void;
 	} = $props();
 
@@ -32,7 +34,7 @@
 	const fieldId = $derived(id ?? auto);
 </script>
 
-<FieldShell {label} id={fieldId} {required} {error} {help} {width}>
+<FieldShell {label} id={fieldId} {required} {error} {help} {width} {hideLabel}>
 	<input
 		class="control"
 		class:compact

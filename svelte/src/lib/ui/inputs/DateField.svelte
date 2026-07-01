@@ -18,6 +18,7 @@
 		disabled = false,
 		compact = false,
 		width = 'date',
+		hideLabel = false,
 		onchange
 	}: {
 		value?: string | null;
@@ -29,6 +30,7 @@
 		disabled?: boolean;
 		compact?: boolean;
 		width?: FieldWidth | string;
+		hideLabel?: boolean;
 		onchange?: (value: string | null) => void;
 	} = $props();
 
@@ -36,7 +38,7 @@
 	const fieldId = $derived(id ?? auto);
 </script>
 
-<FieldShell {label} id={fieldId} {required} {error} {help} {width}>
+<FieldShell {label} id={fieldId} {required} {error} {help} {width} {hideLabel}>
 	<input
 		class="control"
 		class:compact

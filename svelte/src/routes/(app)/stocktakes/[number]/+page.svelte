@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { goto } from '$app/navigation';
 	import Table from '$lib/ui/Table.svelte';
 	import Button from '$lib/ui/Button.svelte';
 	import StatusBadge from '$lib/ui/StatusBadge.svelte';
 	import Modal from '$lib/ui/Modal.svelte';
+	import SplitButton from '$lib/ui/SplitButton.svelte';
+	import StatusCrumbs from '$lib/ui/StatusCrumbs.svelte';
 	import Icon from '$lib/icons/Icon.svelte';
 	import TextField from '$lib/ui/inputs/TextField.svelte';
-	import NumericField from '$lib/ui/inputs/NumericField.svelte';
 	import SelectField from '$lib/ui/inputs/SelectField.svelte';
 	import type { Column } from '$lib/ui/table';
 	import { auth } from '$lib/auth/auth.svelte';
@@ -21,9 +21,7 @@
 		isEditable,
 		editBlockReason,
 		packDifference,
-		adjustmentDirection,
 		reasonError,
-		reasonTypeMatchesDirection,
 		finaliseCheck,
 		errorSurface
 	} from '$lib/stocktakes/rules';
@@ -44,13 +42,12 @@
 	let descDraft = $state('');
 	let commentDraft = $state('');
 
-	// Dirty tracking for lines: id → serialized editable fields at load.
-	let original = new Map<string, string>();
 	let filter = $state('');
 	let selected = $state(new Set<string>());
 
 	// UI state.
-	let showAddItem = $state(false);
+	let editorOpen = $state(false);
+	let editorTarget = $state<{ item: StocktakeLine['item']; lines: StocktakeLine[] } | null>(null);
 	let confirmingFinalise = $state(false);
 	let confirmingReduce = $state(false);
 	let confirmingDeleteLines = $state(false);
@@ -59,23 +56,14 @@
 	let busy = $state(false);
 	let banner = $state<string | null>(null);
 	let notice = $state<string | null>(null);
+	// Status-change split button selection (only forward transition is FINALISED).
+	let statusChoice = $state('FINALISED');
 	// Per-line finalise errors (set after a finalise attempt): id → codes.
 	let lineErrors = $state<Record<string, string[]>>({});
 
 	const editable = $derived(header ? isEditable(header) : false);
 	const blockReason = $derived(header ? editBlockReason(header) : null);
 
-	function serialize(l: StocktakeLine): string {
-		return JSON.stringify({
-			c: l.countedNumberOfPacks ?? null,
-			r: l.reasonOption?.id ?? null
-		});
-	}
-
-	const dirtyIds = $derived(
-		new Set(draft.filter((l) => original.get(l.id) !== serialize(l)).map((l) => l.id))
-	);
-	const hasLineChanges = $derived(dirtyIds.size > 0);
 	const hasHeaderChanges = $derived(
 		!!header &&
 			(descDraft !== (header.description ?? '') || commentDraft !== (header.comment ?? ''))
@@ -93,6 +81,7 @@
 	});
 
 	const existingItemIds = $derived(new Set(draft.map((l) => l.itemId)));
+	const countedCount = $derived(draft.filter((l) => l.countedNumberOfPacks != null).length);
 
 	async function load() {
 		loading = true;
@@ -116,7 +105,6 @@
 			}
 			header = { ...s };
 			draft = structuredClone(s.lines);
-			original = new Map(draft.map((l) => [l.id, serialize(l)]));
 			descDraft = s.description ?? '';
 			commentDraft = s.comment ?? '';
 		} catch (e) {
@@ -133,20 +121,7 @@
 		load();
 	});
 
-	// ── Line editing helpers ──────────────────────────────────────────────────
-	function dirOf(l: StocktakeLine) {
-		return adjustmentDirection(l);
-	}
-	function reasonsFor(l: StocktakeLine) {
-		const dir = dirOf(l);
-		return reasons
-			.filter((r) => r.isActive && reasonTypeMatchesDirection(r.type, dir))
-			.map((r) => ({ value: r.id, label: r.reason }));
-	}
-	function setReason(l: StocktakeLine, id: string | null) {
-		l.reasonOption = id ? (reasons.find((r) => r.id === id) ?? null) : null;
-	}
-
+	// ── Per-line error surfacing (read-only table flags problems) ────────────────
 	function cellError(row: StocktakeLine, key: string): string | undefined {
 		if (key === 'reason') {
 			const re = reasonError(row, reasons);
@@ -160,6 +135,17 @@
 		if (key === 'snapshotNumberOfPacks' && codes.includes('snapshotMismatch'))
 			return 'Snapshot differs from current stock — reload before finalising.';
 		return undefined;
+	}
+
+	// ── Open the line editor (S4) — add a new item, or edit a line's item ────────
+	function openAdd() {
+		editorTarget = null;
+		editorOpen = true;
+	}
+	function openEdit(row: StocktakeLine) {
+		if (!editable) return;
+		editorTarget = { item: row.item, lines: draft.filter((l) => l.itemId === row.itemId) };
+		editorOpen = true;
 	}
 
 	// ── Header actions ──────────────────────────────────────────────────────────
@@ -188,29 +174,6 @@
 			const res = await updateStocktake(auth.storeId, { id: header.id, isLocked: !header.isLocked });
 			if (!res.ok) banner = `Couldn't change the lock (${res.errorType}).`;
 			else header = { ...header, isLocked: !header.isLocked };
-		} finally {
-			busy = false;
-		}
-	}
-
-	// ── Line save ─────────────────────────────────────────────────────────────
-	async function saveLines() {
-		if (!header || !hasLineChanges) return;
-		busy = true;
-		banner = null;
-		try {
-			const upserts = draft
-				.filter((l) => dirtyIds.has(l.id))
-				.map((l) => ({
-					id: l.id,
-					stocktakeId: header!.id,
-					countedNumberOfPacks: l.countedNumberOfPacks,
-					reasonOptionId: l.reasonOption?.id
-				}));
-			await batchStocktakeLines(auth.storeId, { upserts });
-			await load();
-		} catch (e) {
-			banner = e instanceof Error ? e.message : String(e);
 		} finally {
 			busy = false;
 		}
@@ -280,7 +243,7 @@
 			return;
 		}
 		if (Object.keys(check.lineErrors).length > 0) {
-			banner = 'Some lines need attention before finalising — see the highlighted cells.';
+			banner = 'Some lines need attention before finalising — see the highlighted rows.';
 			return;
 		}
 		confirmingFinalise = true;
@@ -291,17 +254,6 @@
 		busy = true;
 		banner = null;
 		try {
-			if (hasLineChanges) {
-				const upserts = draft
-					.filter((l) => dirtyIds.has(l.id))
-					.map((l) => ({
-						id: l.id,
-						stocktakeId: header!.id,
-						countedNumberOfPacks: l.countedNumberOfPacks,
-						reasonOptionId: l.reasonOption?.id
-					}));
-				await batchStocktakeLines(auth.storeId, { upserts });
-			}
 			const res = await updateStocktake(auth.storeId, { id: header.id, status: 'FINALISED' });
 			confirmingFinalise = false;
 			if (!res.ok) {
@@ -320,7 +272,7 @@
 		}
 	}
 
-	// ── Columns ──────────────────────────────────────────────────────────────────
+	// ── Columns (read-only; selecting a row opens the editor) ─────────────────────
 	const columns: Column<StocktakeLine>[] = [
 		{ key: 'code', header: 'Code', priority: 1, width: '110px', role: 'identifier', accessor: (r) => r.item?.code ?? '', tooltip: (r) => r.item?.code },
 		{ key: 'itemName', header: 'Item', priority: 1, accessor: (r) => r.itemName, tooltip: (r) => r.itemName },
@@ -329,13 +281,24 @@
 		{ key: 'location', header: 'Location', priority: 3, width: '120px', accessor: (r) => r.location?.name ?? r.location?.code ?? '' },
 		{ key: 'packSize', header: 'Pack size', priority: 2, width: '90px', numeric: true, accessor: (r) => r.packSize, format: (r) => formatNumber(r.packSize) },
 		{ key: 'snapshotNumberOfPacks', header: 'Snapshot', priority: 1, width: '100px', numeric: true, accessor: (r) => r.snapshotNumberOfPacks, format: (r) => formatNumber(r.snapshotNumberOfPacks) },
-		{ key: 'countedNumberOfPacks', header: 'Counted', priority: 1, width: '120px', numeric: true, accessor: (r) => r.countedNumberOfPacks },
+		{ key: 'countedNumberOfPacks', header: 'Counted', priority: 1, width: '100px', numeric: true, accessor: (r) => r.countedNumberOfPacks, format: (r) => (r.countedNumberOfPacks == null ? '—' : formatNumber(r.countedNumberOfPacks)) },
 		{ key: 'difference', header: 'Difference', priority: 1, width: '110px', numeric: true, accessor: (r) => packDifference(r), format: (r) => (r.countedNumberOfPacks == null ? '' : formatDelta(packDifference(r))) },
 		{ key: 'reason', header: 'Reason', priority: 2, width: '200px', accessor: (r) => r.reasonOption?.reason ?? '' },
 		{ key: 'comment', header: 'Comment', priority: 3, accessor: (r) => r.comment ?? '' }
 	];
 
-	const countedCount = $derived(draft.filter((l) => l.countedNumberOfPacks != null).length);
+	const statusSteps = $derived(
+		header
+			? [
+					{ value: 'NEW', label: 'New', reachedAt: header.createdDatetime },
+					{ value: 'FINALISED', label: 'Finalised', reachedAt: header.finalisedDatetime }
+				]
+			: []
+	);
+	const statusOptions = [
+		{ value: 'NEW', label: 'New', disabled: true },
+		{ value: 'FINALISED', label: 'Save and confirm → Finalised' }
+	];
 </script>
 
 <a class="back" href="/stocktakes"><Icon name="arrow-left" size={16} /> All stocktakes</a>
@@ -356,17 +319,8 @@
 		</div>
 		<div class="actions">
 			{#if editable}
-				<Button variant="secondary" onclick={() => (showAddItem = true)} disabled={busy}>
+				<Button variant="secondary" onclick={openAdd} disabled={busy}>
 					<Icon name="plus-circle" size={18} /> Add item
-				</Button>
-			{/if}
-			<!-- No lock glyph in the icon set (see Stage 6 spec notes); text-only for clarity. -->
-			<Button variant="secondary" onclick={toggleLock} disabled={busy || header.status === 'FINALISED'}>
-				{header.isLocked ? 'Unlock' : 'Lock'}
-			</Button>
-			{#if editable}
-				<Button variant="primary" onclick={attemptFinalise} disabled={busy || countedCount === 0}>
-					<Icon name="check" size={18} /> Finalise
 				</Button>
 			{/if}
 		</div>
@@ -410,11 +364,6 @@
 	<!-- Line toolbar -->
 	<div class="toolbar">
 		<TextField bind:value={filter} width="280px" compact placeholder="Filter items…" label="Filter" />
-		<div class="spacer"></div>
-		{#if editable && hasLineChanges}
-			<span class="dirty">{dirtyIds.size} unsaved</span>
-			<Button variant="primary" compact onclick={saveLines} disabled={busy}>Save changes</Button>
-		{/if}
 	</div>
 
 	{#if editable && selected.size > 0}
@@ -434,49 +383,42 @@
 		getRowId={(r) => r.id}
 		selectable={editable}
 		bind:selected
+		onRowClick={editable ? openEdit : undefined}
 		{cellError}
 		emptyText={filter ? 'No lines match this filter.' : 'No lines on this stocktake yet.'}
 		caption="Stocktake lines"
-	>
-		{#snippet cell(row, col)}
-			{#if col.key === 'countedNumberOfPacks'}
-				{#if editable}
-					<span class="edit-cell" role="presentation" onkeydown={(e) => e.stopPropagation()}>
-						<NumericField bind:value={row.countedNumberOfPacks} min={0} compact width="90px" />
-					</span>
-				{:else}
-					{row.countedNumberOfPacks == null ? '—' : formatNumber(row.countedNumberOfPacks)}
-				{/if}
-			{:else if col.key === 'reason'}
-				{#if editable && dirOf(row) !== 'none'}
-					<span class="edit-cell" role="presentation" onkeydown={(e) => e.stopPropagation()}>
-						<SelectField
-							value={row.reasonOption?.id ?? null}
-							options={reasonsFor(row)}
-							compact
-							width="180px"
-							placeholder="Select reason…"
-							onchange={(id) => setReason(row, id as string | null)}
-						/>
-					</span>
-				{:else}
-					{row.reasonOption?.reason ?? ''}
-				{/if}
-			{:else if col.key === 'difference'}
-				{row.countedNumberOfPacks == null ? '' : formatDelta(packDifference(row))}
-			{:else}
-				{col.format ? col.format(row) : (col.accessor ? String(col.accessor(row) ?? '') : '')}
+	/>
+
+	<!-- Status region (footer): lifecycle crumbs + lock + status-change split button -->
+	<footer class="status-bar">
+		<StatusCrumbs steps={statusSteps} current={header.status} />
+		<div class="status-actions">
+			{#if header.status !== 'FINALISED'}
+				<!-- No lock glyph in the icon set (see spec notes); text-only for clarity. -->
+				<Button variant="secondary" onclick={toggleLock} disabled={busy}>
+					{header.isLocked ? 'Unlock' : 'Lock'}
+				</Button>
 			{/if}
-		{/snippet}
-	</Table>
+			{#if editable}
+				<SplitButton
+					options={statusOptions}
+					bind:value={statusChoice}
+					disabled={busy}
+					onaction={attemptFinalise}
+				/>
+			{/if}
+		</div>
+	</footer>
 {/if}
 
 <StocktakeLineEditor
-	bind:open={showAddItem}
+	bind:open={editorOpen}
 	storeId={auth.storeId}
 	stocktakeId={header?.id ?? ''}
 	{existingItemIds}
 	{locations}
+	{reasons}
+	editItem={editorTarget}
 	onSaved={load}
 />
 
@@ -611,13 +553,6 @@
 		gap: var(--space-3);
 		margin-bottom: var(--space-3);
 	}
-	.spacer {
-		flex: 1;
-	}
-	.dirty {
-		font-size: 13px;
-		color: var(--text-secondary);
-	}
 	.bulk {
 		display: flex;
 		align-items: center;
@@ -626,8 +561,20 @@
 		font-size: 14px;
 		color: var(--text-secondary);
 	}
-	.edit-cell {
-		display: inline-flex;
+	.status-bar {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-4);
+		margin-top: var(--space-4);
+		padding: var(--space-3) var(--space-1);
+		border-top: 1px solid var(--divider);
+		flex-wrap: wrap;
+	}
+	.status-actions {
+		display: flex;
+		align-items: center;
+		gap: var(--space-3);
 	}
 	.loc-picker {
 		margin-top: var(--space-3);

@@ -21,6 +21,7 @@
 		disabled = false,
 		compact = false,
 		width = 'half',
+		hideLabel = false,
 		onchange
 	}: {
 		value?: V | null;
@@ -34,6 +35,7 @@
 		disabled?: boolean;
 		compact?: boolean;
 		width?: FieldWidth | string;
+		hideLabel?: boolean;
 		onchange?: (value: V | null) => void;
 	} = $props();
 
@@ -125,7 +127,7 @@
 	});
 </script>
 
-<FieldShell {label} id={fieldId} {required} {error} {help} {width}>
+<FieldShell {label} id={fieldId} {required} {error} {help} {width} {hideLabel}>
 	<Popover bind:open matchWidth>
 		{#snippet trigger()}
 			<button

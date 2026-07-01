@@ -20,6 +20,7 @@
 		disabled = false,
 		compact = false,
 		width = 'qty',
+		hideLabel = false,
 		onchange
 	}: {
 		value?: number | null;
@@ -35,6 +36,7 @@
 		disabled?: boolean;
 		compact?: boolean;
 		width?: FieldWidth | string;
+		hideLabel?: boolean;
 		onchange?: (value: number | null) => void;
 	} = $props();
 
@@ -65,7 +67,7 @@
 	}
 </script>
 
-<FieldShell {label} id={fieldId} {required} {error} {help} {width}>
+<FieldShell {label} id={fieldId} {required} {error} {help} {width} {hideLabel}>
 	<input
 		class="control numeric"
 		class:compact

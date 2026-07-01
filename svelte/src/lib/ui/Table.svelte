@@ -237,7 +237,8 @@
 						title={err}
 					>
 						{#if selectable}
-							<td class="select-col">
+							<!-- Stop the click bubbling to the row so selecting doesn't also fire onRowClick. -->
+							<td class="select-col" onclick={(e) => e.stopPropagation()}>
 								<Checkbox
 									checked={selected.has(id)}
 									ariaLabel="Select row"
