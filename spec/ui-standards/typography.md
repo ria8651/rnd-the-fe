@@ -6,7 +6,7 @@
 
 A single humanist sans-serif is used throughout, with a system fallback stack so
 text renders before/without the webfont. ⚠️ VERIFY the exact face against the brand
-(current app `theme.ts`); the rewrite uses **Inter** with a
+(current app `theme.ts`); this spec uses **Inter** with a
 `system-ui, -apple-system, Segoe UI, Roboto, sans-serif` fallback as a sensible default.
 Numeric contexts additionally request **tabular figures** (see below).
 

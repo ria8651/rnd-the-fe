@@ -99,7 +99,7 @@ brand mark** [`m-supply-guy`](./icons/m-supply-guy.svg) (or a store's custom log
 > **Known inconsistency:** the current app's **mobile menu toggle** uses the framework's built-in
 > hamburger / close glyphs (Material `Menu` / `Close`), which are **not** part of this custom set.
 > The set's nearest members are [`menu-dots`](./icons/menu-dots.svg), [`sidebar`](./icons/sidebar.svg),
-> and [`close`](./icons/close.svg); the rewrite should settle the toggle on one of these rather
+> and [`close`](./icons/close.svg); this spec settles the toggle on one of these rather
 > than pulling a second icon library.
 
 ## Full set (index)
@@ -128,7 +128,7 @@ authoritative list):
   and are out of scope here — icons are functional, single-colour, and inherit `currentColor`.
 - ⚠️ VERIFY / normalise: the captured icons use inconsistent viewBoxes (24×24, 20×20, 16×16,
   and a few legacy sizes) and mix stroke vs fill styles. They are captured **as-is** from the
-  current app; the rewrite should normalise to a single grid and consistent style over time.
+  current app; an implementation should normalise to a single grid and consistent style over time.
   The token names / semantic mapping are the stable part.
 - These SVGs are a snapshot; if the upstream set changes, re-extract.
 - A few source icons were React components with conditional/variant markup rather than plain

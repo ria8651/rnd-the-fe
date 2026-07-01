@@ -1,9 +1,9 @@
 # Stocktakes — API Contract
 
-> The durable backbone. Any rewrite must speak this contract. Authoritative source:
-> `localhost:8000/graphql` (introspectable, auth disabled in dev). Operation names below
-> match the current GraphQL API; a rewrite may name its client operations differently but
-> must send the same fields/inputs.
+> The durable backbone. Any implementation must speak this contract. Authoritative source:
+> the live GraphQL endpoint (introspectable, auth disabled in dev). Operation names below
+> match the current GraphQL API; an implementation may name its client operations differently
+> but must send the same fields/inputs.
 
 All operations are store-scoped via a `storeId` argument.
 
@@ -84,7 +84,7 @@ from "leave unchanged".
 ## Error model
 
 Errors are **typed members of a response union**, not generic strings — the UI matches on
-`__typename` and renders per-line where applicable. The rewrite must surface each:
+`__typename` and renders per-line where applicable. The implementation must surface each:
 
 | Error | Raised when | Surface |
 |-------|-------------|---------|
@@ -98,11 +98,11 @@ Errors are **typed members of a response union**, not generic strings — the UI
 
 See `03-state-rules.md` for the exact conditions behind each.
 
-## Notes for a rewrite
+## Notes for implementers
 
 - **Lines are paginated and fetched separately** from the header — design for large
   stocktakes (thousands of lines), not eager-loading everything.
 - **Optimistic line editing** is feasible because `batchStocktake` returns per-row results;
-  a rewrite can batch a working set of edits in one call.
+  an implementation can batch a working set of edits in one call.
 - The mismatch error means the spec must tolerate **stock changing underneath an open
   stocktake** — counts are validated against *current* stock at finalise, not at creation.

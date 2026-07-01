@@ -1,7 +1,7 @@
 # Stocktakes — Domain Model
 
 > Framework-agnostic. Types are described in neutral notation; the authoritative
-> source is the GraphQL schema at `localhost:8000/graphql`. Field optionality below
+> source is the live GraphQL schema. Field optionality below
 > reflects the API contract (`?` = nullable/optional).
 
 ## Entities

@@ -27,7 +27,7 @@ language, available languages), but owns no business data of its own.
   routes to login on logout.
 - Theming/branding specifics (a design-system concern).
 
-## Key dependencies (what a rewrite must provide)
+## Key dependencies (what an implementation must provide)
 
 - **Auth context:** `user` (name, firstName, lastName, email, jobTitle), `store` (id, name,
   …), the list of the user's `stores`, `token`, and a permission check.

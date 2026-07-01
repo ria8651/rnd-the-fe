@@ -18,7 +18,7 @@
   are link-based and reflect the active route.
 - **Hidden** in full-screen mode.
 
-> The exact section→route map and per-section gating is a configuration detail; a rewrite
+> The exact section→route map and per-section gating is a configuration detail; an implementation
 > should treat the nav as a data-driven list of (icon, label, route, visible?) entries with
 > two groups (upper/lower) and optional nested sub-navs, not a hard-coded tree.
 

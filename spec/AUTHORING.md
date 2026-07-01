@@ -35,11 +35,11 @@ available:
    `mod.rs`). This is where invariants, state transitions, and side-effects truly live.
    *Lesson from stocktakes:* the finalise engine, reduce-below-zero check, and reason rules
    were all only knowable from here — the frontend merely mirrors them.
-2. **GraphQL API** — the durable contract for *shape*. `localhost:8000/graphql` (introspect;
+2. **GraphQL API** — the durable contract for *shape*. The live GraphQL endpoint (introspect;
    auth is off in dev) and the generated client types (`packages/common/src/types/schema.ts`).
    Anchors operations, inputs, enums, and the error union.
-3. **Running app** — `localhost:3003`, or the `open-msupply` MCP tools — to confirm real
-   behaviour and resolve ambiguity by observation.
+3. **Running app** — the current frontend running locally, or the `open-msupply` MCP tools — to
+   confirm real behaviour and resolve ambiguity by observation.
 4. **Current client source** — `client/packages/<area>/src/<Vertical>` — evidence of *intent*
    and the UI surface. Treat as evidence, **not** as a design to copy.
 

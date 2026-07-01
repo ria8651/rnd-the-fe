@@ -1,6 +1,6 @@
 # Stocktakes — State & Rules
 
-> The invariants the rewrite must preserve, hoisted out of the current hooks/modals into
+> The invariants any implementation must preserve, hoisted out of the current hooks/modals into
 > one place. Authoritative source: backend service logic (validated against the running
 > app where noted). These rules are **enforced server-side**; the UI mirrors them for
 > good UX but must not assume it is the only guard.

@@ -1,7 +1,7 @@
 # Stocktakes — UI Surface
 
 > Screens and regions described by **intent and content**, not implementation. No component
-> names and no visual styling (pixels/CSS) — a rewrite may realise the look however its
+> names and no visual styling (pixels/CSS) — an implementation may realise the look however its
 > framework/design system dictates, as long as the information and actions are present, sit in
 > the standard [page regions](../ui-standards/layout.md), and are gated by the same rules
 > (`03-state-rules.md`). *Where* a region sits (its anatomy) is in scope; how it is styled is not.

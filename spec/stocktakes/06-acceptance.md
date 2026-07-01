@@ -2,7 +2,7 @@
 
 > Framework-agnostic Given/When/Then criteria any implementation must pass. Each maps to a
 > journey (`04`) and the rules it exercises (`03`). These are the executable definition of
-> "the rewrite preserves stocktake behaviour." IDs are stable; cite them in tests.
+> "the implementation preserves stocktake behaviour." IDs are stable; cite them in tests.
 
 ## Creation
 

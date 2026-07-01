@@ -8,10 +8,10 @@
 
 Distilled from the published **Open mSupply UI Component Standards**:
 <https://msupply-foundation.github.io/ui-standards/>. That site is the canonical, evolving
-source; this folder is a framework-agnostic capture of its *rules* for the rewrite. Where the
+source; this folder is a framework-agnostic capture of its *rules*. Where the
 upstream gives implementation tokens (exact hex, specific component/library config), those
 belong to the **design system**, not this spec — here we keep the design intent, numeric
-sizes, and behavioural rules a rewrite must honour in any framework.
+sizes, and behavioural rules an implementation must honour in any framework.
 
 If this folder and the upstream site disagree, the **upstream site wins** — re-sync this
 capture.

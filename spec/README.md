@@ -1,36 +1,14 @@
 # Reverse Spec
 
-Framework-agnostic behavioural specifications reverse-engineered from the current
-open-mSupply frontend. The goal is a spec from which the same vertical can be rebuilt
-in **any** frontend stack, without inheriting the current implementation's structure.
-
-## Sources of truth
-
-These specs are triangulated from three sources, in priority order:
-
-1. **GraphQL API** — the durable contract. `localhost:8000/graphql` (live, introspectable)
-   and the generated types in the current client. The API is what any rewrite must speak,
-   so it anchors the spec.
-2. **Running app** — `localhost:3003`. Used to confirm real behaviour, state transitions,
-   and rules that source code alone leaves ambiguous.
-3. **Current client source** — `open-mSupply-5/client/packages/<domain>`. Tells us intent
-   and surfaces business rules, but is treated as evidence, not as a design to copy.
+Framework-agnostic behavioural specifications for building the open-mSupply frontend fresh.
+The goal is a spec from which each vertical can be built in **any** frontend stack, without
+inheriting the current implementation's structure. Behaviour is captured from the existing
+frontend as evidence; the target is greenfield.
 
 > **Adding or extending a vertical?** Read [`AUTHORING.md`](./AUTHORING.md) first — it is the
-> canonical process and quality bar for writing these specs.
-
-## Authoring principles
-
-- **Describe behaviour, not components.** No React, no hook names, no file paths in the
-  spec body. Say *"the line editor lets the user set counted packs"*, not *"`StocktakeLineEditForm`
-  renders a `NumericTextInput`"*.
-- **Lower layers are the backbone.** Domain model, API contract, and state/rules are
-  stack-independent and change rarely. UI-surface and journeys describe intent and can be
-  realised differently per framework.
-- **Invariants are first-class.** Rules currently scattered across hooks, modals, and error
-  contexts are hoisted into one place (`03-state-rules.md`). Each is testable.
-- **Flag uncertainty.** Anything inferred but not yet confirmed against the live API or app
-  is marked `⚠️ VERIFY`.
+> canonical process and quality bar for these specs: the [sources of truth](./AUTHORING.md#2-sources-of-truth-triangulate-in-priority-order)
+> to triangulate, the [authoring conventions](./AUTHORING.md#5-authoring-conventions), and the
+> [definition of done](./AUTHORING.md#6-definition-of-done-review-checklist).
 
 ## Layers (per vertical)
 

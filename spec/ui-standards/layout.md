@@ -2,7 +2,7 @@
 
 > The shared **structure** of a screen: which regions exist and where they sit. This is
 > information architecture (region roles and positioning intent), **not** visual styling — no
-> pixels, grids, or CSS. A rewrite may realise the look however its design system dictates, but
+> pixels, grids, or CSS. An implementation may realise the look however its design system dictates, but
 > the regions, their order, and their scroll/pin behaviour are the same everywhere so the app
 > feels like one product and controls land where users expect.
 

@@ -4,8 +4,8 @@
 > define, plus the non-colour scales. It contains **no colour values and no CSS** — so it
 > applies equally to a web app or a native app. Concrete values live in the theme variants:
 >
-> - [`theme-light.md`](./theme-light.md) — the rewrite's light theme
-> - [`theme-dark.md`](./theme-dark.md) — the rewrite's dark theme
+> - [`theme-light.md`](./theme-light.md) — the light theme
+> - [`theme-dark.md`](./theme-dark.md) — the dark theme
 > - [`theme-mui.md`](./theme-mui.md) — the **existing** app's theme, captured as a reference
 >
 > Interaction *behaviour* (hover, focus, selected, pressed, disabled…) is **not** here — see
