@@ -70,6 +70,38 @@ specs (link the meaning, not the file, from vertical docs):
 > text toggle in the current app, not an icon. Reference an icon only where the current frontend
 > uses one; don't invent icons for text controls.
 
+### Primary navigation sections (chrome)
+
+Each [sidebar](../chrome/01-behaviours.md#sidebar-desktop-primary-nav) section pairs a label with
+one icon (the same icon marks the active section in the [top bar](../chrome/01-behaviours.md#desktop-top-bar)):
+
+| Section | Icon |
+|---------|------|
+| Dashboard | [`dashboard`](./icons/dashboard.svg) |
+| Replenishment | [`suppliers`](./icons/suppliers.svg) |
+| Inventory | [`stock`](./icons/stock.svg) |
+| Distribution | [`truck`](./icons/truck.svg) |
+| Dispensary | [`customers`](./icons/customers.svg) |
+| Cold Chain | [`thermometer`](./icons/thermometer.svg) |
+| Programs | [`invoice`](./icons/invoice.svg) |
+| Reports | [`reports`](./icons/reports.svg) |
+| Catalogue | [`list`](./icons/list.svg) |
+| Manage | [`sliders`](./icons/sliders.svg) |
+| Settings | [`settings`](./icons/settings.svg) |
+| Sync status | [`radio`](./icons/radio.svg) — swaps to [`alert`](./icons/alert.svg) on sync error |
+| Help | [`help`](./icons/help.svg) |
+| Plugin categories | per-plugin (icon supplied by the plugin, resolved at runtime) |
+
+Other chrome entries: **exit full-screen** [`minimise`](./icons/minimise.svg); **app / drawer
+brand mark** [`m-supply-guy`](./icons/m-supply-guy.svg) (or a store's custom logo); **docs**
+[`book`](./icons/book.svg); **logout** [`power`](./icons/power.svg).
+
+> **Known inconsistency:** the current app's **mobile menu toggle** uses the framework's built-in
+> hamburger / close glyphs (Material `Menu` / `Close`), which are **not** part of this custom set.
+> The set's nearest members are [`menu-dots`](./icons/menu-dots.svg), [`sidebar`](./icons/sidebar.svg),
+> and [`close`](./icons/close.svg); the rewrite should settle the toggle on one of these rather
+> than pulling a second icon library.
+
 ## Full set (index)
 
 All assets in [`icons/`](./icons/); grouped here for discovery (see `_manifest.json` for the

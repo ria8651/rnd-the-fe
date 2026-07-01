@@ -11,6 +11,9 @@
 - **Sections (top, scrollable):** Dashboard, Replenishment, Inventory, Distribution,
   Dispensary, Cold Chain, Programs, any plugin categories, Reports.
 - **Sections (bottom):** Catalogue, Manage, Settings, Sync status, Help.
+- **Each section pairs a label with an icon** — see the
+  [nav-section icon map](../ui-standards/icons.md#primary-navigation-sections-chrome). In the
+  collapsed rail only the icon shows; expanded shows icon + label.
 - **Gating:** some sections appear only for certain store types or user permissions. Nav items
   are link-based and reflect the active route.
 - **Hidden** in full-screen mode.
@@ -19,12 +22,23 @@
 > should treat the nav as a data-driven list of (icon, label, route, visible?) entries with
 > two groups (upper/lower) and optional nested sub-navs, not a hard-coded tree.
 
+## Desktop top bar
+
+Above the routed page content:
+- **Section icon + breadcrumbs:** the active [nav section's icon](../ui-standards/icons.md#primary-navigation-sections-chrome)
+  followed by the breadcrumb trail for the current route.
+- **Full-screen toggle:** enters full-screen (hides the sidebar); the control to exit uses
+  [`minimise`](../ui-standards/icons.md).
+
 ## Mobile / tablet nav
 
-- A top bar shows a menu toggle (open/close icon reflects state), breadcrumbs, and the app
-  icon.
-- The menu opens a slide-down drawer containing the nav links plus **Docs** (external),
-  **Sync**, **Settings** (permission-gated), and **Logout**.
+- A top bar shows a **menu toggle** (open/close glyph reflects state — ⚠️ the current app uses the
+  framework's built-in hamburger/close, [not the custom set](../ui-standards/icons.md#primary-navigation-sections-chrome)),
+  breadcrumbs, and the app / brand mark ([`m-supply-guy`](../ui-standards/icons.md) or a custom logo).
+- The menu opens a slide-down drawer containing the nav links (same section icons as the sidebar)
+  plus **Docs** ([`book`](../ui-standards/icons.md), external), **Sync**
+  ([`radio`](../ui-standards/icons.md)), **Settings** ([`settings`](../ui-standards/icons.md),
+  permission-gated), and **Logout** ([`power`](../ui-standards/icons.md)).
 - Page-level action buttons and content render below the bar.
 
 ## Bottom bar (footer)
