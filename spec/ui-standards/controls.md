@@ -59,6 +59,15 @@ The standard control for choosing one option from a list (location, reason, VVM 
 
 The chrome's [store selector](../chrome/01-behaviours.md#store-selector) is this control applied to a long list.
 
+### Async / catalogue-lookup variant
+
+The **same combobox shell** as above — trigger, popover, selected/active, keyboard, and [clearing](#single-select-dropdown) are all identical — differing only in **where the options come from**: a **remote query** instead of a local list. Used for catalogues too large to ship to the client (item / master-list lookup, supplier, patient, …).
+
+- **Query on type:** typing in the trigger runs a [debounced](./inputs.md#editing--saving) remote search (the typed text *is* the query) and the results fill the popover. It does not filter a preloaded list — each coalesced keystroke is a fresh fetch.
+- **Popover states:** the popover reflects the request lifecycle — an **idle/prompt** state before enough characters are typed ("type to search…", with an optional minimum query length), a **loading** indicator while a query is in flight, the **results** when they arrive, an **empty** state ("no matches") when a query returns nothing, and an **error** state offering retry.
+- **Paging:** large result sets page or infinite-scroll **within the popover** (fetch-more on scroll) rather than returning everything at once.
+- **Otherwise identical** to the [single-select dropdown](#single-select-dropdown): selection, dismissal, placement/collision, and keyboard are unchanged — remote-vs-local data source is the only difference.
+
 ## Out of scope
 
 Multi-select, free-text autocomplete/combobox with creation, and date pickers each have their own behaviour; date entry is covered in [inputs › date entry](./inputs.md#interaction-states). ⚠️ Add these here as the verticals that need them are specified.

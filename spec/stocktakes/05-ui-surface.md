@@ -117,7 +117,7 @@ Shown in the [action footer](../ui-standards/layout.md#action-footer) when lines
 
 **Purpose:** the single surface for entering line data — add/count an item's batches and set their reason, batch, dates, location, prices, etc. (J3). A [modal](../ui-standards/layout.md#regions) over S3, opened by selecting a line (edit) or via *Add item* (create).
 
-- **Item selector:** catalogue search; excludes items already on the stocktake; locked to the chosen item when editing an existing line.
+- **Item selector:** an [async catalogue-lookup single-select](../ui-standards/controls.md#async--catalogue-lookup-variant) (remote item search); excludes items already on the stocktake; locked to the chosen item when editing an existing line.
 - **Unit display:** read-only unit name for context.
 - **Per-batch entry:** one row per batch (existing + newly added) capturing counted packs, batch, expiry/manufacture date, location, pack size, cost/sell price, reason, donor, item variant, VVM status, comment/note.
 - **Navigation:** move to next/previous item without leaving the editor (supports rapid counting).
