@@ -3,7 +3,6 @@
 // updates. Inspired by the common "signals" model.
 
 let currentEffect: EffectRunner | null = null;
-const effectStack: EffectRunner[] = [];
 
 class EffectRunner {
   private deps = new Set<Set<EffectRunner>>();
@@ -17,13 +16,15 @@ class EffectRunner {
   run() {
     if (!this.active) return;
     this.dispose(false);
-    effectStack.push(this);
+    // Save/restore the previous tracking context locally (not via a global
+    // stack) so `untrack` composes correctly: a child effect running inside an
+    // untracked region restores tracking to *null*, not to an outer effect.
+    const prev = currentEffect;
     currentEffect = this;
     try {
       this.cleanup = this.fn();
     } finally {
-      effectStack.pop();
-      currentEffect = effectStack[effectStack.length - 1] ?? null;
+      currentEffect = prev;
     }
   }
 

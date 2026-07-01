@@ -1,6 +1,6 @@
 import './styles/global.css';
 import { el, mount } from './framework/dom.ts';
-import { effect } from './framework/signal.ts';
+import { effect, untrack } from './framework/signal.ts';
 import { currentRoute, navigate } from './framework/router.ts';
 import { initTheme } from './theme/theme.ts';
 import { loadStores, activeStore } from './api/store.ts';
@@ -75,9 +75,17 @@ async function bootstrap() {
   if (currentRoute().segments.length === 0) navigate('/stocktakes');
 
   // Re-render the shell + page whenever the route (or active store) changes.
+  // Subscribe to route + store here, but build the page *untracked* so a page's
+  // own internal signal reads during setup don't leak into this route effect
+  // (which would rebuild the whole page — and reset its state — on every
+  // internal change).
   effect(() => {
-    const page = route();
-    mount(app, renderShell(page.node, page.breadcrumbs));
+    currentRoute();
+    activeStore();
+    untrack(() => {
+      const page = route();
+      mount(app, renderShell(page.node, page.breadcrumbs));
+    });
   });
 }
 
