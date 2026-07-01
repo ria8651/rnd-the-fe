@@ -109,7 +109,7 @@ Columns (presence of some is gated by store preferences, noted):
 
 ### Bulk line actions (J5)
 Shown in the [action footer](../ui-standards/layout.md#action-footer) when lines are selected, with a *clear selection* ([`minus-circle`](../ui-standards/icons.md)) affordance:
-- Reduce selected lines to zero ([`rewind`](../ui-standards/icons.md), with confirmation).
+- Reduce selected lines to zero ([`rewind`](../ui-standards/icons.md)) — opens a confirmation dialog stating how many lines are affected. Setting counted = 0 is a reduction, so the dialog carries a [reason selector](../ui-standards/controls.md#single-select-dropdown) whenever active reasons exist for a reduction (per the [adjustment-reason rules](./03-state-rules.md#adjustment-reason-rules-enforced-at-line-save)); confirm stays disabled until a reason is chosen, and the chosen reason is applied to **every** selected line. When no reduction reasons are configured, no reason field shows and confirm proceeds. A vaccine-only selection offers vaccine-wastage reasons.
 - Change location of selected lines ([`arrow-right`](../ui-standards/icons.md)).
 - Delete selected lines ([`delete`](../ui-standards/icons.md)).
 

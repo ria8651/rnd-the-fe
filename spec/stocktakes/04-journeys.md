@@ -46,7 +46,7 @@ Precondition: `NEW`, not locked. Postcondition: lines hold counted values; uncou
 
 ## J5 — Bulk line operations
 
-- **Reduce selected lines to zero** — set counted = 0 for a selection (e.g. "none of this found"). Confirmation required.
+- **Reduce selected lines to zero** — set counted = 0 for a selection (e.g. "none of this found"). A confirmation is required; because this is a reduction, the confirmation also **captures a reason** (applied to all selected lines) whenever reduction reasons are configured.
 - **Change location of selected lines** — reassign location in bulk.
 - **Delete selected lines.**
 

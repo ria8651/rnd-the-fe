@@ -39,6 +39,9 @@ Given a line, then its displayed difference equals `countedNumberOfPacks − sna
 **AC-E5 — Reduce-to-zero / bulk location / bulk delete**
 Given selected `NEW` lines, when the user reduces to zero / changes location / deletes, then the operation applies to exactly the selection (reduce-to-zero requires confirmation).
 
+**AC-E8 — Reduce-to-zero captures a required reason**
+Given selected `NEW` lines and active reasons valid for a reduction (`NegativeInventoryAdjustment`, or vaccine-wastage reasons for a vaccine-only selection), when the user reduces the selection to zero, then the confirmation dialog requires a reason before it can proceed (confirm disabled until one is chosen) and records that reason on every selected line. Given no reduction reasons are configured, the reduction proceeds with no reason field. (Same rule as line save — see [adjustment-reason rules](03-state-rules.md#adjustment-reason-rules-enforced-at-line-save).)
+
 **AC-E6 — In-place edits are edited in place and auto-saved**
 Given a `NEW`, unlocked stocktake, when the user changes a header/metadata field (description, comment, counted-by, verified-by), then it is edited directly in the field (no Save button) and persisted automatically per the shared [in-place field behaviour](../ui-standards/inputs.md#editing--saving).
 
