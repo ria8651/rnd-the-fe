@@ -57,10 +57,19 @@
 ### Actions (screen-level)
 - *Add item* (J3) — disabled when not editable.
 - *Generate/print report.*
-- *Status change* — a "save and confirm → Finalised" control (the only forward transition).
-  Hidden when not editable; blocked with a notice if there are no counted lines.
+- *Status change* — the shared [split (multi-action) button](../ui-standards/controls.md#split-multi-action-button):
+  its primary action is "save and confirm → Finalised" (the only forward transition, so the
+  disclosure menu lists New — disabled — and Finalised). Hidden when not editable; a click with
+  no counted lines surfaces a notice instead of finalising.
 - *Lock / unlock* toggle.
 - *Detail/side panel* toggle (summary info).
+
+### Status region (footer)
+- **Status crumbs** — the shared [lifecycle indicator](../ui-standards/controls.md#status-crumbs-lifecycle-indicator)
+  showing the stocktake flow **New → Finalised**, with the reached status emphasised and its
+  history (created / finalised timestamps) revealed on hover/focus/tap.
+- The lock toggle and the status-change split button sit alongside the crumbs in this footer
+  region.
 
 ### Line table
 Columns (presence of some is gated by store preferences, noted):

@@ -23,6 +23,48 @@
   [stocktakes state-rules](../stocktakes/03-state-rules.md#editability-rules)).
 - Icon-only buttons require a [tooltip / accessible label](./tables.md#wrapping-and-truncation).
 
+## Split (multi-action) button
+
+The standard control for an action that has **one default target plus alternatives** — most
+notably advancing a document's status. It is a single pill made of two fused segments:
+
+- **Primary segment:** a labelled action button that performs the **currently-selected**
+  action directly (e.g. *"Save and confirm → Finalised"*, with a forward
+  [`arrow-right`](./icons.md) icon). This is the one main action of the region.
+- **Disclosure segment:** an attached toggle (a `chevron-down`, divided from the primary by a
+  hairline) that opens a [menu](#menus--popovers) of **all** options. Selecting an option makes
+  it the new primary and the button remembers it; it does **not** fire the action immediately.
+- **Option gating:** options that aren't valid from the current state are **shown but disabled**
+  (e.g. the current and past statuses), so only legal forward choices are pickable — the menu
+  doubles as a legend of the lifecycle. The selected option marks itself (check + emphasis).
+- **Degenerate case:** when only one option is enabled the control still works, behaving like a
+  plain button with an informational menu.
+- **Confirmation & guards:** an irreversible primary action opens a
+  [confirmation](#menus--popovers) first; when a precondition fails the click surfaces an
+  explanatory notice instead of acting (e.g. "nothing counted to finalise").
+- **Availability:** follows the [disabled-vs-hidden](#buttons) rule — hidden when the whole
+  action is unavailable for the current state (finalised/locked), rather than shown inert.
+- **Appearance:** pill radius, `raised` [elevation](./theming.md#elevation-levels), secondary
+  emphasis; obeys the shared [interaction states](./inputs.md#interaction-states).
+
+## Status crumbs (lifecycle indicator)
+
+A compact, read-only indicator of **where a document sits in its lifecycle**, shown wherever a
+record with an ordered status flow is viewed (typically the detail footer). It is **generic
+across document types** — the same control drives stocktakes (New → Finalised), inbound/outbound
+shipments, requisitions, etc.; each supplies its own ordered status list and the timestamp for
+each reached status. The pattern scales identically whether the flow has two steps or several:
+
+- **Crumbs:** the vertical's statuses in order, separated by a forward chevron (which
+  [flips under RTL](./icons.md)). Statuses already **reached** are emphasised (accent text);
+  statuses **not yet reached** are muted. The **current** status is the last reached one.
+  State is conveyed by position + text, never [colour alone](./accessibility.md#colour-independence).
+- **History (enhancement):** revealing the crumbs (hover / focus / tap) shows **when** each
+  status was reached — a vertical stepper of status + localised timestamp. This is an
+  [enhancement, not a requirement](./interaction.md) — the crumbs convey current state without
+  it, and it must be reachable by keyboard/touch, not hover-only.
+- **Responsive:** on small screens the row collapses to a single *"Status: {current}"* label.
+
 ## Menus & popovers
 
 Any transient surface anchored to a trigger (action menus, selectors, the chrome's store/
