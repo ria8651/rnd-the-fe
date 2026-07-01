@@ -53,7 +53,11 @@
 	--bp-tablet-portrait: 800px;
 	--bp-desktop: 1100px;
 
-	/* Elevation (theming.md › Elevation levels): raised = y4/blur8, overlay = y12/blur24. */
+	/* Elevation (theming.md › Elevation levels): raised = y4/blur8, overlay = y12/blur24.
+	   Flat surfaces (cards, tables, panels) use a border, not a shadow — so --shadow-card
+	   is none by default. The MUI reference theme overrides it (the current app's Paper
+	   does cast a soft shadow). */
+	--shadow-card: none;
 	--shadow-popover: 0 4px 8px rgba(40, 41, 61, 0.16), 0 0 2px rgba(40, 41, 61, 0.08);
 	--shadow-modal: 0 12px 24px rgba(40, 41, 61, 0.24), 0 4px 8px rgba(40, 41, 61, 0.16);
 
@@ -77,7 +81,8 @@
 :root[data-theme='mui'] {
 	--radius-card: 4px;
 	--radius-modal: 4px;
-	/* Existing app shadow levels: 2 ≈ raised, 3–4 ≈ overlay. */
+	/* Existing app shadow levels (theme-mui.md): 1 ≈ card, 2 ≈ raised, 3–4 ≈ overlay. */
+	--shadow-card: 0 1px 2px rgba(96, 97, 112, 0.16), 0 0 1px rgba(40, 41, 61, 0.08);
 	--shadow-popover: 0 4px 8px rgba(96, 97, 112, 0.16), 0 0 2px rgba(40, 41, 61, 0.08);
 	--shadow-modal: 0 8px 16px rgba(96, 97, 112, 0.16), 0 2px 4px rgba(40, 41, 61, 0.04);
 }

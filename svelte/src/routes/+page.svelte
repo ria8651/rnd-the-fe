@@ -150,6 +150,7 @@
 		background: var(--surface-default);
 		border: 1px solid var(--border-default);
 		border-radius: var(--radius-card);
+		box-shadow: var(--shadow-card);
 		padding: var(--space-2);
 	}
 	.chip {
@@ -173,6 +174,7 @@
 		background: var(--surface-default);
 		border: 1px solid var(--border-default);
 		border-radius: var(--radius-card);
+		box-shadow: var(--shadow-card);
 		padding: var(--space-5);
 	}
 	.type-samples p {

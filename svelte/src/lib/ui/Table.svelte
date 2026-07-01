@@ -274,6 +274,7 @@
 		background: var(--surface-default);
 		border: 1px solid var(--border-default);
 		border-radius: var(--radius-card);
+		box-shadow: var(--shadow-card);
 	}
 	table {
 		width: 100%;
@@ -390,6 +391,7 @@
 		background: var(--surface-default);
 		border: 1px solid var(--border-default);
 		border-radius: var(--radius-card);
+		box-shadow: var(--shadow-card);
 		padding: var(--space-3);
 	}
 	.card.has-error {
