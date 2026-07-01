@@ -1,0 +1,186 @@
+/* Stocktakes screen styles (S1 list, S3 detail, S4 line editor). Layout regions come from
+   chrome/chrome.css (.page*); these are the stocktake-specific bits. */
+
+/* ── Filter bar (tables.md › Filtering) ──────────────────────────────────────── */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-1) 0 var(--space-3);
+  height: var(--field-height-compact);
+  background: var(--surface-default);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-control);
+}
+.filter-chip__label {
+  color: var(--text-secondary);
+  font-size: var(--font-size-caption);
+  font-weight: var(--weight-medium);
+}
+.filter-chip__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  background: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+}
+.filter-chip__remove:hover {
+  background: var(--hover-overlay);
+  color: var(--text-primary);
+}
+
+/* ── Pager ───────────────────────────────────────────────────────────────────── */
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size-caption);
+}
+.pager__btns {
+  display: flex;
+  gap: var(--space-1);
+}
+
+/* ── Detail side panel ───────────────────────────────────────────────────────── */
+.detail-side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.detail-side h3 {
+  margin: 0 0 var(--space-2);
+  color: var(--text-secondary);
+  font-size: var(--font-size-caption);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.detail-meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.detail-meta__row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font-size: 13px;
+}
+.detail-meta__row dt {
+  color: var(--text-secondary);
+}
+.detail-meta__row dd {
+  margin: 0;
+  color: var(--text-primary);
+  text-align: end;
+}
+.side-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* ── Status footer (S3 › Status footer) ──────────────────────────────────────── */
+.status-footer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+}
+.status-footer__crumbs {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+.bulk-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+}
+.bulk-bar__count {
+  font-weight: 600;
+}
+.bulk-bar__spacer {
+  flex: 1;
+}
+
+/* ── Toolbar item search ─────────────────────────────────────────────────────── */
+.item-search {
+  width: 240px;
+  max-width: 40vw;
+}
+
+/* ── Detail header fields ────────────────────────────────────────────────────── */
+.detail-header {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+/* ── Line editor (S4) ────────────────────────────────────────────────────────── */
+.line-editor {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.editor-batches {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.batch-card {
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-card);
+  padding: var(--space-3);
+  background: var(--surface-sunken);
+}
+.batch-card__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-3);
+}
+.batch-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-2);
+  gap: var(--space-2);
+}
+.editor-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+.form-grid--full {
+  grid-column: 1 / -1;
+}
+@media (max-width: 560px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.hint {
+  color: var(--text-secondary);
+  font-size: 13px;
+}

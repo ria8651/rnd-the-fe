@@ -1,0 +1,87 @@
+/* Theme-independent scale tokens: type, spacing, radius, sizing, density, elevation.
+   Numeric values come from spec/ui-standards/{theming,typography,inputs,tables,accessibility}.md.
+   These do not change between light/dark, so they live outside the generated tokens.css. */
+
+:root {
+  /* Type scale (typography.md) */
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-size-cell: 14px; /* desktop cell / body */
+  --font-size-header: 14px; /* desktop header (differs from cell by weight, not size) */
+  --font-size-cell-touch: 16px; /* tablet cell */
+  --font-size-caption: 12px; /* caption / label */
+  --font-size-card-label: 11px; /* uppercase card field labels */
+  --line-height-cell: 20px;
+  --line-height-touch: 24px;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-header: 600;
+  --font-feature-tabular: 'tnum' 1, 'lnum' 1;
+
+  /* Spacing scale — single 4px base step (theming.md › Spacing scale) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  /* Radius scale (theming.md › Radius scale). --radius-card/-modal diverge under MUI. */
+  --radius-sm: 4px;
+  --radius-control: 8px; /* inputs, cards, panels */
+  --radius-card: 8px; /* cards, panels, tables, popovers, menus */
+  --radius-modal: 12px; /* dialogs */
+  --radius-pill: 999px;
+  /* Button radius is the one per-theme metric (theming.md › Radius scale): a moderate,
+     consistent rounding in light/dark; pill in the existing-MUI theme. ALL buttons (incl.
+     split buttons) share it — rounding must never vary button-to-button. */
+  --radius-button: var(--radius-control);
+
+  /* Input sizing (inputs.md › Field sizing) */
+  --field-height: 40px;
+  --field-height-compact: 36px;
+  --field-pad-x: 12px;
+
+  /* Table row density (tables.md › Row density) */
+  --row-compact: 40px;
+  --row-comfortable: 52px; /* default */
+  --row-spacious: 64px; /* tablet / touch */
+
+  /* Touch-target floor (accessibility.md: 48×48) */
+  --touch-target: 48px;
+
+  /* Responsive breakpoints (tables.md › Responsive strategy) */
+  --bp-phone: 600px;
+  --bp-tablet-portrait: 800px;
+  --bp-desktop: 1100px;
+
+  /* Elevation (theming.md › Elevation levels): flat surfaces use a border, not a shadow —
+     so --shadow-card is none by default; MUI overrides it (the current app's Paper casts one). */
+  --shadow-card: none;
+  --shadow-raised: 0 4px 8px rgba(40, 41, 61, 0.16), 0 0 2px rgba(40, 41, 61, 0.08);
+  --shadow-overlay: 0 12px 24px rgba(40, 41, 61, 0.24), 0 4px 8px rgba(40, 41, 61, 0.16);
+
+  /* Layering */
+  --z-sticky-header: 10;
+  --z-sidebar: 20;
+  --z-bottom-bar: 20;
+  --z-modal: 50;
+  --z-popover: 60; /* above modals: a menu opened inside a dialog floats over it (controls.md) */
+  --z-toast: 70;
+
+  /* Motion */
+  --transition-fast: 120ms ease;
+  --transition: 200ms ease;
+}
+
+/* MUI reference metrics (theme-mui.md › Metrics): tighter 4px Paper + the current app's
+   layered shadow recipes. Colours come from the generated tokens.css; these are the
+   non-colour differences that give the existing app its feel. */
+:root[data-theme='mui'] {
+  --radius-card: 4px;
+  --radius-modal: 4px;
+  --radius-button: var(--radius-pill); /* the current app's pill action buttons */
+  --shadow-card: 0 1px 2px rgba(96, 97, 112, 0.16), 0 0 1px rgba(40, 41, 61, 0.08);
+  --shadow-raised: 0 4px 8px rgba(96, 97, 112, 0.16), 0 0 2px rgba(40, 41, 61, 0.08);
+  --shadow-overlay: 0 8px 16px rgba(96, 97, 112, 0.16), 0 2px 4px rgba(40, 41, 61, 0.04);
+}

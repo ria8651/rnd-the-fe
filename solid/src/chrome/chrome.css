@@ -1,0 +1,357 @@
+/* App-shell (chrome) styles — spec/chrome + spec/ui-standards/layout.md. The shell frames the
+   routed content: sidebar (left), a thin section top bar, the scrolling page area, and the
+   persistent bottom bar (full width). Only the page body scrolls. */
+
+.shell {
+  display: flex;
+  flex-direction: row; /* sidebar (full height) | content column */
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--surface-base);
+}
+.shell__content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.shell__routed {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── Sidebar (chrome/01 › Sidebar) ───────────────────────────────────────────── */
+.sidebar {
+  width: 240px;
+  flex: none;
+  background: var(--surface-nav);
+  border-inline-end: 1px solid var(--border-default);
+  display: flex;
+  flex-direction: column;
+  transition: width var(--transition);
+}
+.sidebar--collapsed {
+  width: 68px;
+}
+/* Header band: the brand mark is horizontally centred (in both states) and is the
+   collapse/expand toggle (spec/chrome/01 › Sidebar; AC-CH1b). */
+.sidebar__brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 56px;
+  flex: none;
+  color: var(--brand-primary);
+}
+.sidebar__brand-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  border-radius: var(--radius-control);
+}
+.sidebar__brand-btn:hover {
+  background: var(--hover-overlay);
+}
+.sidebar__group {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-2);
+  gap: 2px;
+}
+.sidebar__group--upper {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.sidebar__group--lower {
+  border-top: 1px solid var(--divider);
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--touch-target);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-control);
+  color: var(--text-secondary);
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.nav-item:hover {
+  background: var(--hover-overlay);
+  text-decoration: none;
+}
+.nav-item--active {
+  background: var(--brand-primary-subtle);
+  color: var(--brand-primary);
+  font-weight: 600;
+}
+.nav-item__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sidebar--collapsed .nav-item {
+  justify-content: center;
+  padding: 0;
+}
+.sidebar--collapsed .nav-item__label {
+  display: none;
+}
+
+/* ── Section top bar (chrome/01 › Desktop top bar) ───────────────────────────── */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 48px;
+  flex: none;
+  padding: 0 var(--space-4);
+  border-bottom: 1px solid var(--border-default);
+  background: var(--surface-base);
+  color: var(--text-secondary);
+}
+.topbar__crumbs {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--font-size-cell);
+  min-width: 0;
+}
+.topbar__crumb {
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.topbar__crumb--last {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+.topbar__crumb-sep {
+  color: var(--text-disabled);
+}
+.topbar__spacer {
+  flex: 1;
+}
+
+/* ── Bottom bar (chrome/01 › Bottom bar) ─────────────────────────────────────── */
+/* A slim status strip (like a desktop editor's status bar), not a toolbar-height band
+   (chrome/01 › Bottom bar, AC-CH17). Its background is the active store's colour (via the
+   inline --bb-bg var) with an auto-contrasting foreground (--bb-fg); both fall back to the
+   nav surface / secondary text when a store sets no colour. */
+.bottom-bar {
+  flex: none;
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-1);
+  height: 30px;
+  padding: 0 var(--space-2);
+  background: var(--bb-bg, var(--surface-nav));
+  color: var(--bb-fg, var(--text-secondary));
+  border-top: 1px solid var(--border-default);
+  font-size: var(--font-size-caption);
+  z-index: var(--z-bottom-bar);
+}
+/* The store/user/language controls are wrapped in a Popover (.pop-root), a flex child of the
+   bar. Make it stretch so its button can vertically centre its content, like Edit/Central. */
+.bottom-bar .pop-root {
+  display: flex;
+  align-items: stretch;
+}
+.bottom-bar__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 0 var(--space-2);
+  background: none;
+  border: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  max-width: 240px;
+  opacity: 0.8;
+}
+.bottom-bar__item:hover {
+  opacity: 1;
+}
+.bottom-bar__item span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.bottom-bar__divider {
+  width: 1px;
+  background: currentColor;
+  opacity: 0.25;
+  margin: 6px 0;
+  flex: none;
+}
+.bottom-bar__spacer {
+  flex: 1;
+}
+.bottom-bar__central {
+  opacity: 0.9;
+}
+/* Keep the strip thin on extra-small screens: drop labels to icons rather than stacking. */
+@media (max-width: 600px) {
+  .bottom-bar__item span {
+    display: none;
+  }
+  .bottom-bar__central span {
+    display: inline;
+  }
+}
+
+/* ── Store / language / user popovers ────────────────────────────────────────── */
+.selector-popover {
+  min-width: 260px;
+  max-width: 320px;
+}
+.user-card {
+  padding: var(--space-4);
+  min-width: 240px;
+}
+.user-card__name {
+  font-weight: 600;
+  font-size: 15px;
+}
+.user-card__row {
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 2px;
+}
+.user-card__actions {
+  margin-top: var(--space-3);
+  display: flex;
+  justify-content: flex-end;
+}
+.store-tag {
+  margin-inline-start: auto;
+  font-size: 11px;
+  color: var(--text-disabled);
+}
+
+/* ── Mobile nav (chrome/01 › Mobile / tablet nav) ────────────────────────────── */
+.mobile-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 52px;
+  flex: none;
+  padding: 0 var(--space-3);
+  border-bottom: 1px solid var(--border-default);
+  background: var(--surface-nav);
+}
+.mobile-bar__brand {
+  margin-inline-start: auto;
+  color: var(--brand-primary);
+  display: inline-flex;
+}
+.mobile-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+}
+.mobile-drawer__scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--surface-scrim);
+}
+.mobile-drawer__panel {
+  position: relative;
+  background: var(--surface-nav);
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: var(--space-2);
+  box-shadow: var(--shadow-overlay);
+  animation: drawer-in var(--transition);
+}
+@keyframes drawer-in {
+  from {
+    transform: translateY(-8px);
+    opacity: 0.6;
+  }
+}
+
+/* ── Page layout (layout.md regions) ─────────────────────────────────────────── */
+.page {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.page__toolbar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border-default);
+  background: var(--surface-base);
+  flex-wrap: wrap;
+}
+.page__title {
+  font-size: 18px;
+  font-weight: var(--weight-header);
+  margin: 0;
+}
+.page__toolbar-spacer {
+  flex: 1;
+}
+.page__toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.page__main {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+.page__body {
+  flex: 1;
+  min-width: 0;
+  overflow: auto;
+  padding: var(--space-4);
+}
+.page__side {
+  width: 300px;
+  flex: none;
+  border-inline-start: 1px solid var(--border-default);
+  background: var(--surface-default);
+  overflow-y: auto;
+  padding: var(--space-4);
+}
+.page__footer {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-4);
+  border-top: 1px solid var(--border-default);
+  background: var(--surface-base);
+  min-height: 56px;
+}
+
+/* Side panel becomes an overlay on narrow viewports (layout.md › responsive). */
+@media (max-width: 900px) {
+  .page__side {
+    position: fixed;
+    inset-block: 0;
+    inset-inline-end: 0;
+    z-index: var(--z-popover);
+    box-shadow: var(--shadow-overlay);
+    width: min(340px, 90vw);
+  }
+}

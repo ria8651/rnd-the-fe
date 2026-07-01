@@ -1,0 +1,247 @@
+/* Input / control styles (spec/ui-standards/inputs.md, controls.md). State precedence
+   (highest wins): disabled → invalid → focus → hover → default. Focus changes colour, not
+   geometry. Colour always pairs with a non-colour cue (validation = icon + message). */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+.field--full {
+  width: 100%;
+}
+
+/* Labels: static, above the field, always visible (inputs.md). */
+.field__label {
+  font-size: var(--font-size-caption);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+}
+.field__required {
+  color: var(--state-error);
+  margin-inline-start: 2px;
+}
+
+/* Control surface: sunken fill, default border → focus ring on focus. */
+.control {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: var(--field-height);
+  padding: 0 var(--field-pad-x);
+  width: 100%;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-control);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: var(--font-size-cell);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+.control--compact {
+  height: var(--field-height-compact);
+}
+.control:hover:not(:disabled):not(.control--invalid):not(:focus-within) {
+  border-color: var(--border-strong);
+}
+.control:focus,
+.control:focus-within,
+.control:focus-visible {
+  outline: none;
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 2px var(--focus-ring);
+}
+.control:disabled,
+.control--disabled {
+  background: var(--surface-sunken);
+  color: var(--text-disabled);
+  cursor: not-allowed;
+}
+.control--invalid {
+  border-color: var(--state-error);
+}
+.control--invalid:focus,
+.control--invalid:focus-within {
+  border-color: var(--state-error);
+  box-shadow: 0 0 0 2px var(--state-error);
+}
+
+/* Bare text/number/date <input> inheriting the control surface. */
+input.control::placeholder {
+  color: var(--text-disabled);
+}
+textarea.control {
+  height: auto;
+  min-height: 72px;
+  padding: var(--space-2) var(--field-pad-x);
+  line-height: var(--line-height-cell);
+  resize: vertical;
+}
+
+/* Select trigger (controls.md › single-select) — a type-to-filter combobox: a bare text
+   input inside the control surface, with a clear (×) and disclosure chevron trailing. */
+.select-trigger {
+  justify-content: space-between;
+  text-align: start;
+  padding-inline-end: var(--space-1);
+  gap: var(--space-1);
+}
+.select-trigger__input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  padding: 0;
+}
+/* The focus ring is the container's box-shadow (.control:focus-within) — suppress the inner
+   input's own focus-visible outline so they don't stack into a double ring. `:focus-visible`
+   here out-specifies the global focus outline in app.css. */
+.select-trigger__input:focus,
+.select-trigger__input:focus-visible {
+  outline: none;
+}
+.select-trigger__input::placeholder {
+  color: var(--text-disabled);
+}
+.control--disabled .select-trigger__input {
+  cursor: not-allowed;
+  color: var(--text-disabled);
+}
+.select-trigger__toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex: none;
+  border: 0;
+  background: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0;
+}
+/* Legacy static-label trigger (used by the async item picker) */
+.select-trigger__value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.select-trigger__value.is-placeholder {
+  color: var(--text-disabled);
+}
+.select-trigger__chevron {
+  color: var(--text-secondary);
+  flex: none;
+}
+/* Clear (×) affordance for optional dropdowns (controls.md), before the disclosure arrow. */
+.select-clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex: none;
+  border: 0;
+  background: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+}
+.select-clear:hover {
+  background: var(--hover-overlay);
+  color: var(--text-primary);
+}
+/* When a clear button is present it takes the auto margin; otherwise the value does. */
+.select-trigger .select-trigger__value {
+  margin-inline-end: auto;
+}
+.select-search {
+  padding: var(--space-2);
+  border-bottom: 1px solid var(--divider);
+}
+
+/* Validation message (inputs.md › validation cue: icon + text + border). */
+.field__error {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--state-error);
+  font-size: var(--font-size-caption);
+}
+
+/* Toggle switch (pill). Accent when on. */
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+  user-select: none;
+  min-height: var(--touch-target);
+  background: none;
+  border: 0;
+  font: inherit;
+  color: var(--text-primary);
+  padding: 0;
+}
+.toggle__track {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  border-radius: var(--radius-pill);
+  background: var(--border-strong);
+  transition: background var(--transition-fast);
+  flex: none;
+}
+.toggle[aria-pressed='true'] .toggle__track {
+  background: var(--brand-primary);
+}
+.toggle__thumb {
+  position: absolute;
+  top: 2px;
+  inset-inline-start: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform var(--transition-fast);
+}
+.toggle[aria-pressed='true'] .toggle__thumb {
+  transform: translateX(18px);
+}
+[dir='rtl'] .toggle[aria-pressed='true'] .toggle__thumb {
+  transform: translateX(-18px);
+}
+.toggle:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Checkbox — small visual box with a 48×48 hit area (accessibility.md › touch targets). */
+.checkbox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--touch-target);
+  height: var(--touch-target);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: var(--text-secondary);
+}
+.checkbox:hover {
+  color: var(--text-primary);
+}
+.checkbox[aria-checked='true'],
+.checkbox[aria-checked='mixed'] {
+  color: var(--brand-primary);
+}
+.checkbox:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
