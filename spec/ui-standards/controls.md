@@ -5,7 +5,7 @@
 ## Buttons
 
 - **Variants:** `primary` (the one main action of a view, filled with the brand accent), `secondary` (outlined / neutral surface), `ghost` (text-only, low-emphasis), and `destructive` (delete / irreversible). At most **one primary** action should be visible per view/region.
-- **Destructive styling:** a destructive button carries the error colour as its cue, paired with the delete icon/label so danger never rests on [colour alone](./accessibility.md#colour-independence). (The current app tints only the delete *icon* on an otherwise-neutral button — [divergence D7](../DIVERGENCES.md).)
+- **Destructive styling:** a destructive action reads as dangerous through a red (error-colour) **icon** on an otherwise-neutral button, paired with a clear label so danger never rests on [colour alone](./accessibility.md#colour-independence). Irreversible destructive actions also require a [confirmation](#menus--popovers).
 - **Semantic action buttons:** confirmation/dialog actions come from a small semantic set (confirm/ok, cancel, save, delete, export, copy, next, back, close), each with a consistent icon; primary flow actions advertise a **keyboard shortcut** (e.g. add = Alt+N, save = Alt+S, cancel = Escape) to assistive tech.
 - **Sizing:** label + optional leading icon; height and hit-area meet the shared [touch-target minimum](./accessibility.md#touch-targets) (48×48); a compact height exists for toolbars/inline use (matching the [compact field height](./inputs.md#field-sizing-and-states)).
 - **States:** default / hover / focus (brand [focus ring](./accessibility.md#focus-states)) / disabled / busy. A **busy** button shows progress and is non-interactive while the action runs.
@@ -41,7 +41,8 @@ Any transient surface anchored to a trigger (action menus, selectors, the chrome
 - **Open** on trigger activation (click / Enter / Space).
 - **Dismiss** on: outside-click, `Escape`, selecting an item, or the trigger toggling it shut. On dismissal, **focus returns to the trigger** (an accessibility improvement over the current app, which drops focus — [divergence D6](../DIVERGENCES.md)).
 - **Surface:** the `surface.raised` colour + `raised` [elevation](./theming.md#elevation-levels).
-- **Placement:** anchored to the trigger (typically below, start-aligned); stays within the viewport (flips/shifts if it would overflow).
+- **Layering (it must actually pop *over*):** a popover renders in a **top-level overlay above the page**, not inline within its trigger's container. It MUST NOT be clipped, scrolled, or resized by any ancestor's bounds, `overflow`, or scroll region — a table cell, a scrolling list or body, or a **dialog**. It paints above surrounding content **and above the surface that opened it** (a menu opened inside a modal floats above that modal, not inside its scroll area). Opening a popover never reflows the content beneath it.
+- **Placement & collision:** anchored to its trigger (default: directly below, start-aligned) and staying visually tethered to it. If it would overflow the viewport it **flips to the opposite side** (e.g. opens upward near the bottom edge) and/or **shifts along the edge** to stay fully on-screen — it is never cut off or pushed off-screen. If it is taller than the space available, it caps its height and **scrolls internally** rather than being clipped or forcing the page to scroll.
 
 ## Single-select dropdown
 
