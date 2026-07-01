@@ -23,7 +23,9 @@ right-aligned headers; mismatched alignment breaks the visual column.
 ## Vertical alignment
 
 - Headers: middle-aligned.
-- Data cells: top-aligned (for multi-line content).
+- Data cells: **middle-aligned (vertically centered)**. Multi-line content (e.g. a
+  wrapped item name) centres as a block against its single-line neighbours — this reads
+  better for the mostly-single-line rows here and matches the current app.
 - Checkbox cells: middle-aligned (visually centered) even when neighbour text wraps.
 
 ## Wrapping and truncation

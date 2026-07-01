@@ -306,7 +306,7 @@
 		padding: var(--space-2) var(--space-3);
 		height: var(--row-h);
 		border-bottom: 1px solid var(--divider);
-		vertical-align: top;
+		vertical-align: middle;
 		color: var(--text-primary);
 	}
 	tbody tr:last-child td {
