@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import Popover from '$lib/ui/Popover.svelte';
+	import Icon from '$lib/icons/Icon.svelte';
 	import Checkbox from '$lib/ui/inputs/Checkbox.svelte';
 	import { auth } from '$lib/auth/auth.svelte';
 	import { ROOT_PATH } from './nav-config';
@@ -40,7 +41,7 @@
 				aria-expanded={open}
 				onclick={() => (open = !open)}
 			>
-				<span aria-hidden="true">🏠</span>
+				<Icon name="home" size={18} />
 				<span class="label">{auth.currentStore?.name ?? 'Select store'}</span>
 			</button>
 		{/snippet}

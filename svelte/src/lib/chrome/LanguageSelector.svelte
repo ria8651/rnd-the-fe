@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Popover from '$lib/ui/Popover.svelte';
+	import Icon from '$lib/icons/Icon.svelte';
 	import { i18n } from '$lib/i18n/i18n.svelte';
 
 	let open = $state(false);
@@ -22,7 +23,7 @@
 			aria-expanded={open}
 			onclick={() => (open = !open)}
 		>
-			<span aria-hidden="true">🌐</span>
+			<Icon name="translate" size={18} />
 			<span class="label">{i18n.current.name}</span>
 		</button>
 	{/snippet}

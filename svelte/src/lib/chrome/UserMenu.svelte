@@ -3,6 +3,7 @@
 	import Popover from '$lib/ui/Popover.svelte';
 	import Modal from '$lib/ui/Modal.svelte';
 	import Button from '$lib/ui/Button.svelte';
+	import Icon from '$lib/icons/Icon.svelte';
 	import { auth } from '$lib/auth/auth.svelte';
 
 	let open = $state(false);
@@ -31,7 +32,7 @@
 				aria-expanded={open}
 				onclick={() => (open = !open)}
 			>
-				<span aria-hidden="true">👤</span>
+				<Icon name="user" size={18} />
 				<span class="label">{auth.user?.firstName} {auth.user?.lastName}</span>
 			</button>
 		{/snippet}
@@ -43,7 +44,9 @@
 				<div><dt>Email</dt><dd>{auth.user.email}</dd></div>
 				<div><dt>Job title</dt><dd>{auth.user.jobTitle}</dd></div>
 			</dl>
-			<Button variant="secondary" onclick={requestLogout}>Log out</Button>
+			<Button variant="secondary" onclick={requestLogout}>
+				<Icon name="power" size={18} />Log out
+			</Button>
 		</div>
 	</Popover>
 

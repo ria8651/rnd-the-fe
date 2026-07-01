@@ -2,6 +2,7 @@
 	import StoreSelector from './StoreSelector.svelte';
 	import LanguageSelector from './LanguageSelector.svelte';
 	import UserMenu from './UserMenu.svelte';
+	import Icon from '$lib/icons/Icon.svelte';
 	import { auth } from '$lib/auth/auth.svelte';
 
 	// Mock: pretend we're connected to a central server so the indicator shows.
@@ -13,7 +14,7 @@
 		<StoreSelector />
 		{#if auth.can('EditStore')}
 			<button class="bar-control" type="button" title="Edit store details">
-				<span aria-hidden="true">✏️</span>
+				<Icon name="edit" size={18} />
 				<span class="label">Edit store</span>
 			</button>
 		{/if}
@@ -22,7 +23,7 @@
 	<div class="group end">
 		{#if centralServer}
 			<span class="central" title="Connected to central server">
-				<span aria-hidden="true">🛰</span>
+				<Icon name="central" size={18} label="Connected to central server" />
 				<span class="label">Central</span>
 			</span>
 		{/if}

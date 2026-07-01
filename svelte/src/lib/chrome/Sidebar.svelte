@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import Icon from '$lib/icons/Icon.svelte';
 	import { chrome } from './chrome.svelte';
 	import { navGroups, isActive, type NavItem } from './nav-config';
 
@@ -13,7 +14,7 @@
 
 <nav class="sidebar" class:collapsed={chrome.collapsed} aria-label="Primary">
 	<div class="head">
-		<span class="brand" aria-hidden="true">m+</span>
+		<span class="brand"><Icon name="m-supply-guy" size={28} /></span>
 		{#if !chrome.collapsed}<span class="brand-label">open mSupply</span>{/if}
 		<button
 			class="toggle"
@@ -22,7 +23,7 @@
 			aria-expanded={!chrome.collapsed}
 			onclick={() => chrome.toggle()}
 		>
-			{chrome.collapsed ? '»' : '«'}
+			<Icon name={chrome.collapsed ? 'expand' : 'collapse'} size={20} />
 		</button>
 	</div>
 
@@ -37,7 +38,7 @@
 						aria-current={active ? 'page' : undefined}
 						title={chrome.collapsed ? item.label : undefined}
 					>
-						<span class="icon" aria-hidden="true">{item.icon}</span>
+						<span class="icon"><Icon name={item.icon} size={20} /></span>
 						{#if !chrome.collapsed}<span class="label">{item.label}</span>{/if}
 					</a>
 				</li>
@@ -75,13 +76,7 @@
 	.brand {
 		display: grid;
 		place-items: center;
-		width: 32px;
-		height: 32px;
 		flex: none;
-		border-radius: var(--radius-control);
-		background: var(--brand-primary);
-		color: var(--brand-on-primary);
-		font-weight: 700;
 	}
 	.brand-label {
 		font-weight: 600;

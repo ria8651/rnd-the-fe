@@ -7,6 +7,7 @@
 import { auth } from '$lib/auth/auth.svelte';
 
 export interface NavItem {
+	/** Icon name from the spec set (ui-standards/icons). */
 	icon: string;
 	label: string;
 	route: string;
@@ -28,24 +29,24 @@ export const navGroups: NavGroup[] = [
 	{
 		id: 'upper',
 		items: [
-			{ icon: '🏠', label: 'Dashboard', route: '/dashboard' },
-			{ icon: '🔄', label: 'Replenishment', route: '/replenishment' },
-			{ icon: '📦', label: 'Inventory', route: '/stocktakes' },
-			{ icon: '🚚', label: 'Distribution', route: '/distribution' },
-			{ icon: '💊', label: 'Dispensary', route: '/dispensary' },
-			{ icon: '❄️', label: 'Cold Chain', route: '/cold-chain' },
-			{ icon: '📋', label: 'Programs', route: '/programs' },
-			{ icon: '📊', label: 'Reports', route: '/reports' }
+			{ icon: 'dashboard', label: 'Dashboard', route: '/dashboard' },
+			{ icon: 'refresh', label: 'Replenishment', route: '/replenishment' },
+			{ icon: 'stock', label: 'Inventory', route: '/stocktakes' },
+			{ icon: 'truck', label: 'Distribution', route: '/distribution' },
+			{ icon: 'customers', label: 'Dispensary', route: '/dispensary' },
+			{ icon: 'snowflake', label: 'Cold Chain', route: '/cold-chain' },
+			{ icon: 'list', label: 'Programs', route: '/programs' },
+			{ icon: 'reports', label: 'Reports', route: '/reports' }
 		]
 	},
 	{
 		id: 'lower',
 		items: [
-			{ icon: '📚', label: 'Catalogue', route: '/catalogue' },
-			{ icon: '🛠', label: 'Manage', route: '/manage' },
-			{ icon: '⚙️', label: 'Settings', route: '/settings', visible: () => auth.can('ServerAdmin') || auth.can('EditStore') },
-			{ icon: '🔁', label: 'Sync status', route: '/sync' },
-			{ icon: '❓', label: 'Help', route: '/help' }
+			{ icon: 'book', label: 'Catalogue', route: '/catalogue' },
+			{ icon: 'sliders', label: 'Manage', route: '/manage' },
+			{ icon: 'settings', label: 'Settings', route: '/settings', visible: () => auth.can('ServerAdmin') || auth.can('EditStore') },
+			{ icon: 'refresh', label: 'Sync status', route: '/sync' },
+			{ icon: 'help', label: 'Help', route: '/help' }
 		]
 	}
 ];

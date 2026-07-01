@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import Button from '$lib/ui/Button.svelte';
+	import Icon from '$lib/icons/Icon.svelte';
 	import { auth } from '$lib/auth/auth.svelte';
 	import { ROOT_PATH } from '$lib/chrome/nav-config';
 
@@ -14,7 +15,7 @@
 
 <div class="login">
 	<div class="card">
-		<span class="brand" aria-hidden="true">m+</span>
+		<span class="brand"><Icon name="m-supply-guy" size={48} /></span>
 		<h1>open mSupply</h1>
 		<p class="note">Mock sign-in for the Stage 3 shell demo. Real authentication lands in Stage 4.</p>
 		<Button variant="primary" onclick={signIn}>Sign in</Button>
@@ -45,13 +46,6 @@
 	.brand {
 		display: grid;
 		place-items: center;
-		width: 48px;
-		height: 48px;
-		border-radius: var(--radius-control);
-		background: var(--brand-primary);
-		color: var(--brand-on-primary);
-		font-weight: 700;
-		font-size: 20px;
 	}
 	h1 {
 		margin: 0;

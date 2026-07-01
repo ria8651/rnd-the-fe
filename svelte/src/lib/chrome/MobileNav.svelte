@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
+	import Icon from '$lib/icons/Icon.svelte';
 	import Modal from '$lib/ui/Modal.svelte';
 	import Button from '$lib/ui/Button.svelte';
 	import { auth } from '$lib/auth/auth.svelte';
@@ -36,10 +37,10 @@
 		aria-expanded={open}
 		onclick={() => (open = !open)}
 	>
-		{open ? '✕' : '☰'}
+		<Icon name={open ? 'close' : 'list'} size={24} />
 	</button>
 	<span class="crumb">{crumb}</span>
-	<span class="brand" aria-hidden="true">m+</span>
+	<span class="brand"><Icon name="m-supply-guy" size={28} /></span>
 </div>
 
 {#if open}
@@ -57,19 +58,20 @@
 							navigate(item.route);
 						}}
 					>
-						<span class="icon" aria-hidden="true">{item.icon}</span>{item.label}
+						<span class="icon"><Icon name={item.icon} size={20} /></span>{item.label}
 					</a>
 				</li>
 			{/each}
 			<li class="sep"></li>
 			<li>
 				<a href="https://docs.msupply.foundation" target="_blank" rel="noopener">
-					<span class="icon" aria-hidden="true">📖</span>Docs ↗
+					<span class="icon"><Icon name="book" size={20} /></span>Docs
+					<Icon name="external-link" size={14} flipRtl />
 				</a>
 			</li>
 			<li>
 				<button type="button" onclick={() => (confirmingLogout = true)}>
-					<span class="icon" aria-hidden="true">🚪</span>Log out
+					<span class="icon"><Icon name="power" size={20} /></span>Log out
 				</button>
 			</li>
 		</ul>
@@ -111,12 +113,6 @@
 	.brand {
 		display: grid;
 		place-items: center;
-		width: 32px;
-		height: 32px;
-		border-radius: var(--radius-control);
-		background: var(--brand-primary);
-		color: var(--brand-on-primary);
-		font-weight: 700;
 	}
 	.drawer-scrim {
 		position: fixed;

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { auth } from '$lib/auth/auth.svelte';
 	import ThemeToggle from '$lib/theme/ThemeToggle.svelte';
+	import Icon from '$lib/icons/Icon.svelte';
 </script>
 
 <div class="dash">
@@ -20,17 +21,17 @@
 
 	<div class="cards">
 		<a class="card" href="/stocktakes">
-			<span class="icon" aria-hidden="true">📦</span>
+			<span class="icon"><Icon name="stock" size={28} /></span>
 			<h2>Stocktakes</h2>
 			<p>Count and reconcile stock. The first vertical built from the spec.</p>
 		</a>
 		<div class="card muted">
-			<span class="icon" aria-hidden="true">🔄</span>
+			<span class="icon"><Icon name="refresh" size={28} /></span>
 			<h2>Replenishment</h2>
 			<p>Coming soon.</p>
 		</div>
 		<div class="card muted">
-			<span class="icon" aria-hidden="true">🚚</span>
+			<span class="icon"><Icon name="truck" size={28} /></span>
 			<h2>Distribution</h2>
 			<p>Coming soon.</p>
 		</div>
