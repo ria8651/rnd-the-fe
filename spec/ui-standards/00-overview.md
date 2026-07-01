@@ -20,10 +20,16 @@ capture.
 
 | File | Covers |
 |------|--------|
-| [`theming.md`](./theming.md) | Light + dark colour tokens (hex), semantic token model, mode selection |
-| [`tables.md`](./tables.md) | Alignment, density, column priority/responsive, selection, sorting, keyboard, inline edit, filtering, touch targets |
-| [`typography.md`](./typography.md) | Font sizes, header/cell weight, value formatting (dates/currency/numbers/percent) |
-| [`inputs.md`](./inputs.md) | Field sizing/states, widths by content type, grid guidance |
+| [`theming.md`](./theming.md) | Platform-neutral **theme model**: semantic colour roles, spacing/radius/elevation/type scales, mode selection. No colour values, no CSS. |
+| [`theme-light.md`](./theme-light.md) | Light theme colour values |
+| [`theme-dark.md`](./theme-dark.md) | Dark theme colour values (proposed baseline) |
+| [`theme-mui.md`](./theme-mui.md) | The **existing** app's theme captured as a reference (colours + metrics) |
+| [`interaction.md`](./interaction.md) | Interaction states (hover, focus, selected, pressed, disabled, busy) — behaviour, not colour |
+| [`tables.md`](./tables.md) | Alignment, density, column priority/responsive, selection, sorting, keyboard, inline edit, filtering, touch targets, empty/loading/error states |
+| [`typography.md`](./typography.md) | Font family, sizes, header/cell weight, value formatting (dates/currency/numbers/percent/signed), locale & symbols |
+| [`icons.md`](./icons.md) | The icon system + the actual extracted SVG assets in [`icons/`](./icons/) |
+| [`inputs.md`](./inputs.md) | Field sizing, states (per interaction model), widths by content type, grid guidance |
+| [`controls.md`](./controls.md) | Buttons, menus/popovers, the single-select dropdown (combobox/listbox) behaviour |
 | [`accessibility.md`](./accessibility.md) | WCAG 2.1 AA, contrast, focus, keyboard, screen reader, touch targets, colour-independence |
 
 ## How to reference

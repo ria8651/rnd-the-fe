@@ -1,105 +1,99 @@
-# UI Standards — Theming & Colour
+# UI Standards — Theming Model
 
-> Concrete colour tokens for **light and dark** themes, so every implementation looks
-> consistent. Implementations must theme via these **semantic tokens**, never by hard-coding
-> raw hex at call sites. Light values are taken from the current app's brand palette
-> (`theme.ts`); dark values are a designed counterpart — a sensible baseline to refine, not a
-> shipped standard. All pairings target the contrast rules in
-> [accessibility](./accessibility.md#compliance-and-contrast).
+> The **platform-neutral** theming contract: the set of semantic roles every theme must
+> define, plus the non-colour scales. It contains **no colour values and no CSS** — so it
+> applies equally to a web app or a native app. Concrete values live in the theme variants:
+>
+> - [`theme-light.md`](./theme-light.md) — the rewrite's light theme
+> - [`theme-dark.md`](./theme-dark.md) — the rewrite's dark theme
+> - [`theme-mui.md`](./theme-mui.md) — the **existing** app's theme, captured as a reference
+>
+> Interaction *behaviour* (hover, focus, selected, pressed, disabled…) is **not** here — see
+> [`interaction.md`](./interaction.md). This doc defines the colour *roles* those states use;
+> that doc defines *when* they apply.
 
-## Principles
+## How theming works
 
-1. **Semantic tokens only.** Components reference roles (`surface`, `text.primary`,
-   `border.default`, `state.error`) — not `#e95c30`. Swapping the theme swaps the token values;
-   call sites don't change.
-2. **Two themes minimum:** light and dark, with identical token sets. A rewrite must support
-   both even though the current app ships light only.
-3. **Mode selection:** follow the OS preference (`prefers-color-scheme`) by default, with a
-   manual override the user can set, persisted per user (alongside the language preference —
-   see [chrome](../chrome/01-behaviours.md)).
-4. **Brand is constant:** the orange brand accent and the blue secondary read as "mSupply" in
-   both themes; only their tints shift for contrast.
-5. **Never colour-alone:** colour always pairs with text/icon/shape
-   ([colour independence](./accessibility.md#colour-independence)). Tokens are for emphasis,
-   not the sole carrier of meaning.
+1. **Semantic roles, not raw values.** Code references a role (`surface.default`,
+   `text.primary`, `state.error`) — never a literal colour. A theme is a complete mapping from
+   every role below to a concrete value. Swapping themes swaps the mapping; call sites are
+   unchanged.
+2. **Every theme defines every role.** Light, dark, and any future theme implement the same
+   role set, so any screen works under any theme.
+3. **Colours differ between themes; the scales below do not.** Spacing, radius, elevation, and
+   the type scale are shared by all themes (a theme variant may note where a legacy snapshot
+   diverges).
+4. **Brand is constant.** The orange brand accent and blue secondary read as "mSupply" in
+   every theme; only their tints adjust for contrast.
+5. **Colour is never the sole signal.** Always pair colour with text/icon/shape
+   ([colour independence](./accessibility.md#colour-independence)).
 
-## Brand
+## Colour roles
 
-| Token | Role | Light | Dark |
-|-------|------|-------|------|
-| `brand.primary` | Primary actions, active nav, focus | `#E95C30` | `#F2774B` |
-| `brand.primaryHover` | Hover/pressed primary | `#C43C11` | `#E95C30` |
-| `brand.primarySubtle` | Tinted primary background | `#FCEAE3` | `rgba(233,92,48,0.16)` |
-| `brand.onPrimary` | Text/icon on primary | `#FFFFFF` | `#FFFFFF` |
-| `brand.secondary` | Secondary/links/info accents | `#3E7BFA` | `#6B9BFF` |
-| `brand.secondaryHover` | Hover secondary | `#3568D4` | `#3E7BFA` |
-| `brand.secondarySubtle` | Tinted secondary background | `#E8F1FE` | `rgba(62,123,250,0.18)` |
+The roles every theme must supply a value for. (Values: see the variant docs.)
 
-## Surfaces
+| Group | Roles |
+|-------|-------|
+| **Brand** | `brand.primary`, `brand.primaryHover`, `brand.primarySubtle`, `brand.onPrimary`, `brand.secondary`, `brand.secondaryHover`, `brand.secondarySubtle` |
+| **Surface** | `surface.base` (app background), `surface.default` (cards/tables/panels), `surface.raised` (modals/menus/popovers), `surface.sunken` (inputs/wells), `surface.nav` (drawer/footer), `surface.scrim` (modal backdrop) |
+| **Text** | `text.primary`, `text.secondary`, `text.disabled`, `text.link`, `text.inverse` |
+| **Line** | `border.default`, `border.strong`, `divider` |
+| **State** | each of `state.error`, `state.warning`, `state.success`, `state.info` provides a `main` (icon/text/border/indicator) and a `subtle` (tinted background) |
+| **Interaction** | `hoverOverlay`, `selected`, `selectedHover`, `focusRing` (semantics in [interaction.md](./interaction.md)) |
 
-| Token | Role | Light | Dark |
-|-------|------|-------|------|
-| `surface.base` | App background (behind everything) | `#F2F2F5` | `#16161D` |
-| `surface.default` | Cards, tables, panels | `#FFFFFF` | `#1F2029` |
-| `surface.raised` | Modals, popovers, menus | `#FFFFFF` | `#262732` |
-| `surface.sunken` | Inputs, wells | `#FAFAFC` | `#14141A` |
-| `surface.nav` | Drawer / footer / nav chrome | `#F2F2F5` | `#1A1B23` |
-| `surface.scrim` | Modal backdrop overlay | `rgba(0,0,0,0.5)` | `rgba(0,0,0,0.6)` |
+Domain status palettes (VVM stages, cold-chain hot/cold, vaccination status) map onto
+`state.*` and must keep their text/icon labels.
 
-## Text
+## Value notation (for the variant docs)
 
-| Token | Role | Light | Dark |
-|-------|------|-------|------|
-| `text.primary` | Default body / headings | `#1C1C28` | `#F2F2F5` |
-| `text.secondary` | Labels, captions, helper | `#555770` | `#A4A7B5` |
-| `text.disabled` | Disabled / placeholder | `#8F90A6` | `#6A6D7E` |
-| `text.link` | Hyperlinks | `#3568D4` | `#6B9BFF` |
-| `text.inverse` | On dark/brand fills | `#FFFFFF` | `#16161D` |
+So values stay platform-neutral (no CSS):
 
-## Borders & dividers
+- Opaque colours as 6-digit **hex** (`#1C1C28`).
+- Translucent colours as **hex + opacity percentage** (`#E95C30 @ 16%`) — never `rgba(...)`.
+- The renderer maps these to its own colour type (web rgba/hsl, native ARGB, etc.).
 
-| Token | Role | Light | Dark |
-|-------|------|-------|------|
-| `border.default` | Input/card borders | `#E4E4EB` | `#33343F` |
-| `border.strong` | Emphasis borders, table header rule | `#CBCED4` | `#454654` |
-| `divider` | Hairline separators | `#EAEAEA` | `#2A2B36` |
+## Spacing scale
 
-## State colours
+A single base step of **4** (unitless; the platform applies px/dp). Use steps, not arbitrary
+values: `4, 8, 12, 16, 24, 32, 48`.
 
-Each state has a `main` (for icon/text/border/indicator) and a `subtle` tinted background. Pair
-with text/icon per colour-independence.
+## Radius scale
 
-| Token | Role | Light main | Light subtle | Dark main | Dark subtle |
-|-------|------|-----------|--------------|-----------|-------------|
-| `state.error` | Errors, destructive, reduced-below-zero | `#E63535` | `#FFCDCE` | `#FF6B6B` | `rgba(230,53,53,0.18)` |
-| `state.warning` | Warnings, near-expiry, needs-attention | `#E1A200` | `#FCF1D4` | `#F2B43C` | `rgba(225,162,0,0.18)` |
-| `state.success` | Success, functioning, finalised-ok | `#69A607` | `#EDF7ED` | `#8FCB3A` | `rgba(105,166,7,0.18)` |
-| `state.info` | Informational | `#3E7BFA` | `#E8F1FE` | `#6B9BFF` | `rgba(62,123,250,0.18)` |
+| Role | Step | Applies to |
+|------|------|-----------|
+| `radius.sm` | 4 | small chips, tight controls |
+| `radius.control` | 8 | inputs, buttons, cards, panels |
+| `radius.modal` | 12 | dialogs |
+| `radius.pill` | full | badges, toggles, segmented/pill buttons |
 
-> Domain status palettes that ride on these (e.g. VVM stages green/amber/red, cold-chain
-> hot/cold) map onto `state.*` and must keep their text/icon labels.
+## Elevation levels
 
-## Interaction
+Elevation is expressed as named **levels** by intent — not as shadow CSS. A renderer realises
+each with whatever its platform uses (web shadow, native shadow/tonal overlay). Parameters are
+given platform-neutrally as *vertical offset / blur / shadow colour @ opacity*.
 
-| Token | Role | Light | Dark |
-|-------|------|-------|------|
-| `focusRing` | Focus-visible outline (2px, 2px offset) | `#E95C30` | `#F2774B` |
-| `hoverOverlay` | Row/control hover wash | `rgba(0,0,0,0.04)` | `rgba(255,255,255,0.06)` |
-| `selected` | Selected table row tint | `#E8F1FE` | `rgba(62,123,250,0.24)` |
-| `selectedHover` | Hover on selected row | `#D2DFFF` | `rgba(62,123,250,0.32)` |
+| Level | Intent | Offset | Blur | Shadow |
+|-------|--------|--------|------|--------|
+| `flat` | cards, tables | — | — | none — use `border.default` instead |
+| `raised` | menus, popovers, dropdowns | 4 | 8 | neutral @ ~16% |
+| `overlay` | dialogs, modals | 12 | 24 | neutral @ ~16–30% |
 
-## Applying the tokens
+## Type scale
 
-- **Tables:** `surface.default` background, `border.strong` header rule, `selected`/
-  `selectedHover` for selection, `state.error` for invalid cells — see
-  [tables](./tables.md#selection).
-- **Inputs:** `surface.sunken` fill, `border.default` → `focusRing` on focus — see
-  [inputs](./inputs.md#field-sizing-and-states).
-- **Chrome:** `surface.nav` for drawer/footer; `brand.primary` for the active nav item.
+Roles (sizes shared by all themes; family/exact metrics per variant). See
+[typography](./typography.md) for formatting.
 
-## Status of the dark values
+| Role | Size | Weight |
+|------|------|--------|
+| `type.heading` | 16 | 600 |
+| `type.bodyEmphasis` / table header | 14 | 600 |
+| `type.body` / table cell | 14 | 400 |
+| `type.caption` / label | 12 | 500 |
+| (tablet bumps body to 16 — see [typography](./typography.md#font-sizes)) | | |
 
-The dark hexes are a **proposed baseline**. Before they're treated as authoritative, run a
-contrast pass (`text.*` on each `surface.*`, and `state.*` on `*.subtle`) against the AA
-thresholds in [accessibility](./accessibility.md#compliance-and-contrast) and adjust. The token
-*names* and *structure* are the stable part; the exact dark hexes are expected to be tuned.
+## Mode selection
+
+- Default to the **operating system's light/dark preference**.
+- Offer a **manual override** (light / dark / follow-system) the user can set.
+- **Persist** the choice per user, alongside the language preference (see
+  [chrome](../chrome/01-behaviours.md)).

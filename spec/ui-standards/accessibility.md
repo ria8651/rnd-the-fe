@@ -14,8 +14,9 @@
 ## Focus states
 
 Every focus-visible interactive element shows a clear focus indicator: a 2px outline in the
-[`focusRing` token](./theming.md#interaction) (brand orange) with a 2px offset. **Never remove
-focus outlines** — it breaks keyboard accessibility.
+`focusRing` token (brand orange — see [theming roles](./theming.md#colour-roles)) with a 2px
+offset, applied on keyboard focus per [interaction states](./interaction.md#the-states).
+**Never remove focus outlines** — it breaks keyboard accessibility.
 
 ## Keyboard navigation
 
