@@ -23,6 +23,7 @@ If this folder and the upstream site disagree, the **upstream site wins** — re
 | [`icons.md`](./icons.md) | The icon system + the actual extracted SVG assets in [`icons/`](./icons/) |
 | [`inputs.md`](./inputs.md) | Field sizing, states (per interaction model), widths by content type, grid guidance |
 | [`controls.md`](./controls.md) | Buttons, menus/popovers, the single-select dropdown (combobox/listbox) behaviour |
+| [`urls.md`](./urls.md) | **URL & navigation state**: path layout, store segment, search/filter/sort/page query params, history & restore behaviour |
 | [`accessibility.md`](./accessibility.md) | WCAG 2.1 AA, contrast, focus, keyboard, screen reader, touch targets, colour-independence |
 
 ## How to reference

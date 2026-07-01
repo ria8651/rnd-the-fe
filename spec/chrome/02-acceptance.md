@@ -30,6 +30,8 @@
 
 **AC-CH8 — Switch navigates to root** — When the user selects a different store, then it becomes the active store and the app navigates to the root landing path.
 
+**AC-CH8b — URLs are store-scoped** — Given any view, then its URL carries the active store as a path segment; and opening a URL whose store differs from the session's active store switches to that store (when the user has access) so the link lands on the intended view, per [URL & navigation state](../ui-standards/urls.md#store-in-the-url).
+
 **AC-CH9 — Remember choice** — When the user enables "remember choice", then the store selector is skipped at next login for that username.
 
 ## Language selector

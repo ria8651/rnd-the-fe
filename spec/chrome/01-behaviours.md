@@ -75,3 +75,4 @@ Thin dividers separate the groups (before the user group when it's shown, and be
 
 - All chrome regions assume an authenticated session; unauthenticated users are routed to login (the chrome consumes auth state, it does not perform login).
 - Sync status is surfaced in-shell (a nav entry) so users see connectivity without leaving their page.
+- **Routing is store-scoped:** every view's URL carries the active store, and switching store (via the selector) or opening a link for another store follows the shared [URL & navigation state](../ui-standards/urls.md#store-in-the-url) rules.
