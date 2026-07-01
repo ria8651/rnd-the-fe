@@ -40,7 +40,10 @@ class ThemeController {
 		if (!browser) return;
 		this.#mql = window.matchMedia('(prefers-color-scheme: dark)');
 		this.systemPrefersDark = this.#mql.matches;
-		this.#mql.addEventListener('change', (e) => (this.systemPrefersDark = e.matches));
+		this.#mql.addEventListener('change', (e) => {
+			this.systemPrefersDark = e.matches;
+			this.#apply(); // keep color-scheme in sync when following the OS
+		});
 		this.#load();
 		this.#apply();
 	}
@@ -72,6 +75,10 @@ class ThemeController {
 		const root = document.documentElement;
 		if (this.mode === 'system') root.removeAttribute('data-theme');
 		else root.setAttribute('data-theme', this.mode);
+		// Tell the UA which scheme to render native controls in, matching the
+		// *resolved app theme* — otherwise a light app under a dark OS gets white
+		// native-button/input text on our light surfaces. (mui is light-based.)
+		root.style.colorScheme = this.resolved === 'dark' ? 'dark' : 'light';
 	}
 }
 
