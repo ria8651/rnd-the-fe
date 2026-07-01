@@ -7,6 +7,7 @@
  * permission check. The shape is what the real adapter will populate.
  */
 import { browser } from '$app/environment';
+import { gql } from '$lib/api/graphql';
 
 export interface User {
 	username: string;
@@ -36,12 +37,14 @@ const MOCK_USER: User = {
 	jobTitle: 'Store manager'
 };
 
-const MOCK_STORES: Store[] = [
-	{ id: 'store-a', name: 'Central Medical Store', code: 'CMS' },
-	{ id: 'store-b', name: 'Northern Regional Warehouse', code: 'NRW' },
-	{ id: 'store-c', name: 'Dili District Pharmacy', code: 'DDP' },
-	{ id: 'store-d', name: 'Cold Chain Hub', code: 'CCH', isOnHold: true },
-	{ id: 'store-e', name: 'Decommissioned Depot', code: 'DEP', isDisabled: true }
+// The data-rich test store (402 stocktakes) — a good default landing for the demo.
+const DEFAULT_STORE_ID = 'AFCA0C9F0743AB43B779FB9EA2E64EAF';
+
+// Seed with two known real stores so the selector isn't empty before the live
+// `stores` query resolves; loadStores() then replaces this with the full list.
+const SEED_STORES: Store[] = [
+	{ id: DEFAULT_STORE_ID, name: 'Liquica Store', code: 'liquica' },
+	{ id: '5B28901C52396E4BB098B9862CCF5DF9', name: 'CHC Ermera', code: 'chc_ermera' }
 ];
 
 const STORE_KEY = 'oms.activeStore';
@@ -49,8 +52,8 @@ const REMEMBER_KEY = 'oms.rememberStore';
 
 class AuthController {
 	user = $state<User | null>(MOCK_USER);
-	stores = $state<Store[]>(MOCK_STORES);
-	storeId = $state<string>(MOCK_STORES[0].id);
+	stores = $state<Store[]>(SEED_STORES);
+	storeId = $state<string>(DEFAULT_STORE_ID);
 	token = $state<string | null>('mock-token');
 	/** Per-user "skip the store selector at login" preference. */
 	rememberStoreChoice = $state(false);
@@ -71,8 +74,25 @@ class AuthController {
 	init() {
 		if (!browser || !this.user) return;
 		const storedStore = localStorage.getItem(this.scoped(STORE_KEY));
-		if (storedStore && this.stores.some((s) => s.id === storedStore)) this.storeId = storedStore;
+		if (storedStore) this.storeId = storedStore;
 		this.rememberStoreChoice = localStorage.getItem(this.scoped(REMEMBER_KEY)) === 'true';
+		void this.loadStores();
+	}
+
+	/** Load the real store list from the live API (user is still mocked). */
+	async loadStores() {
+		try {
+			const data = await gql<{ stores: { nodes: { id: string; code: string; storeName: string }[] } }>(
+				`query { stores(page: { first: 200 }) { ... on StoreConnector { nodes { id code storeName } } } }`
+			);
+			if (data.stores?.nodes?.length) {
+				this.stores = data.stores.nodes.map((s) => ({ id: s.id, name: s.storeName, code: s.code }));
+				// Drop a stale/invalid persisted store id (e.g. from earlier mock data).
+				if (!this.stores.some((s) => s.id === this.storeId)) this.storeId = DEFAULT_STORE_ID;
+			}
+		} catch {
+			// Keep the seed stores if the API is unreachable.
+		}
 	}
 
 	setStore(id: string) {

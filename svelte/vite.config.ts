@@ -15,5 +15,11 @@ export default defineConfig({
 			},
 			adapter: adapter({ fallback: 'index.html' })
 		})
-	]
+	],
+	// Dev: proxy GraphQL to the local open-mSupply server (same-origin → no CORS).
+	server: {
+		proxy: {
+			'/graphql': { target: 'http://localhost:8000', changeOrigin: true }
+		}
+	}
 });
