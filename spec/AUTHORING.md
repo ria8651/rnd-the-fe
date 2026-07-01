@@ -105,6 +105,39 @@ this lighter form for genuine cross-cutting shells, not to shortcut a real domai
   the spec body.)
 - Prefer present-tense, declarative statements of fact.
 
+**Force levels** — state how binding a statement is with one small vocabulary, used
+consistently so a bare keyword carries the weight (no need for **bold**, "important", or
+"normative, not cosmetic" theatrics):
+- **MUST / MUST NOT** — a hard invariant. Any implementation that violates it is wrong. These
+  are the statements that earn an acceptance criterion.
+- **SHOULD** — a strong default; deviate only with a reason.
+- **MAY** — genuinely optional.
+
+**Clarity without bludgeoning.** Precision comes from saying the right thing once, not from
+defending against every way it could be misread. When an implementation gets something wrong,
+the reflex is a *surgical* fix, not another paragraph:
+
+- **State invariants positively, once, in the owning layer.** A closed positive rule ("line
+  data is entered only in the line editor") beats an open-ended list of prohibitions ("not in
+  the table, not in the header, not …") — you can't enumerate every wrong implementation, and
+  each added negative lowers the salience of everything around it. Other docs **link** to the
+  canonical statement; they don't re-warn.
+- **Give the *why*.** One line of rationale ("…so per-batch entry stays coherent and there's a
+  single validation path") lets a reader generalise to cases you never anticipated. A principle
+  compresses infinitely many prohibitions; a prohibition covers one.
+- **Fix the misleading word at the source.** If a label like "editable" caused the mistake,
+  delete or correct it — don't wrap it in a warning. Compensating prose is a sign the upstream
+  word is wrong.
+- **Let acceptance criteria enforce; let prose describe.** Reaching for emphasis usually means
+  the statement has no teeth. Put the teeth in `06` (testable, cited by tests) and keep the
+  descriptive layers calm. Enforcement lives in the verification loop, not in louder wording.
+- **Hoist a recurring mistake to a cross-cutting principle exactly once.** If the same class of
+  error shows up across verticals, state the rule once in [`ui-standards/`](./ui-standards/)
+  (or the relevant shared doc) and link to it — fix the class, not each instance.
+
+The goal is a spec that is *crisp and principled*, not one so armoured no reader can misread it
+— the latter is unachievable and just produces bloat. Trust the reader; back it with tests.
+
 **Optionality & types** — use neutral notation: `Field | Type | Notes` tables; mark nullable
 with `?`. The GraphQL schema is authoritative for optionality.
 
@@ -144,6 +177,8 @@ A vertical's spec is complete when:
 - [ ] No `⚠️ VERIFY` flags remain (or remaining ones are listed as known gaps in `00`).
 - [ ] Every rule in `03` and journey in `04` has at least one acceptance criterion in `06`.
 - [ ] No banned implementation detail (§5) appears in any spec body.
+- [ ] Invariants are stated positively and once, with a rationale, at the right force level —
+      no defensive prose padding, enumerated prohibitions, or restated rules (§5).
 - [ ] The "could it be rebuilt in another framework from this alone?" test passes.
 - [ ] Error/edge cases are covered, not just the happy path.
 - [ ] `README.md` lists the vertical with accurate status.

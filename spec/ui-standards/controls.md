@@ -64,6 +64,9 @@ each reached status. The pattern scales identically whether the flow has two ste
   [enhancement, not a requirement](./interaction.md) — the crumbs convey current state without
   it, and it must be reachable by keyboard/touch, not hover-only.
 - **Responsive:** on small screens the row collapses to a single *"Status: {current}"* label.
+- **Placement:** the crumbs and the [split status button](#split-multi-action-button) that
+  advances the flow live in the document's [action footer](./layout.md#action-footer) (which
+  stays visible as the body scrolls), so they stay reachable in a record of any length.
 
 ## Menus & popovers
 

@@ -20,6 +20,7 @@ capture.
 
 | File | Covers |
 |------|--------|
+| [`layout.md`](./layout.md) | **Page anatomy**: the shared screen regions (app bar, content body, always-visible action footer, side panel, modals) and their positioning/scroll behaviour |
 | [`theming.md`](./theming.md) | Platform-neutral **theme model**: semantic colour roles, spacing/radius/elevation/type scales, mode selection. No colour values, no CSS. |
 | [`theme-light.md`](./theme-light.md) | Light theme colour values |
 | [`theme-dark.md`](./theme-dark.md) | Dark theme colour values (proposed baseline) |

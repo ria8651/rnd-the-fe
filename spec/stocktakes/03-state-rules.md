@@ -24,21 +24,20 @@
 
 ## Editability rules
 
-**The single gate:** a stocktake is editable **if and only if `status = NEW` and
-`isLocked = false`**. Any other combination disables **all** header-field edits, **all** line
-edits (add/count/edit/delete lines), and the **delete-stocktake** action. The UI mirrors this
-one condition everywhere it gates an affordance; the server enforces it per field.
+A stocktake is editable if and only if `status = NEW` and `isLocked = false`. Any other state
+disables all header edits, all line edits (add/count/edit/delete), and delete-stocktake. This
+one condition gates every edit affordance in the UI; the server enforces it per field.
 
 | Condition | Effect |
 |-----------|--------|
-| status = NEW **and** not locked | Editable. Header fields, lines, lock toggle, finalise, and delete are all available. |
-| status = FINALISED | All header/line edits rejected (`CannotEditFinalised` / `CannotEditStocktake`); delete not offered. Terminal. |
-| `isLocked` = true (status still NEW) | Edits rejected (`StocktakeIsLocked`) unless the same request sets `isLocked: false`; the **unlock toggle itself remains available** so the user can re-enable editing. Delete not offered while locked. |
-| store mismatch | Rejected (`InvalidStore`). |
+| `NEW` and not locked | Editable: header fields, lines, lock toggle, finalise, and delete available. |
+| `FINALISED` | Terminal. All edits rejected (`CannotEditFinalised` / `CannotEditStocktake`); delete not offered. |
+| Locked (still `NEW`) | Edits rejected (`StocktakeIsLocked`) unless the same request sets `isLocked: false` — so the unlock toggle stays available. Delete not offered while locked. |
+| Store mismatch | Rejected (`InvalidStore`). |
 
-The two edit-blocking states are surfaced differently: **locked** is user-reversible (unlock to
-resume), **finalised** is permanent. Both show an explanatory banner rather than silently
-disabling (see [05 › header region](./05-ui-surface.md#header-region)).
+Locked and finalised block edits for different reasons: locked is user-reversible (unlock to
+resume), finalised is permanent. Both SHOULD show an explanatory banner rather than silently
+disable (see [05 › metadata fields](./05-ui-surface.md#metadata-fields)).
 
 ## Finalise preconditions (validated before any adjustment)
 

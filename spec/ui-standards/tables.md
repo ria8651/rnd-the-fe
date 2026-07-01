@@ -154,10 +154,12 @@ Interactive table elements meet the shared minimum **48×48px** (see
 sortable headers, and checkbox hit-areas (small visual checkbox + padding to 48px).
 Pagination controls ≥ 44×44px.
 
-## Sticky headers
+## Persistent header row
 
-Use sticky headers when the table exceeds the viewport height or has ~20+ rows; skip for short
-(5–10 row) or fully-paginated tables.
+Keep the header row visible as the rows scroll when the table exceeds the viewport height or has
+~20+ rows; skip for short (5–10 row) or fully-paginated tables. As with the
+[action footer](./layout.md#action-footer), this is a visibility requirement, not a specific
+technique.
 
 ## States (empty / loading / error)
 

@@ -138,3 +138,6 @@ error indicators.
 **AC-D2 — Editing opens the line editor** — selecting a line row opens the line editor for that
 item, and *Add item* opens it for a new item; all counted-packs and reason entry occurs there,
 not in the table.
+**AC-D3 — Lifecycle controls live in a persistent footer** — the status crumbs (New → Finalised),
+lock/unlock toggle, and finalise (status-change) button appear together in a footer that
+remains visible at the bottom of the detail screen regardless of line count or scroll position.

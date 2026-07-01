@@ -29,13 +29,17 @@
 
 ## Bottom bar (footer)
 
-Persistent row of controls:
-- **Store:** home icon + current store name → opens the store selector (below).
-- **Edit store:** opens store-properties editing.
-- **User:** user icon + name → opens user details + logout (below). Only when signed in.
-- **Language:** translate icon + current language → opens the language selector (below).
-- **Central-server indicator:** shown when connected to a central server.
-- Condenses on extra-small screens (icon-over-label, evenly spaced).
+A persistent row of controls in a fixed left → right order (mirrored in RTL); each pairs an
+[icon](../ui-standards/icons.md) with a label:
+
+1. **Store** — [`home`](../ui-standards/icons.md) + current store name → opens the store selector (below).
+2. **Edit store** — [`edit`](../ui-standards/icons.md) + "Edit" → opens store-properties editing.
+3. **User** — [`user`](../ui-standards/icons.md) + name → opens user details + logout (below). Only when signed in.
+4. **Language** — [`translate`](../ui-standards/icons.md) + current language → opens the language selector (below).
+5. **Central-server indicator** — [`central`](../ui-standards/icons.md) + label; shown only when connected to a central server, and **trailing** (right-aligned, at the end of the row).
+
+Thin dividers separate the groups (before the user group when it's shown, and before language).
+Condenses on extra-small screens (icon-over-label, evenly spaced) but keeps this order.
 
 ## Store selector
 

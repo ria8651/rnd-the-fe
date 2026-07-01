@@ -57,10 +57,18 @@ specs (link the meaning, not the file, from vertical docs):
 | Save & confirm / next status | [`arrow-right`](./icons/arrow-right.svg) |
 | Edit | [`edit`](./icons/edit.svg) |
 | Delete | [`delete`](./icons/delete.svg) |
+| Copy to clipboard | [`copy`](./icons/copy.svg) |
+| Print / generate report | [`printer`](./icons/printer.svg) |
+| Reduce packs to zero (rewind) | [`rewind`](./icons/rewind.svg) |
+| Clear / deselect | [`minus-circle`](./icons/minus-circle.svg) |
 | Filter / search | [`filter`](./icons/filter.svg) · [`search`](./icons/search.svg) |
 | Export / import | [`download`](./icons/download.svg) · [`upload`](./icons/upload.svg) |
 | Sort | [`sort-asc`](./icons/sort-asc.svg) · [`sort-desc`](./icons/sort-desc.svg) |
 | Brand mark (drawer) | [`m-supply-guy`](./icons/m-supply-guy.svg) |
+
+> Not every control carries an icon — e.g. the stocktake **lock / "On hold"** control is a
+> text toggle in the current app, not an icon. Reference an icon only where the current frontend
+> uses one; don't invent icons for text controls.
 
 ## Full set (index)
 

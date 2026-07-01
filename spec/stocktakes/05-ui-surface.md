@@ -1,9 +1,10 @@
 # Stocktakes — UI Surface
 
 > Screens and regions described by **intent and content**, not implementation. No component
-> names, no layout prescriptions — a rewrite may realise these however its framework/design
-> system dictates, as long as the information and actions are present and gated by the same
-> rules (`03-state-rules.md`).
+> names and no visual styling (pixels/CSS) — a rewrite may realise the look however its
+> framework/design system dictates, as long as the information and actions are present, sit in
+> the standard [page regions](../ui-standards/layout.md), and are gated by the same rules
+> (`03-state-rules.md`). *Where* a region sits (its anatomy) is in scope; how it is styled is not.
 >
 > **Shared UI behaviour** (alignment, density, responsive column-hiding, selection, sorting,
 > keyboard, inline edit, accessibility) is governed by the cross-cutting
@@ -24,10 +25,10 @@
   URL. The stocktake list currently offers one filter: **status** (an `enum`: New / Finalised).
   Adding further filters (e.g. created-date range, description text) is a matter of extending
   that filter set, not adding a new UI pattern.
-- **Actions:**
-  - *New stocktake* → opens the create flow (S2).
-  - *Export* the list to CSV.
-  - *Select rows* → bulk **delete**.
+- **Actions** (icons per the [icon set](../ui-standards/icons.md)):
+  - *New stocktake* ([`plus-circle`](../ui-standards/icons.md)) → opens the create flow (S2).
+  - *Export* ([`download`](../ui-standards/icons.md)) the list to CSV.
+  - *Select rows* → bulk **delete** ([`delete`](../ui-standards/icons.md)).
 - **States:** empty (no stocktakes), loading, normal.
 
 ## S2 — Create flow
@@ -47,22 +48,25 @@
 
 **Purpose:** view one stocktake, review its lines, manage the line set, and finalise.
 
-> **Division of responsibility (important).** The detail screen and the line editor (S4) are
-> **distinct surfaces with distinct jobs**:
-> - **S3 displays and manages.** Its line table is **read-only** — it shows each line's current
->   values and flags per-line errors, but is **not** a data-entry grid. Editing a value happens
->   in S4, opened by selecting the line.
-> - **S4 is the only place line data is entered** — counted packs, reason, batch, dates,
->   location, prices, etc.
->
-> Counting and reason selection must **not** be implemented as inline-editable cells in the S3
-> table. This mirrors the current app, keeps per-batch entry coherent, and preserves a single
-> validation path.
+Line data (counted packs, reason, batch, dates, location, prices, …) MUST be entered only in
+the line editor (S4); the detail screen's line table is read-only and opens S4 when a row is
+selected. This keeps per-batch entry coherent and preserves a single validation path.
 
-### Header region
-The header presents the stocktake's metadata. Every editable field shares the one
-[editability gate](./03-state-rules.md#editability-rules) — writable only while **`NEW` and
-unlocked**, otherwise shown read-only (prefer disabled-with-reason over hiding).
+**Layout** — the screen uses the standard [page anatomy](../ui-standards/layout.md); its
+regions map as:
+
+```
+App bar / toolbar   →  header fields (description, …) + item search
+Content body        →  the line table (scrolls)
+Action footer       →  lock · status crumbs · finalise button   (or bulk-action bar)
+Side panel          →  additional info (counted/verified-by, comment) + delete/copy
+```
+
+### Metadata fields
+The stocktake's metadata is split across the app bar (description) and the side panel
+(attribution + comment) per the layout map above. Every editable field shares the
+one [editability gate](./03-state-rules.md#editability-rules) — writable only while `NEW` and
+unlocked, otherwise read-only (SHOULD disable-with-reason rather than hide).
 
 **Editable fields** (gated):
 
@@ -83,31 +87,40 @@ unlocked**, otherwise shown read-only (prefer disabled-with-reason over hiding).
   the permanent **finalised** state.
 - **Item filter:** a free-text search that narrows the line table. This is a **view filter, not
   a stored field**, and stays available regardless of status/lock.
-- **Header-level actions:** *delete stocktake* (only when `NEW` and unlocked — same gate) and
-  *copy record to clipboard* (always available). The lock toggle and finalise control live in
-  the [status footer](#status-region-footer), not among the header fields.
+- **Record actions (side panel):** *delete stocktake* ([`delete`](../ui-standards/icons.md); only
+  when `NEW` and unlocked — same gate) and *copy record to clipboard*
+  ([`copy`](../ui-standards/icons.md); always available).
 
 ### Actions (screen-level)
-- *Add item* (J3) — disabled when not editable.
-- *Generate/print report.*
-- *Status change* — the shared [split (multi-action) button](../ui-standards/controls.md#split-multi-action-button):
-  its primary action is "save and confirm → Finalised" (the only forward transition, so the
-  disclosure menu lists New — disabled — and Finalised). Hidden when not editable; a click with
-  no counted lines surfaces a notice instead of finalising.
-- *Lock / unlock* toggle.
-- *Detail/side panel* toggle (summary info).
+Icons per the [icon set](../ui-standards/icons.md).
+- *Add item* ([`plus-circle`](../ui-standards/icons.md)) (J3) — disabled when not editable.
+- *Generate / print report* ([`printer`](../ui-standards/icons.md)).
+- *Status change* — the shared [split (multi-action) button](../ui-standards/controls.md#split-multi-action-button)
+  ([`arrow-right`](../ui-standards/icons.md)), in the [status footer](#status-footer): its primary
+  action is "save and confirm → Finalised" (the only forward transition, so the disclosure menu
+  lists New — disabled — and Finalised). Hidden when not editable; a click with no counted lines
+  surfaces a notice instead of finalising.
+- *Lock / on-hold* toggle — in the [status footer](#status-footer); a **text toggle** ("On hold"),
+  not an icon.
+- *Detail / side panel* toggle (summary info).
 
-### Status region (footer)
+### Status footer
+The stocktake's lifecycle controls occupy the screen's [action
+footer](../ui-standards/layout.md#action-footer): laid out left → right,
+
+- **Lock / unlock** toggle.
 - **Status crumbs** — the shared [lifecycle indicator](../ui-standards/controls.md#status-crumbs-lifecycle-indicator)
-  showing the stocktake flow **New → Finalised**, with the reached status emphasised and its
-  history (created / finalised timestamps) revealed on hover/focus/tap.
-- The lock toggle and the status-change split button sit alongside the crumbs in this footer
-  region.
+  showing the stocktake flow **New → Finalised**, reached status emphasised, history
+  (created / finalised timestamps) revealed on hover/focus/tap.
+- **Status-change split button** (the finalise control), right-aligned.
+
+Because the footer stays visible, these MUST remain reachable however long the line list grows.
+When rows are selected, the [bulk line-action bar](#bulk-line-actions-j5) takes over this same
+region until the selection clears.
 
 ### Line table
-A **read-only** table of the stocktake's lines. **Selecting a row opens the line editor (S4)**
-for that item; *Add item* opens the same editor for a new item. No cell in this table is
-directly editable — the "editable" concern lives entirely in S4.
+A read-only table of the stocktake's lines (see the S3 [purpose](#s3--detail-screen) invariant).
+Selecting a row opens the line editor (S4) for that item; *Add item* opens it for a new item.
 
 Columns (presence of some is gated by store preferences, noted):
 
@@ -123,10 +136,10 @@ Columns (presence of some is gated by store preferences, noted):
 | Pack size | |
 | Doses per unit | only if *manage vaccines in doses* pref; vaccines only |
 | **Snapshot packs** | shows mismatch error inline |
-| **Counted packs** | display only (entered in S4); shows reduced-below-zero error inline |
+| **Counted packs** | shows reduced-below-zero error inline |
 | Doses counted | only if *manage vaccines in doses* pref; vaccines only |
 | **Difference** | counted − snapshot, in units/doses |
-| Reason | display only (selected in S4); required by adjustment direction |
+| Reason | required by adjustment direction |
 | Donor | only if *track stock by donor* pref |
 | Manufacturer | |
 | Comment | |
@@ -137,23 +150,24 @@ Columns (presence of some is gated by store preferences, noted):
 - Column visibility under narrowing viewports follows the
   [priority tiers](../ui-standards/tables.md#column-priority): item code/name and counted
   packs are P1 (never hidden); batch/location/manufacturer are the first to drop.
-- The table is the primary **review** surface (not the entry surface); it must scale to large
-  line counts (virtualised/paginated) and reflect per-line validation errors after a failed
-  finalise, keyed to the offending row.
+- The table is the primary review surface; it must scale to large line counts
+  (virtualised/paginated) and reflect per-line validation errors after a failed finalise, keyed
+  to the offending row.
 - Extension point: plugins can contribute extra line columns (preserve as an extensibility
   seam, not a hard requirement).
 
 ### Bulk line actions (J5)
-- Reduce selected lines to zero (with confirmation).
-- Change location of selected lines.
-- Delete selected lines.
+Shown in the [action footer](../ui-standards/layout.md#action-footer) when lines are selected,
+with a *clear selection* ([`minus-circle`](../ui-standards/icons.md)) affordance:
+- Reduce selected lines to zero ([`rewind`](../ui-standards/icons.md), with confirmation).
+- Change location of selected lines ([`arrow-right`](../ui-standards/icons.md)).
+- Delete selected lines ([`delete`](../ui-standards/icons.md)).
 
 ## S4 — Line editor
 
-**Purpose:** the **single surface for entering line data** — add/count an item's batches and
-set their reason, batch, dates, location, prices, etc. (J3). Opened from S3 by selecting a line
-(edit) or via *Add item* (create). This modal owns **all** stocktake-line editing; the S3 table
-never edits inline.
+**Purpose:** the single surface for entering line data — add/count an item's batches and set
+their reason, batch, dates, location, prices, etc. (J3). A [modal](../ui-standards/layout.md#regions)
+over S3, opened by selecting a line (edit) or via *Add item* (create).
 
 - **Item selector:** catalogue search; excludes items already on the stocktake; locked to the
   chosen item when editing an existing line.
