@@ -116,10 +116,36 @@ colour alone (see [colour independence](./accessibility.md#colour-independence))
 
 ## Filtering
 
-Prefer **column filters** (inputs beneath headers) for precise multi-criteria filtering that
-stays visible on tablets, plus a **global search** in the toolbar for quick lookups. Avoid
-hidden popover/Excel-style filter icons. Filter input type should match the column
-(text, single-select, multi-select/autocomplete, numeric range, date range).
+The standard list-filtering model is an **add-a-filter menu**, not always-visible column
+filters. It sits in the list toolbar (above the table) and works the same across every list:
+
+- **A "Filters" dropdown** lists the filters *available* for this list but not yet applied.
+  Choosing one **activates** it — its input appears inline in the toolbar, next to the
+  dropdown. Already-active filters drop out of the dropdown so they can't be added twice.
+- **Each active filter is its own typed control**, shown side by side. Supported filter types:
+  - **text** — free-text contains/match.
+  - **enum** — single-select (or multi-select) from a fixed option set.
+  - **date / date-time** — a single date or an open/closed **range** (from / to).
+  - **number** — a value or a numeric **range**.
+  - **boolean** — on/off.
+  - A filter definition may also be a **group** that adds several related filters at once.
+- **Removing filters:** an active filter clears and disappears when the user clears it; a
+  **"Remove all filters"** entry at the bottom of the dropdown clears every applied filter's
+  value at once. **Default filters** (marked as always-on) stay applied and are not offered for
+  removal individually — remove-all keeps them but resets their values.
+- **State lives in the URL.** Every filter binds to a named URL query parameter, so the filtered
+  view is **shareable, bookmarkable, and survives reload / back-forward**. Reading initial
+  filter state from the URL means a link can open a list pre-filtered.
+- **Dependent filters** are allowed: one filter's selection may narrow another's options (e.g.
+  picking a category changes the items offered in a second filter). Options refresh when
+  dependencies change; a filter whose definition is withdrawn is dropped from the active set.
+- **Applying/changing a filter resets paging to the first page** and re-queries; the table's
+  [empty state](#states-empty--loading--error) distinguishes "no records yet" from "no matches
+  for the current filter" and offers the clear-filters affordance.
+
+A **global search** box in the toolbar (quick free-text lookup) may accompany the filter menu;
+it is separate from the typed filters above. Avoid hidden popover / Excel-style per-column
+filter icons — filters are explicit toolbar controls.
 
 ## Touch targets
 

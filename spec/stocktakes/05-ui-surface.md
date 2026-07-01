@@ -19,7 +19,11 @@
   column-hiding). Each row conveys at least: stocktake number, status, description, comment,
   created date, finalised date, locked indicator. Status is shown with text + style, never
   [colour alone](../ui-standards/accessibility.md#colour-independence).
-- **Filter:** by status (New / Finalised).
+- **Filter:** via the shared [add-a-filter menu](../ui-standards/tables.md#filtering) — a
+  "Filters" dropdown from which filters are added as typed toolbar controls, persisted in the
+  URL. The stocktake list currently offers one filter: **status** (an `enum`: New / Finalised).
+  Adding further filters (e.g. created-date range, description text) is a matter of extending
+  that filter set, not adding a new UI pattern.
 - **Actions:**
   - *New stocktake* → opens the create flow (S2).
   - *Export* the list to CSV.
