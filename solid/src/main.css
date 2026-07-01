@@ -1,0 +1,123 @@
+/* Global styles + non-colour scales from spec/ui-standards/theming.md.
+   Colour custom properties (--surface-*, --text-*, …) are injected at runtime
+   by ThemeProvider; the scales below are shared by every theme. */
+
+:root {
+  /* Spacing scale (base step 4) */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-12: 48px;
+
+  /* Radius scale */
+  --radius-sm: 4px;
+  --radius-control: 8px;
+  --radius-modal: 12px;
+  --radius-pill: 999px;
+
+  /* Elevation (web realisation of the named levels) */
+  --elev-raised: 0 4px 8px rgba(0, 0, 0, 0.16);
+  --elev-overlay: 0 12px 24px rgba(0, 0, 0, 0.24);
+
+  /* Type scale */
+  --type-heading: 16px;
+  --type-body: 14px;
+  --type-caption: 12px;
+
+  --font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  /* Table row density (comfortable default) */
+  --row-height: 52px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--type-body);
+  line-height: 20px;
+  color: var(--text-primary);
+  background: var(--surface-base);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'tnum' 0;
+}
+
+/* Tabular figures for numeric contexts (tables › data type alignment) */
+.tnum {
+  font-feature-settings: 'tnum' 1;
+  font-variant-numeric: tabular-nums;
+}
+
+a {
+  color: var(--text-link);
+}
+
+h1, h2, h3 {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Focus ring: 2px brand outline + 2px offset, keyboard focus only.
+   Never removed (accessibility.md#focus-states). */
+:focus-visible {
+  outline: 2px solid var(--focusRing);
+  outline-offset: 2px;
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* Respect reduced-motion (interaction.md#transitions) */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Utility layout helpers */
+.row {
+  display: flex;
+  align-items: center;
+}
+.col {
+  display: flex;
+  flex-direction: column;
+}
+.grow {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.muted {
+  color: var(--text-secondary);
+}
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

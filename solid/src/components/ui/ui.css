@@ -1,0 +1,356 @@
+/* Shared component styles. Colours come from theme CSS vars; scales from main.css. */
+
+/* ---------- Button ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  min-height: 40px;
+  padding: 0 var(--sp-4);
+  border-radius: var(--radius-control);
+  border: 1px solid transparent;
+  font-weight: 600;
+  font-size: var(--type-body);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.1s ease, border-color 0.1s ease, color 0.1s ease;
+  background: transparent;
+  color: var(--text-primary);
+}
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.btn--sm {
+  min-height: 32px;
+  padding: 0 var(--sp-3);
+  font-size: var(--type-caption);
+}
+.btn--primary {
+  background: var(--brand-primary);
+  color: var(--brand-onPrimary);
+}
+.btn--primary:not(:disabled):hover {
+  background: var(--brand-primaryHover);
+}
+.btn--secondary {
+  background: var(--surface-default);
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+.btn--secondary:not(:disabled):hover {
+  background: var(--hoverOverlay);
+}
+.btn--ghost {
+  background: transparent;
+  color: var(--text-primary);
+}
+.btn--ghost:not(:disabled):hover {
+  background: var(--hoverOverlay);
+}
+.btn--destructive {
+  background: var(--state-error-main);
+  color: #fff;
+}
+.btn--destructive:not(:disabled):hover {
+  filter: brightness(0.92);
+}
+.btn--icon {
+  min-width: 40px;
+  padding: 0;
+}
+
+/* ---------- Badge (status) ---------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: 2px var(--sp-2);
+  border-radius: var(--radius-pill);
+  font-size: var(--type-caption);
+  font-weight: 600;
+  line-height: 18px;
+  white-space: nowrap;
+}
+.badge--new {
+  background: var(--state-info-subtle);
+  color: var(--state-info-main);
+}
+.badge--finalised {
+  background: var(--state-success-subtle);
+  color: var(--state-success-main);
+}
+.badge--neutral {
+  background: var(--surface-sunken);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-default);
+}
+
+/* ---------- Inputs ---------- */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+.field__label {
+  font-size: var(--type-caption);
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+.input,
+.select-trigger {
+  height: 40px;
+  padding: 0 var(--sp-3);
+  border-radius: var(--radius-control);
+  border: 1px solid var(--border-default);
+  background: var(--surface-sunken);
+  color: var(--text-primary);
+  font-size: var(--type-body);
+  font-family: inherit;
+  width: 100%;
+}
+.input--sm,
+.select-trigger--sm {
+  height: 36px;
+}
+.input:hover,
+.select-trigger:hover {
+  border-color: var(--border-strong);
+}
+.input:focus,
+.select-trigger:focus {
+  outline: none;
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 2px var(--focusRing);
+}
+.input--invalid {
+  border-color: var(--state-error-main);
+}
+
+/* ---------- Select (single-select dropdown) ---------- */
+.select {
+  position: relative;
+}
+.select-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  cursor: pointer;
+  text-align: left;
+}
+.select-trigger[data-placeholder='true'] {
+  color: var(--text-disabled);
+}
+.select-menu {
+  position: absolute;
+  z-index: 40;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 100%;
+  max-height: 280px;
+  overflow-y: auto;
+  background: var(--surface-raised);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-control);
+  box-shadow: var(--elev-raised);
+  padding: var(--sp-1);
+}
+.select-search {
+  padding: var(--sp-1);
+  position: sticky;
+  top: 0;
+  background: var(--surface-raised);
+}
+.select-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  min-height: 40px;
+}
+.select-option[data-active='true'] {
+  background: var(--hoverOverlay);
+}
+.select-option[data-selected='true'] {
+  background: var(--selected);
+  font-weight: 600;
+}
+.select-option[data-disabled='true'] {
+  color: var(--text-disabled);
+  cursor: not-allowed;
+}
+
+/* ---------- Modal ---------- */
+.scrim {
+  position: fixed;
+  inset: 0;
+  background: var(--surface-scrim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: var(--sp-4);
+}
+.modal {
+  background: var(--surface-raised);
+  border-radius: var(--radius-modal);
+  box-shadow: var(--elev-overlay);
+  width: 100%;
+  max-width: 640px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-4) var(--sp-6);
+  border-bottom: 1px solid var(--divider);
+}
+.modal__title {
+  font-size: var(--type-heading);
+  font-weight: 600;
+  margin: 0;
+}
+.modal__body {
+  padding: var(--sp-6);
+  overflow-y: auto;
+}
+.modal__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-2);
+  padding: var(--sp-4) var(--sp-6);
+  border-top: 1px solid var(--divider);
+}
+
+/* ---------- Toast ---------- */
+.toast-region {
+  position: fixed;
+  bottom: var(--sp-6);
+  right: var(--sp-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  z-index: 200;
+}
+.toast {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--radius-control);
+  background: var(--surface-raised);
+  box-shadow: var(--elev-raised);
+  border-left: 4px solid var(--border-strong);
+  min-width: 260px;
+  max-width: 420px;
+}
+.toast--error {
+  border-left-color: var(--state-error-main);
+}
+.toast--success {
+  border-left-color: var(--state-success-main);
+}
+.toast--info {
+  border-left-color: var(--state-info-main);
+}
+
+/* ---------- Spinner ---------- */
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border-strong);
+  border-top-color: var(--brand-primary);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- Checkbox ---------- */
+.checkbox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface-default);
+  cursor: pointer;
+  color: var(--brand-onPrimary);
+}
+.checkbox[data-checked='true'] {
+  background: var(--brand-primary);
+  border-color: var(--brand-primary);
+}
+.checkbox-hit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  min-height: 40px;
+  cursor: pointer;
+}
+
+/* ---------- Segmented control ---------- */
+.segmented {
+  display: inline-flex;
+  padding: 2px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border-default);
+  gap: 2px;
+}
+.segmented__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: var(--sp-1) var(--sp-3);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: var(--type-caption);
+  font-weight: 600;
+  min-height: 32px;
+}
+.segmented__item[data-active='true'] {
+  background: var(--surface-default);
+  color: var(--text-primary);
+  box-shadow: var(--elev-raised);
+}
+
+/* ---------- Banner ---------- */
+.banner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--radius-control);
+  font-size: var(--type-body);
+}
+.banner--info {
+  background: var(--state-info-subtle);
+  color: var(--state-info-main);
+}
+.banner--warning {
+  background: var(--state-warning-subtle);
+  color: var(--state-warning-main);
+}
+.banner--error {
+  background: var(--state-error-subtle);
+  color: var(--state-error-main);
+}
