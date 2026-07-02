@@ -1,0 +1,186 @@
+/* Theme tokens — semantic colour roles + shared scales.
+   Roles per spec/ui-standards/theming.md; values per theme-light / theme-dark / theme-mui.
+   Selected by data-theme on <html> ("light" default, "dark", "mui").
+   Translucent "hex @ opacity%" values are pre-resolved to rgba() here (the CSS renderer's
+   colour type), as the spec's notation permits. */
+
+:root,
+:root[data-theme='light'] {
+  /* Brand */
+  --brand-primary: #e95c30;
+  --brand-primary-hover: #c43c11;
+  --brand-primary-subtle: #fceae3;
+  --brand-on-primary: #ffffff;
+  --brand-secondary: #3e7bfa;
+  --brand-secondary-hover: #3568d4;
+  --brand-secondary-subtle: #e8f1fe;
+
+  /* Surface */
+  --surface-base: #f2f2f5;
+  --surface-default: #ffffff;
+  --surface-raised: #ffffff;
+  --surface-sunken: #fafafc;
+  --surface-nav: #f2f2f5;
+  --surface-scrim: rgba(0, 0, 0, 0.5);
+
+  /* Text */
+  --text-primary: #1c1c28;
+  --text-secondary: #555770;
+  --text-disabled: #8f90a6;
+  --text-link: #3568d4;
+  --text-inverse: #ffffff;
+
+  /* Line */
+  --border-default: #e4e4eb;
+  --border-strong: #cbced4;
+  --divider: #eaeaea;
+
+  /* State */
+  --state-error: #e63535;
+  --state-error-subtle: #ffcdce;
+  --state-warning: #e1a200;
+  --state-warning-subtle: #fcf1d4;
+  --state-success: #69a607;
+  --state-success-subtle: #edf7ed;
+  --state-info: #3e7bfa;
+  --state-info-subtle: #e8f1fe;
+
+  /* Interaction */
+  --focus-ring: #e95c30;
+  --hover-overlay: rgba(0, 0, 0, 0.04);
+  --selected: #e8f1fe;
+  --selected-hover: #d2dfff;
+
+  /* Elevation */
+  --elev-raised: 0 4px 8px rgba(96, 97, 112, 0.16), 0 0 2px rgba(40, 41, 61, 0.04);
+  --elev-overlay: 0 12px 24px rgba(96, 97, 112, 0.2), 0 4px 8px rgba(40, 41, 61, 0.16);
+
+  /* Per-theme button radius: light rounds at radius.control (8) */
+  --radius-button: 8px;
+}
+
+:root[data-theme='dark'] {
+  --brand-primary: #f2774b;
+  --brand-primary-hover: #e95c30;
+  --brand-primary-subtle: rgba(233, 92, 48, 0.16);
+  --brand-on-primary: #ffffff;
+  --brand-secondary: #6b9bff;
+  --brand-secondary-hover: #3e7bfa;
+  --brand-secondary-subtle: rgba(62, 123, 250, 0.18);
+
+  --surface-base: #16161d;
+  --surface-default: #1f2029;
+  --surface-raised: #262732;
+  --surface-sunken: #14141a;
+  --surface-nav: #1a1b23;
+  --surface-scrim: rgba(0, 0, 0, 0.6);
+
+  --text-primary: #f2f2f5;
+  --text-secondary: #a4a7b5;
+  --text-disabled: #6a6d7e;
+  --text-link: #6b9bff;
+  --text-inverse: #16161d;
+
+  --border-default: #33343f;
+  --border-strong: #454654;
+  --divider: #2a2b36;
+
+  --state-error: #ff6b6b;
+  --state-error-subtle: rgba(230, 53, 53, 0.18);
+  --state-warning: #f2b43c;
+  --state-warning-subtle: rgba(225, 162, 0, 0.18);
+  --state-success: #8fcb3a;
+  --state-success-subtle: rgba(105, 166, 7, 0.18);
+  --state-info: #6b9bff;
+  --state-info-subtle: rgba(62, 123, 250, 0.18);
+
+  --focus-ring: #f2774b;
+  --hover-overlay: rgba(255, 255, 255, 0.06);
+  --selected: rgba(62, 123, 250, 0.24);
+  --selected-hover: rgba(62, 123, 250, 0.32);
+
+  --elev-raised: 0 4px 8px rgba(0, 0, 0, 0.4), 0 0 2px rgba(0, 0, 0, 0.3);
+  --elev-overlay: 0 12px 24px rgba(0, 0, 0, 0.5), 0 4px 8px rgba(0, 0, 0, 0.4);
+
+  --radius-button: 8px;
+}
+
+/* Existing-MUI reference theme: light colours, pill buttons. */
+:root[data-theme='mui'] {
+  --brand-primary: #e95c30;
+  --brand-primary-hover: #c43c11;
+  --brand-primary-subtle: #fceae3;
+  --brand-on-primary: #ffffff;
+  --brand-secondary: #3e7bfa;
+  --brand-secondary-hover: #3568d4;
+  --brand-secondary-subtle: #e8f1fe;
+
+  --surface-base: #f2f2f5;
+  --surface-default: #ffffff;
+  --surface-raised: #ffffff;
+  --surface-sunken: #fafafc;
+  --surface-nav: #f2f2f5;
+  --surface-scrim: rgba(0, 0, 0, 0.5);
+
+  --text-primary: #1c1c28;
+  --text-secondary: #555770;
+  --text-disabled: #8f90a6;
+  --text-link: #3568d4;
+  --text-inverse: #ffffff;
+
+  --border-default: #e4e4eb;
+  --border-strong: #cbced4;
+  --divider: #eaeaea;
+
+  --state-error: #e63535;
+  --state-error-subtle: #ffcdce;
+  --state-warning: #f2a001;
+  --state-warning-subtle: #fcf1d4;
+  --state-success: #69a607;
+  --state-success-subtle: #edf7ed;
+  --state-info: #3e7bfa;
+  --state-info-subtle: #e8f1fe;
+
+  --focus-ring: #e95c30;
+  --hover-overlay: rgba(0, 0, 0, 0.04);
+  --selected: #e8f1fe;
+  --selected-hover: #d2dfff;
+
+  --elev-raised: 0 4px 8px rgba(96, 97, 112, 0.16), 0 0 2px rgba(40, 41, 61, 0.04);
+  --elev-overlay: 0 12px 24px rgba(96, 97, 112, 0.2), 0 4px 8px rgba(40, 41, 61, 0.16);
+
+  /* MUI theme rounds buttons at radius.pill */
+  --radius-button: 9999px;
+}
+
+:root {
+  /* Shared scales (identical across themes) */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-12: 48px;
+
+  --radius-sm: 4px;
+  --radius-control: 8px;
+  --radius-modal: 12px;
+  --radius-pill: 9999px;
+
+  /* Type scale */
+  --type-heading-size: 16px;
+  --type-heading-weight: 600;
+  --type-body-size: 14px;
+  --type-body-weight: 400;
+  --type-emphasis-weight: 600;
+  --type-caption-size: 12px;
+  --type-caption-weight: 500;
+
+  /* Z-index: popovers sit above modals so a menu inside a dialog floats over it */
+  --z-modal: 50;
+  --z-popover: 60;
+  --z-toast: 70;
+
+  --font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
