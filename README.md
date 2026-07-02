@@ -1,0 +1,28 @@
+## Notes
+
+- Had a go at SDD
+    - Idea is to define how entire app works
+    - Our case we're doing reverse SDD
+- The Phoenix Principle
+    - If I'm trying it out should take it to the extreme
+    - Should be able to delete whole codebase and get something usable back purely from spec
+    - Code is a build artifact
+    - Ultimate vibe coding
+- Goal is simple, make a good enough spec for the stocktake vertical that I can get usable frontend from a single prompt
+- Workflow
+    - Write some spec using existing codebase
+    - Tell claude to implement the spec with some framework
+    - Not implemented right? Update spec
+    - Repeat
+    - ?
+    - Profit
+- Results
+    - Look at spec
+    - Basically one prompt
+    - React, Just TS, Solid, Svelte (see branches in this repo)
+- What does this mean for us?
+    - If spec is solid code simply follows
+    - Refactors don't affect functionality
+    - Product, Devs, Claude, QA all on the same page
+    - Hard bit is probably process not actual spec
+    - Maybe lets not delete our codebase on a regular basis though
