@@ -1,0 +1,23 @@
+{
+  "name": "oms-solid",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Greenfield SolidJS implementation of the open-mSupply reverse spec (see ../spec). Stocktakes vertical + full chrome.",
+  "scripts": {
+    "dev": "vite --port 5180",
+    "build": "vite build",
+    "preview": "vite preview --port 5180",
+    "typecheck": "tsc --noEmit",
+    "icons": "node scripts/copy-icons.mjs"
+  },
+  "dependencies": {
+    "@solidjs/router": "^0.15.3",
+    "solid-js": "^1.9.5"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3",
+    "vite": "^6.0.7",
+    "vite-plugin-solid": "^2.11.6"
+  }
+}

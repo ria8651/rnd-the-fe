@@ -1,0 +1,199 @@
+/*
+ * Theming model (spec/ui-standards/theming.md) realised as CSS custom properties.
+ * Code references a semantic ROLE (var(--surface-default), var(--text-primary), …),
+ * never a literal colour. Swapping [data-theme] swaps the mapping; call sites are
+ * unchanged. Every theme defines every role. Colours come from the theme variants
+ * (theme-light/dark/mui.md); the non-colour scales are shared by all themes, except
+ * the one per-theme choice: the button radius (--radius-button).
+ *
+ * Translucent values (spec notation `hex @ n%`) are written as rgb(...) with an
+ * alpha; opaque values as hex.
+ */
+
+:root {
+  /* Spacing scale — base step 4 (theming.md#spacing-scale) */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-12: 48px;
+
+  /* Radius scale (theming.md#radius-scale). --radius-button is set per theme. */
+  --radius-sm: 4px;
+  --radius-control: 8px;
+  --radius-modal: 12px;
+  --radius-pill: 9999px;
+
+  /* Elevation levels (theming.md#elevation-levels), mapped from the MUI reference. */
+  --elevation-raised: 0 4px 8px rgb(96 97 112 / 0.16), 0 1px 2px rgb(40 41 61 / 0.04);
+  --elevation-overlay: 0 12px 24px rgb(96 97 112 / 0.18), 0 4px 8px rgb(40 41 61 / 0.28);
+
+  /* Type scale (theming.md#type-scale). Family per typography.md. */
+  --font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --type-heading-size: 16px;
+  --type-heading-weight: 600;
+  --type-body-size: 14px;
+  --type-body-weight: 400;
+  --type-emphasis-weight: 600;
+  --type-caption-size: 12px;
+  --type-caption-weight: 500;
+  --line-height: 20px;
+
+  /* Motion */
+  --transition-fast: 120ms ease;
+}
+
+/* Tablet bumps body text to 16px (typography.md#font-sizes). */
+@media (max-width: 1100px) and (pointer: coarse) {
+  :root {
+    --type-body-size: 16px;
+    --line-height: 24px;
+  }
+}
+
+/* ---------- Light theme (theme-light.md) ---------- */
+:root,
+[data-theme='light'] {
+  --radius-button: var(--radius-control);
+  --radius-card: var(--radius-control);
+
+  --brand-primary: #e95c30;
+  --brand-primary-hover: #c43c11;
+  --brand-primary-subtle: #fceae3;
+  --brand-on-primary: #ffffff;
+  --brand-secondary: #3e7bfa;
+  --brand-secondary-hover: #3568d4;
+  --brand-secondary-subtle: #e8f1fe;
+
+  --surface-base: #f2f2f5;
+  --surface-default: #ffffff;
+  --surface-raised: #ffffff;
+  --surface-sunken: #fafafc;
+  --surface-nav: #f2f2f5;
+  --surface-scrim: rgb(0 0 0 / 0.5);
+  --surface-row: #fafafc;
+
+  --text-primary: #1c1c28;
+  --text-secondary: #555770;
+  --text-disabled: #8f90a6;
+  --text-link: #3568d4;
+  --text-inverse: #ffffff;
+
+  --border-default: #e4e4eb;
+  --border-strong: #cbced4;
+  --divider: #eaeaea;
+
+  --state-error: #e63535;
+  --state-error-subtle: #ffcdce;
+  --state-warning: #e1a200;
+  --state-warning-subtle: #fcf1d4;
+  --state-success: #69a607;
+  --state-success-subtle: #edf7ed;
+  --state-info: #3e7bfa;
+  --state-info-subtle: #e8f1fe;
+
+  --focus-ring: #e95c30;
+  --hover-overlay: rgb(0 0 0 / 0.04);
+  --selected: #e8f1fe;
+  --selected-hover: #d2dfff;
+}
+
+/* ---------- Dark theme (theme-dark.md) ---------- */
+[data-theme='dark'] {
+  --radius-button: var(--radius-control);
+  --radius-card: var(--radius-control);
+
+  --brand-primary: #f2774b;
+  --brand-primary-hover: #e95c30;
+  --brand-primary-subtle: rgb(233 92 48 / 0.16);
+  --brand-on-primary: #ffffff;
+  --brand-secondary: #6b9bff;
+  --brand-secondary-hover: #3e7bfa;
+  --brand-secondary-subtle: rgb(62 123 250 / 0.18);
+
+  --surface-base: #16161d;
+  --surface-default: #1f2029;
+  --surface-raised: #262732;
+  --surface-sunken: #14141a;
+  --surface-nav: #1a1b23;
+  --surface-scrim: rgb(0 0 0 / 0.6);
+  --surface-row: #1f2029;
+
+  --text-primary: #f2f2f5;
+  --text-secondary: #a4a7b5;
+  --text-disabled: #6a6d7e;
+  --text-link: #6b9bff;
+  --text-inverse: #16161d;
+
+  --border-default: #33343f;
+  --border-strong: #454654;
+  --divider: #2a2b36;
+
+  --state-error: #ff6b6b;
+  --state-error-subtle: rgb(230 53 53 / 0.18);
+  --state-warning: #f2b43c;
+  --state-warning-subtle: rgb(225 162 0 / 0.18);
+  --state-success: #8fcb3a;
+  --state-success-subtle: rgb(105 166 7 / 0.18);
+  --state-info: #6b9bff;
+  --state-info-subtle: rgb(62 123 250 / 0.18);
+
+  --focus-ring: #f2774b;
+  --hover-overlay: rgb(255 255 255 / 0.06);
+  --selected: rgb(62 123 250 / 0.24);
+  --selected-hover: rgb(62 123 250 / 0.32);
+}
+
+/*
+ * Existing-app (MUI) reference theme (theme-mui.md). Same palette as light (light
+ * is derived from it); the one distinctive per-theme metric honoured here is the
+ * button radius (pill) and the tighter 4px card radius. Per the theming model, the
+ * button radius is the sole per-theme choice — the captured white-fill/orange-icon
+ * button quirk is an inconsistency, not a target, so buttons keep the shared model.
+ */
+[data-theme='mui'] {
+  --radius-button: var(--radius-pill);
+  --radius-card: 4px;
+
+  --brand-primary: #e95c30;
+  --brand-primary-hover: #c43c11;
+  --brand-primary-subtle: #fceae3;
+  --brand-on-primary: #ffffff;
+  --brand-secondary: #3e7bfa;
+  --brand-secondary-hover: #3568d4;
+  --brand-secondary-subtle: #e8f1fe;
+
+  --surface-base: #f2f2f5;
+  --surface-default: #ffffff;
+  --surface-raised: #ffffff;
+  --surface-sunken: #fafafc;
+  --surface-nav: #f2f2f5;
+  --surface-scrim: rgb(0 0 0 / 0.5);
+  --surface-row: #fafafc;
+
+  --text-primary: #1c1c28;
+  --text-secondary: #555770;
+  --text-disabled: #8f90a6;
+  --text-link: #3568d4;
+  --text-inverse: #ffffff;
+
+  --border-default: #e4e4eb;
+  --border-strong: #cbced4;
+  --divider: #eaeaea;
+
+  --state-error: #e63535;
+  --state-error-subtle: #ffcdce;
+  --state-warning: #e1a200;
+  --state-warning-subtle: #fcf1d4;
+  --state-success: #69a607;
+  --state-success-subtle: #edf7ed;
+  --state-info: #3e7bfa;
+  --state-info-subtle: #e8f1fe;
+
+  --focus-ring: #e95c30;
+  --hover-overlay: rgb(0 0 0 / 0.04);
+  --selected: #e8f1fe;
+  --selected-hover: #d2dfff;
+}
