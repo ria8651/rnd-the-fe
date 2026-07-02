@@ -35,21 +35,29 @@ export function Modal({
   const triggerRef = useRef<Element | null>(null);
   const titleId = useRef(`modal-${Math.random().toString(36).slice(2)}`).current;
 
+  // Read the latest callbacks/flags from the keydown handler without making them
+  // effect deps — otherwise a parent that passes a fresh onClose each render would
+  // re-run the mount effect and steal focus from inputs on every keystroke.
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
+  const dismissableRef = useRef(dismissable);
+  dismissableRef.current = dismissable;
+
   useEffect(() => {
     if (!open) return;
     triggerRef.current = document.activeElement;
     const dialog = dialogRef.current;
 
-    // Focus the first focusable element (or the dialog itself).
+    // Focus the first focusable element (or the dialog itself) — once, on open.
     const focusables = dialog?.querySelectorAll<HTMLElement>(
       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
     );
     (focusables?.[0] ?? dialog)?.focus();
 
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && dismissable) {
+      if (e.key === 'Escape' && dismissableRef.current) {
         e.stopPropagation();
-        onClose();
+        onCloseRef.current();
         return;
       }
       // Simple focus trap.
@@ -81,7 +89,7 @@ export function Modal({
       // Return focus to the trigger on close.
       (triggerRef.current as HTMLElement | null)?.focus?.();
     };
-  }, [open, onClose, dismissable]);
+  }, [open]);
 
   if (!open) return null;
 
